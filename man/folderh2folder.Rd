@@ -4,14 +4,14 @@
   Hierarchic folder of two data frames to folder of data frames whose column names are the same
 }
 \description{
-  Creates an object of class \code{folder} from an object of class \code{folderh}.
+  Creates an object of class \code{folder} from a \code{folderh} of two data frames.
 }
 \usage{
 folderh2folder(foldh)
 }
 \arguments{
   \item{foldh}{
-     object of class \code{\link{folderh}} with two data frames.
+     object of class \code{\link{folderh}} containing two data frames.
 }
 }
 \value{
@@ -39,7 +39,7 @@ data(roseflowers)
 flg <- roseflowers$variety
 flx <- roseflowers$flower
 
-flfh <- folderh(flg, flx, "numrose", "rose")
+flfh <- folderh(flg, "rose", flx)
 print(flfh)
 
 flf <- folderh2folder(flfh)
@@ -50,7 +50,7 @@ data(castles.dated)
 cag <- castles.dated$periods
 cax <- castles.dated$stones
 
-cafh <- folderh(cag, cax, "castle", "castle")
+cafh <- folderh(cag, "castle", cax)
 print(cafh)
 
 caf <- folderh2folder(cafh)

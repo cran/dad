@@ -456,9 +456,10 @@ if (crit %in% 2:3)
   prediction <- data.frame(prediction, NA)
   colnames(prediction)[2:3] <- c("prior.class", "predicted.class")
   rownames(prediction) <- prediction[, 1]
-  prediction$predicted.class <- factor(NA, levels = levels(classe[, 2]))
-  prediction[names(group.calc), "predicted.class"] <- group.calc
-  
+  lev.class <- levels(classe[, 2])
+  prediction$predicted.class <- factor(NA, levels = lev.class)
+  prediction[names(group.calc), "predicted.class"] <- lev.class[group.calc]
+
   # Changing of distances into proximities
   inv.distances <- 1/(distances)
   sum.inv.distances <- rowSums(inv.distances)

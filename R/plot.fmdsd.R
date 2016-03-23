@@ -1,5 +1,5 @@
 plot.fmdsd <-
-function(x, nscore=1:3, sub.title=NULL, ...)
+function(x, nscore=1:3, sub.title=NULL, fontsize.points = 1.5, ...)
 {
 inertia=x$inertia$inertia
 coor=x$scores[, -1]

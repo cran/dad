@@ -1,46 +1,49 @@
 \name{folderh}
 \alias{folderh}
 \title{
-  Folder of two data sets related by a hierarchy
+  Hierarchic folder of n data frames related in pairs by (n-1) keys
 }
 \description{
-  Creates an object of class \code{folderh}, that is a list of 2 data frames whose rows are related by two keys defining a relation "1 to N".
+  Creates an object of class \code{folderh}, that is a list of \eqn{n>1} data frames whose rows are related by (n-1) keys, each key defining a relation "1 to N" between the two adjacent data frames passed as arguments of the function.
 }
 \usage{
-folderh(g, x, keyg = "rownames", keyx, nag.rm = TRUE, nax.rm = TRUE)
+folderh(df1, key1, df2, ..., na.rm = TRUE)
 }
 \arguments{
-  \item{g}{
-     data frame with at least one column if \code{keyg} is \code{"rownames"}, or two columns if \code{keyg} is not \code{"rownames"}.
-     
-     If \code{keyg} is not \code{"rownames"}, the data frame contains a factor (named \code{keyg}) whose levels are taken once.
+  \item{df1}{
+     data frame with at least two columns. It contains a factor (whose name is given by \code{key1} argument) whose levels are taken exactly once.
 }
-  \item{x}{
-     data frame with at least two columns.
-     
-     It contains a factor column (named \code{keyx}) whose levels are the rownames of \code{g} (if \code{keyg = rownames}) or the levels of \code{keyg} (if \code{keyg} is a factor of the data frame \code{g}).
+  \item{key1}{
+     character string. The name of the factor of the data frames \code{df1} and \code{df2} which contains the key of the relations "1 to N" between the two datasets.
 }
-  \item{keyg}{
-     string. It is either \code{"rownames"} (default) or the name of the factor of \code{g} which contains the key of the relation "1 to N".
+  \item{df2}{
+     data frame with at least two columns. It contains a factor column (named by \code{keys} argument) with the same levels as \code{df1[, key1]} (see Details).
 }
-  \item{keyx}{
-     string. It is the name of the factor of \code{x} which contains the key of the relation "1 to N".
+  \item{...}{
+     optional. One or several supplementary character strings and data frames, ordered as follows: \code{key2, df3, ...}.
+     The argument \code{key2} indicates the key defining the relation "1 to N" between the data frames \code{df2} and \code{df3}, and so on.
 }
-  \item{nag.rm}{
-     logical. If \code{TRUE}, the rows of \code{g} for which \code{keyg} is \code{NA} are removed.
-}
-  \item{nax.rm}{
-     logical. If \code{TRUE}, the rows of \code{x} for which \code{keyx} is \code{NA} are removed.
+  \item{na.rm}{
+     logical. If \code{TRUE}, the rows of each data frame for which the key is \code{NA} are removed.
 }
 }
 \value{
- Returns an object of class \code{folderh} that is a list of the two data frames \code{g} and \code{x}.
- 
- This object has one attribute \code{attr(,"keys")} which is a character vector of two elements \code{c(key1, key2)}: \code{key1} is the column name of the key in \code{g}, and \code{key2} is the column name of the key in \code{x}.
+ Returns an object of class \code{folderh}. Its elements are the data frames passed as arguments, and the attribute \code{attr(, "keys")} contains the character arguments.
 }
 
 \details{
-If the argument \code{keyg} is \code{"rownames"} (the default), a column named \code{key} is added to the data frame \code{g}.
+The object of class \code{folderh} is a list of \eqn{n \ge 2} data frames.
+\itemize{
+\item If no optional arguments are given via \code{...}, that is \eqn{n = 2}, the two data frames of the list
+have a column named by the attribute \code{attr(, "keys")} (argument \code{key1}), which is a factor with the same levels.
+Each one of these levels occur exactly once in the first data frame of the list.
+\item If some supplementary data frames and supplementary strings \code{key2, df3}, ... are given as optional arguments, \eqn{n} is the number of data frames given as arguments.
+Then, the attribute \code{attr(, "keys")} is a vector of \eqn{n-1} character strings.
+For \eqn{i = 1, \ldots, N-1}, its \eqn{i}-th element is the name of a column of the \eqn{i}-th and \eqn{(i+1)}-th data frames of the folderh, which are factors with the same levels.
+Each one of these levels occur exactly once in the \eqn{i}-th data frame.
+}
+
+If there are more than two data frames, \code{folderh} computes a folderh with the two last data frames, and then uses the function \code{\link{append.df2folderh}} to append each one of the other data frames to the folderh.
 }
 
 \author{
@@ -56,22 +59,19 @@ Maintainer: Rachid Boumaza <rachid.boumaza@agrocampus-ouest.fr>
 \code{\link{folderh2df}} to build a data frame.
 }
 \examples{
-# First example: rose flowers               
+# First example: rose flowers
 data(roseflowers)
-flg <- roseflowers$variety
-flx <- roseflowers$flower
-
-fh1 <- folderh(flg, flx, "rownames", "rose")
+df1 <- roseflowers$variety
+df2 <- roseflowers$flower
+fh1 <- folderh(df1, "rose", df2)
 print(fh1)
 
-fh2 <- folderh(flg, flx, "numrose", "rose")
+# Second example
+data(roseleaves)
+roses <- roseleaves$rose
+stems <- roseleaves$stem
+leaves <- roseleaves$leaf
+leaflets <- roseleaves$leaflet
+fh2 <- folderh(roses, "rose", stems, "stem", leaves, "leaf", leaflets)
 print(fh2)
-
-# Second example: castles               
-data(castles.dated)
-cag <- castles.dated$periods
-cax <- castles.dated$stones
-
-cafh <- folderh(cag, cax, "castle", "castle")
-print(cafh)
 }

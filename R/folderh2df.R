@@ -13,7 +13,7 @@ folderh2df <- function(foldh) {
   
   # Change the object of class "folder"  into a data frame
   x <- folder2df(fold)
-  colnames(x)[1] <- attr(foldh, "key")["key2"]
+  colnames(x)[1] <- attr(foldh, "keys")
   
   return(x)
 }

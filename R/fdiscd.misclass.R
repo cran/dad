@@ -501,10 +501,11 @@ if (crit %in% 2:3)
   misclass <- classe
   colnames(misclass)[2] <- "prior.class"
   rownames(misclass) <- classe[, 1]
-  misclass <- data.frame(misclass, predicted.class = factor(NA, levels = levels(misclass[, 2])))
-  misclass[names(group.calc), "predicted.class"] <- group.calc
+  lev.class <- levels(misclass[, 2])
+  misclass <- data.frame(misclass, predicted.class = factor(NA, levels = lev.class))
+  misclass[names(group.calc), "predicted.class"] <-  lev.class[group.calc]
   misclass <- data.frame(misclass, misclassed = (misclass[, 2] != misclass[, 3]))
-  
+
   # Allocations per classe:
   alloc.per.classe <- table(misclass[, 2:3])
   

@@ -16,12 +16,12 @@ folderh2folder <- function(foldh) {
   x <- foldh[[2]]
   
   # The groups (levels of the column of g associated to key1)
-  jkeyg <- which(colnames(g) == attr(foldh, "keys")[1])
+  jkeyg <- which(colnames(g) == attr(foldh, "keys"))
   levg <- as.character(g[, jkeyg])
   nlevg <- length(levg)
   
   # The grouping variable in data frame x
-  jkeyx <- which(colnames(x) == attr(foldh, "keys")[2])
+  jkeyx <- which(colnames(x) == attr(foldh, "keys"))
   xkey <- x[, jkeyx]
   
   # Building of the list

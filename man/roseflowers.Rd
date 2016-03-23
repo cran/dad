@@ -13,7 +13,7 @@
   
   \itemize{
     \item{\code{roseflowers$variety}: }{this first data frame has 5 rows and 3 columns (factors) named
-     \code{place}, \code{numrose} and \code{variety}.}
+     \code{place}, \code{rose} and \code{variety}.}
 
     \item{\code{roseflowers$flower}: }{this second data frame has 11 cases and 5 columns named \code{numflower} (the order number of the flower), \code{rose}, \code{diameter} and \code{height} (the diameter and height of the flower), and \code{nleaves} (the number of the leaves of the axis).}
 }
