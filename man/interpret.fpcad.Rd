@@ -8,7 +8,7 @@
     Applies to an object of class \code{fpcad}, plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
 }
 \usage{
-interpret.fpcad(x, nscore = 1:3, moment = "mean")
+\method{interpret}{fpcad}(x, nscore = 1:3, moment = "mean")
 }
 \arguments{
   \item{x}{
@@ -48,7 +48,7 @@ interpret.fpcad(x, nscore = 1:3, moment = "mean")
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -56,9 +56,10 @@ interpret.fpcad(x, nscore = 1:3, moment = "mean")
 }
 \examples{
 data(roses)
-result1 = fpcad(roses[,c("Sha","Den","Sym","Lot")])
-interpret.fpcad(result1)
-interpret.fpcad(result1, moment = "var")
-interpret.fpcad(result1, moment = "cor")
-interpret.fpcad(result1, nscore = 1:2)
+rosefold <- as.folder(roses[,c("Sha","Den","Sym","rose")])
+result1 <- fpcad(rosefold)
+interpret(result1)
+interpret(result1, moment = "var")
+interpret(result1, moment = "cor")
+interpret(result1, nscore = 1:2)
 }

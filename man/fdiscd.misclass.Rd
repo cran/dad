@@ -7,14 +7,18 @@
   Computes the one-leave-out misclassification ratio of the rule allocating \eqn{T} groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the \eqn{L^2} distances between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes. 
 }
 \usage{
-fdiscd.misclass(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL)
+fdiscd.misclass(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL)
 }
 \arguments{
-  \item{x}{
-       data frame with (\eqn{p}+1) columns. The first \eqn{p} columns are numeric. The last column is a factor with \eqn{T} levels defining \eqn{T} groups. Each group, say \eqn{t}, consists of \eqn{n_t} individuals. 
+  \item{xf}{
+       object of class \code{\link{folderh}} with two data frames:
+       \itemize{
+         \item The first one has at least two columns. One column contains the names of the \eqn{T} groups (all the names must be different). An other column is a factor with \eqn{K} levels partitionning the T groups into K classes..
+         \item The second one has \eqn{(p+1)} columns. The first \eqn{p} columns are numeric (otherwise, there is an error). The last column is a factor with \eqn{T} levels defining \eqn{T} groups. Each group, say \eqn{t}, consists of \eqn{n_t} individuals.
+       }
 }       
-  \item{classe}{
-       data frame with two columns. The first column contains the names of the \eqn{T} groups (all the names must be different). The second column is a factor with \eqn{K} levels partitionning the \eqn{T} groups into \eqn{K} classes.
+  \item{class.var}{
+       string. The name of the classes variable.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.
@@ -26,7 +30,7 @@ fdiscd.misclass(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NU
        string. If \code{gaussiand = FALSE}, this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
 }                                                                                                        
   \item{windowh}{
-       strictly positive numeric value. If \code{windowh=NULL} (default), the bandwidths are computed using the \code{\link{bandwidth.parameter}} function.
+       strictly positive numeric value. If \code{windowh = NULL} (default), the bandwidths are computed using the \code{\link{bandwidth.parameter}} function.
 }
 }
 \details{
@@ -63,13 +67,13 @@ fdiscd.misclass(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NU
     Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \examples{
 data(castles.dated)
-
-# The densities are supposed Gaussian and parametrically estimated
-result1 <- fdiscd.misclass(castles.dated$stones, castles.dated$periods)
-
-print(result1)
+castles.stones <- castles.dated$stones
+castles.periods <- castles.dated$periods
+castlesfh <- folderh(castles.periods, "castle", castles.stones)
+result <- fdiscd.misclass(castlesfh, "period")
+print(result)
 }

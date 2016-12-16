@@ -26,7 +26,7 @@
     \item{\code{Vcfl: }} {intensity of flower colour}
     \item{\code{Tfe: }} {leaf size}
     \item{\code{Vfe: }} {darkness of leaf colour}
-    \item{\code{Lot: }} {factor with 10 levels: \code{A}, \code{B}, \code{C}, \code{D}, 
+    \item{\code{rose: }} {factor with 10 levels: \code{A}, \code{B}, \code{C}, \code{D}, 
                          \code{E}, \code{F}, \code{G}, \code{H}, \code{I} and \code{J}}
   }
 }

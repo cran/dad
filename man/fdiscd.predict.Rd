@@ -7,15 +7,21 @@
   Allocates several groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the \eqn{L^2} distances between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes.
 }
 \usage{
-fdiscd.predict(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL, 
+fdiscd.predict(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL, 
                misclass.ratio = FALSE)
 }
 \arguments{
-  \item{x}{
-       data frame with (\eqn{p}+1) columns. The first \eqn{p} columns are numeric. The last column is a factor with \eqn{T} levels defining \eqn{T} groups. Each group, say \eqn{t}, consists of \eqn{n_t} individuals. 
+  \item{xf}{
+       object of class \code{\link{folderh}} with two data frames:
+       \itemize{
+         \item The first one has at least two columns. One column contains the names of the \eqn{T} groups (all the names must be different). An other column is a factor with \eqn{K} levels partitionning the T groups into K classes..
+         \item The second one has \eqn{(p+1)} columns. The first \eqn{p} columns are numeric (otherwise, there is an error). The last column is a factor with \eqn{T} levels defining \eqn{T} groups. Each group, say \eqn{t}, consists of \eqn{n_t} individuals.
+       }
+       
+       Notice that for the versions earlier than 2.0, fdiscd.predict applied to two data frames.
 }       
-  \item{classe}{
-       data frame with two columns. The first column contains the names of the \eqn{T} groups (all the names must be different). The second column is a factor with \eqn{K} levels partitionning the \eqn{T} groups into \eqn{K} classes.
+  \item{class.var}{
+       string. The name of the classes variable.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.
@@ -27,7 +33,7 @@ fdiscd.predict(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NUL
        string. If \code{gaussiand = FALSE}, this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
 }                                                                                                        
   \item{windowh}{
-       strictly positive number. If \code{windowh=NULL} (default), the bandwidths are computed using the \code{\link{bandwidth.parameter}} function.
+       strictly positive number. If \code{windowh = NULL} (default), the bandwidths are computed using the \code{\link{bandwidth.parameter}} function.
 }
   \item{misclass.ratio}{
        logical (default \code{FALSE}). If \code{TRUE}, the confusion matrix and misclassification ratio are computed on the groups whose prior class is known. In order to compute the misclassification ratio by the one-leave-out method, use the \code{\link{fdiscd.misclass}} function.}
@@ -50,7 +56,7 @@ fdiscd.predict(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NUL
       \itemize{
         \item factor giving the group name. The column name is the same as that of the column (\eqn{p+1}) of \code{x},
         \item \code{class.known}: the prior class of the group if it is available, or NA if not,  
-        \item \code{class.predict}: the class allocation predicted by the discriminant analysis method.
+        \item \code{class.predict}: the class allocation predicted by the discriminant analysis method. If \code{misclass.ratio = TRUE}, the class allocations are computed for all groups. Otherwise (default), they are computed only for the groups whose class is unknown.
       }
     }
     \item{distances }{matrix with \eqn{T} rows and \eqn{K} columns, of the distances (\eqn{d_{tk}}): \eqn{d_{tk}} is the distance between the group \eqn{t} and the class \eqn{k},}
@@ -64,17 +70,14 @@ fdiscd.predict(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NUL
     Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \examples{
 data(castles.dated)
 data(castles.nondated)
 castles.stones <- rbind(castles.dated$stones, castles.nondated$stones)
 castles.periods <- rbind(castles.dated$periods, castles.nondated$periods)
-
-
-# The densities are supposed Gaussian and parametrically estimated
-result1 <- fdiscd.predict(castles.stones, castles.periods)
-
-print(result1)
+castlesfh <- folderh(castles.periods, "castle", castles.stones)
+result <- fdiscd.predict(castlesfh, "period")
+print(result)
 }

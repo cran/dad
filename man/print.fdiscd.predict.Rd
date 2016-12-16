@@ -42,7 +42,7 @@
     Rudrauf J.M., Boumaza R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -53,7 +53,8 @@ data(castles.dated)
 data(castles.nondated)
 castles.stones <- rbind(castles.dated$stones, castles.nondated$stones)
 castles.periods <- rbind(castles.dated$periods, castles.nondated$periods)
-result = fdiscd.predict(castles.stones, castles.periods)
+castlesfh <- folderh(castles.periods, "castle", castles.stones)
+result <- fdiscd.predict(castlesfh, "period")
 print(result)
 print(result, prox.print=TRUE)
 }

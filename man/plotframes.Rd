@@ -26,17 +26,17 @@ plotframes(x, y, font.size = 12, layout = NULL)
 }
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \examples{
 require(MASS)
-mx=c(0,0)
-vx=matrix(c(1,0,0,1),ncol=2) 
-my=c(0,1)
-vy=matrix(c(4,1,1,9),ncol=2)
-x=as.data.frame(mvrnorm(n=10,mu=mx,Sigma=vx))
-y=as.data.frame(mvrnorm(n=10,mu=my,Sigma=vy))
-colnames(x)=c("x1", "x2")
-colnames(y)=c("y1", "y2")
+mx <- c(0,0)
+vx <- matrix(c(1,0,0,1),ncol = 2) 
+my <- c(0,1)
+vy <- matrix(c(4,1,1,9),ncol = 2)
+x <- as.data.frame(mvrnorm(n = 10, mu = mx, Sigma = vx))
+y <- as.data.frame(mvrnorm(n = 10, mu = my, Sigma = vy))
+colnames(x) <- c("x1", "x2")
+colnames(y) <- c("y1", "y2")
 plotframes(x, y)
 }

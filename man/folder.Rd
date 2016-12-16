@@ -20,15 +20,15 @@ folder(x1, x2 = NULL, ..., cols.select = "intersect")
   \item{x2}{
      data frame. Must be provided if \code{x1} is a data frame.
 }
+  \item{\dots}{
+     optional. One or several data frames. When \code{x1} and \code{x2} are data frames, these are the other data frames.
+}
   \item{cols.select}{
      string. Gives the method used to choose the column names of the data frames of the folder. This argument can be:
      \describe{
      \item{\code{"intersect"}}{the data frames of the folder have the column names which are the intersection of the column names of all the date frames given as arguments.}
      \item{\code{"union"}}{the data frames of the folder have the column names which are the union of the column names of all the date frames given as arguments. When necessary, the rows of the data frames returned are completed by NA.}
      }
-}
-  \item{\dots}{
-     optional. One or several data frames. When \code{x1} and \code{x2} are data frames, these are the other data frames.
 }
 }
 \value{
@@ -39,9 +39,7 @@ folder(x1, x2 = NULL, ..., cols.select = "intersect")
 }
 
 \author{
-Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
-
-Maintainer: Rachid Boumaza <rachid.boumaza@agrocampus-ouest.fr>
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -50,8 +48,8 @@ Maintainer: Rachid Boumaza <rachid.boumaza@agrocampus-ouest.fr>
 }
 \examples{
 # First example              
-x1 = data.frame(x = rnorm(10), y = 1:10)
-x2 = data.frame(x = rnorm(10), z = runif(10, 1, 10))
+x1 <- data.frame(x = rnorm(10), y = 1:10)
+x2 <- data.frame(x = rnorm(10), z = runif(10, 1, 10))
 f1 <- folder(x1, x2)
 print(f1)
 
@@ -66,7 +64,7 @@ iris.vir <- iris[iris$Species == "virginica", 1:4]
 irisf1 <- folder(iris.set, iris.ver, iris.vir)
 print(irisf1)
 
-listofdf=list(df1=iris.set,df2=iris.ver,df3=iris.vir)
-irisf2=folder(listofdf,x2=NULL)
+listofdf <- list(df1 = iris.set,df2 = iris.ver,df3 = iris.vir)
+irisf2 <- folder(listofdf,x2 = NULL)
 print(irisf2)
 }

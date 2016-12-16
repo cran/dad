@@ -14,7 +14,7 @@ for (j in 1:ncol(ind))
     }
   par(ps=12);
   plot(coor[,i1],coor[,i2],type="n",
-	main="Functional PCA of probability densities",sub=sub.title,
+	main="Functional MDS of probability densities",sub=sub.title,
 	xlab = paste("PC", i1, " (", inertia[i1], "%)"),ylab=paste("PC", i2, 
          " (", inertia[i2], "%)"), ...)
   par(ps=10);

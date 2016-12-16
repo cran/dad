@@ -1,13 +1,19 @@
 fpcad <-
-function(x, gaussiand=TRUE, kern = NULL, windowh=NULL,
+function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
 			normed=TRUE, centered=FALSE, data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL)
 {
 #require(e1071)
+
 #---------------
 # Preliminaries
 #---------------
+if (!is.folder(xf)){
+  stop("fpcad applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fpcad applied to a data frame.")
+}
+x <- as.data.frame(xf)
+
 # p denotes the dimension of the data
 p<-ncol(x)-1;
 
@@ -27,7 +33,7 @@ group.name<-levels(group);
 if (!prod(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
   stop("The variables must be numeric!")
 if (max(is.na(x)) == 1)
-  stop("There are NAs in x")
+  stop("There are NAs in the folder")
 # on the window or window parameter
 if (!is.null(windowh))
   {if (is.numeric(windowh))
@@ -189,7 +195,7 @@ switch(choix,
             if (abs(det(varL[[i]]+varL[[j]])) < .Machine$double.eps)
               {stop(paste(c("Singular covariance matrix (group ", unique(names(varL)[c(i, j)]), ")"), collapse = ""))
               }
-              W[i,j]<-l2d.gp(moyL[[i]],varL[[i]],moyL[[j]],varL[[j]])
+              W[i,j]<-l2dpar(moyL[[i]],varL[[i]],moyL[[j]],varL[[j]])
             }
          }
        },
@@ -201,7 +207,7 @@ switch(choix,
           if (abs(varL[[i]]+varL[[j]]) < .Machine$double.eps)
             {stop(paste(c("Singular covariance matrix (group ", unique(names(varL)[c(i, j)]), ")"), collapse = ""))
             }
-          W[i,j]<-l2d.gp.u(moyL[[i]],varL[[i]],moyL[[j]],varL[[j]])
+          W[i,j]<-l2dpar(moyL[[i]],varL[[i]],moyL[[j]],varL[[j]])
           }
         }
       },
@@ -222,7 +228,7 @@ switch(choix,
           if (abs(det(varLwL[[i]]+varLwL[[j]])) < .Machine$double.eps)
             stop("The matrices are not invertible")
           xj<-x[x$group==group.name[j],1:p];
-          W[i,j]<-l2d.kgw(xi,varLwL[[i]],xj,varLwL[[j]]) 
+          W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]]) 
          }
         }
       },
@@ -244,7 +250,7 @@ switch(choix,
             {stop("One variance or more is equal to zero")
             }
           xj<-x[x$group==group.name[j],1:p];
-          W[i,j]<-l2d.kgw.u(xi,varLwL[[i]],xj,varLwL[[j]])
+          W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]])
           }
         };
       },
@@ -264,7 +270,7 @@ switch(choix,
           if (abs(det(varLwL[[i]]+varLwL[[j]])) < .Machine$double.eps)
             stop("The matrices are not invertible")
           xj<-x[x$group==group.name[j],1:p];
-         W[i,j]<-l2d.kgw(xi,varLwL[[i]],xj,varLwL[[j]]) 
+         W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]])
          }
         }
       },
@@ -284,7 +290,7 @@ switch(choix,
             {stop("One variance or more is equal to zero")
             }
           xj<-x[x$group==group.name[j],1:p];
-          W[i,j]<-l2d.kgw.u(xi,varLwL[[i]],xj,varLwL[[j]]) }};
+          W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]]) }} 
       },
   # Case: multivariate, non gaussian distributions estimated by gaussian kernel
   # method, and windows given as a list of matrices
@@ -296,7 +302,7 @@ switch(choix,
         for(j in 1:i)
          {gj = group.name[j]
           xj<-x[x$group==gj,1:p];
-          W[i,j]<-l2d.kgw(xi,windowh[[gi]],xj,windowh[[gj]]) }};
+          W[i,j]<-l2d(xi,xj,method="kern",varw1=windowh[[gi]],varw2=windowh[[gj]]) }};
       },
   
     # Case univariate, non gaussian distributions estimated by gaussian kernel
@@ -309,7 +315,7 @@ switch(choix,
         for(j in 1:i)
          {gj = group.name[j]
           xj<-x[x$group==gj,1:p];
-          W[i,j]<-l2d.kgw.u(xi,windowh[[gi]],xj,windowh[[gj]]) 
+          W[i,j]<-l2d(xi,xj,method="kern",varw1=windowh[[gi]],varw2=windowh[[gj]])
           }
          };
       }

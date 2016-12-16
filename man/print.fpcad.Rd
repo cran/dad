@@ -46,7 +46,7 @@
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -54,7 +54,8 @@
 }
 \examples{
 data(roses)
-result = fpcad(roses)
+rosefold <- as.folder(roses[,c("Sha","Den","Sym","rose")])
+result <- fpcad(rosefold)
 print(result)
-print(result, mean.print=TRUE)
+print(result, mean.print = TRUE)
 }

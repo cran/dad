@@ -18,7 +18,7 @@ is.folderh(x)
     \code{TRUE} if its argument is of class \code{folderh}, and \code{FALSE} otherwise. 
 }
 \author{
-Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{

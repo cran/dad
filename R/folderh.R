@@ -85,7 +85,7 @@ folderh <- function(df1, key1, df2=NULL, ..., na.rm = TRUE) {
     args.fh <- c(list(df2), dots, na.rm = na.rm)
     names(args.fh)[1:3] <- c("df1", "key1", "df2")
     fh.temp <- do.call(folderh, args = args.fh)
-    foldh <- append.df2folderh(fh.temp, X[[1]], keys[1], after = FALSE)
+    foldh <- appendtofolderh(fh.temp, X[[1]], keys[1], after = FALSE)
   } else {
     # Checking the values of the arguments
 

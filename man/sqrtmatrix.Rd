@@ -26,10 +26,10 @@ sqrtmatrix(mat)
     Matrix: the square root of the matrix \code{mat}.                                   
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \examples{
-    M2 = matrix(c(5, 4, 4, 5), nrow = 2)
-    M = sqrtmatrix(M2)
+    M2 <- matrix(c(5, 4, 4, 5), nrow = 2)
+    M <- sqrtmatrix(M2)
     M
 }

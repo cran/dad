@@ -19,7 +19,7 @@ bandwidth.parameter(p, n)
 }
 \details{
      The parameter is equal to:
-      \deqn{h =(\frac{4}{n(p+2)})^{\frac{1}{p+4}}}{\{4/(n*(p+2))\}^(1/(p+4))}
+      \deqn{h = (\frac{4}{n(p+2)})^{\frac{1}{p+4}}}{\{4/(n*(p+2))\}^(1/(p+4))}
       It is based on the minimisation of the asymptotic mean integrated square error in density estimation when using the Gaussian kernel method (Wand and Jones, 1995). 
 }
 
@@ -27,7 +27,7 @@ bandwidth.parameter(p, n)
     Returns the value required by the functions \code{\link{fpcad}}, \code{\link{fmdsd}}, \code{\link{fdiscd.misclass}} and \code{\link{fdiscd.predict}} when their argument \code{windowh} is set to \code{NULL}. 
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
     
 \references{    
@@ -37,8 +37,8 @@ Wand, M. P., Jones, M. C. (1995). Kernel Smoothing. Boca Raton, FL: Chapman and 
 }
 \examples{
     # Sample size :
-    n = 20
+    n <- 20
     # Number of variables :
-    p = 3
+    p <- 3
     bandwidth.parameter(p, n)
 }

@@ -43,20 +43,18 @@ For \eqn{i = 1, \ldots, N-1}, its \eqn{i}-th element is the name of a column of 
 Each one of these levels occur exactly once in the \eqn{i}-th data frame.
 }
 
-If there are more than two data frames, \code{folderh} computes a folderh with the two last data frames, and then uses the function \code{\link{append.df2folderh}} to append each one of the other data frames to the folderh.
+If there are more than two data frames, \code{folderh} computes a folderh with the two last data frames, and then uses the function \code{\link{appendtofolderh}} to append each one of the other data frames to the folderh.
 }
 
 \author{
-Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
-
-Maintainer: Rachid Boumaza <rachid.boumaza@agrocampus-ouest.fr>
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
 \code{\link{is.folderh}} to test if an object is of class \code{folder}.
 \code{\link{folder}} for a folder of data frames with no hierarchic relation between them.
-\code{\link{folderh2folder}} to build an object of class \code{folder} from an object of class \code{folderh}, 
-\code{\link{folderh2df}} to build a data frame.
+\code{\link{as.folder.folderh}} to build an object of class \code{folder} from an object of class \code{folderh}, 
+\code{\link{as.data.frame.folderh}} to build a data frame.
 }
 \examples{
 # First example: rose flowers

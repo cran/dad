@@ -8,7 +8,7 @@
     Applies to an object of class \code{fmdsd}, plots the scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
 }
 \usage{
-interpret.fmdsd(x, nscore = 1:3, moment = "mean")
+\method{interpret}{fmdsd}(x, nscore = 1:3, moment = "mean")
 }
 \arguments{
   \item{x}{
@@ -50,7 +50,7 @@ interpret.fmdsd(x, nscore = 1:3, moment = "mean")
     Delicado, P. (2011). Dimensionality reduction when data are density functions. Computational Statistics & Data Analysis, 55, 401-420.
 }
 \author{
-    Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard.
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -58,9 +58,10 @@ interpret.fmdsd(x, nscore = 1:3, moment = "mean")
 }
 \examples{
 data(roses)
-x=roses[,c("Sha","Den","Sym","Lot")]
-result1 = fmdsd(x)
-interpret.fmdsd(result1)
-interpret.fmdsd(result1, moment = "var")
-interpret.fmdsd(result1, nscore = 1:2)
+x <- roses[,c("Sha","Den","Sym","rose")]
+rosesfold <- as.folder(x)
+result1 <- fmdsd(rosesfold)
+interpret(result1)
+interpret(result1, moment = "var")
+interpret(result1, nscore = 1:2)
 }

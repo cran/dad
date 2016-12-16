@@ -1,12 +1,19 @@
 fmdsd <-
-function(x, gaussiand=TRUE, windowh=NULL, kern = NULL, normed=FALSE,
+function(xf, gaussiand=TRUE, windowh=NULL, kern = NULL, normed=FALSE,
       data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL)
 {
+#require(e1071)
+
 #---------------
 # Preliminaries
 #---------------
+if (!is.folder(xf)){
+  stop("fmdsd applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fmdsd apply to a data frame.")
+}
+x <- as.data.frame(xf)
+
 # p denotes the dimension of the data
 p<-ncol(x)-1;
 
@@ -181,11 +188,11 @@ choix = paste(choix, collapse = "")
 switch(choix,
   # Case: multivariate, gaussian distribution and estimated parameters
   mg.. =
-      {W = mat.ip.l2d.gp(meanL, varL)
+      {W = matipl2dpar(meanL, varL)
        },
   # Case univariate, gaussian distributions with parametres internally estimed 
   ug.. =  
-      {W = mat.ip.l2d.gp.u(meanL, varL)
+      {W = matipl2dpar(meanL, varL)
       },
   # Case: multivariate, non Gaussian distribution, density estimated using 
   # Gaussian kernel and AMISE window 
@@ -196,7 +203,7 @@ switch(choix,
       varLwL<-varL
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)}
-      W = mat.ip.l2d.kgw(x, varLwL)
+      W = matipl2d(x, method = "kern", varLwL)
       },
   # Case univariate, non gaussian distributions estimated by gaussian kernel
   # method, and AMISE windows 
@@ -208,7 +215,7 @@ switch(choix,
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
         }
-      W = mat.ip.l2d.kgw.u(x, varLwL)
+      W = matipl2d(x, method = "kern", varLwL)
       },
   # Case: multivariate, non gaussian distributions estimed by gaussian kernel
   # method, and bandwith parameter, common to all densities, given by the user
@@ -218,7 +225,7 @@ switch(choix,
       varLwL<-varL
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-      W = mat.ip.l2d.kgw(x, varLwL)
+      W = matipl2d(x, method = "kern", varLwL)
       },
   # Case univariate, non gaussian distributions estimed by gaussian kernel
   # method, and bandwith parameter, common to all densities, given by the user    
@@ -228,18 +235,18 @@ switch(choix,
       varLwL<-varL
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-      W = mat.ip.l2d.kgw.u(x, varLwL)
+      W = matipl2d(x, method = "kern", varLwL)
       },
   # Case: multivariate, non gaussian distributions estimated by gaussian kernel
   # method, and windows given as a list of matrices
   mngl =
-      {W = mat.ip.l2d.kgw(x, windowh)
+      {W = matipl2d(x, method = "kern", windowh)
       },
   
     # Case univariate, non gaussian distributions estimated by gaussian kernel
     # method, and windows given as a list of numbers
   ungl =
-      {W = mat.ip.l2d.kgw.u(x, windowh)
+      {W = matipl2d(x, method = "kern", windowh)
       }
   )
 
@@ -287,7 +294,7 @@ names(attributes(corL)$dimnames) <- last.column.name
 names(attributes(skewnessL)$dimnames) <- last.column.name
 names(attributes(kurtosisL)$dimnames) <- last.column.name
 
-# Creation of the list of results in an object of class 'fpcad' :
+# Creation of the list of results in an object of class 'fmdsd' :
 results <- list( call=match.call(),
   group=last.column.name,
   variables=colnames(x)[1:p],

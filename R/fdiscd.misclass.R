@@ -1,8 +1,32 @@
 fdiscd.misclass <-
-function(x, classe, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL)  
+function(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL)  
 {
+  # xf:     object of class 'folderh' with 2 data frames.
+  # class.var: character. Name of the column of xf[[1]] containing the class variable.
+                               
+  name.foldh <- as.character(match.call())[2]
+  name.x <- names(xf)[2]
+  name.classe <- names(xf)[1]
+  
+  if (!is.folderh(xf))
+    stop("fdiscd.misclass applies to a folderh.\nNotice that for versions earlier than 2.0, fdiscd.misclass applied to two data frames.")
+  if (length(xf) != 2)
+    stop("fdiscd.misclass applies to a folderh with only two data frames.")
+  if (ncol(xf[[2]]) < 2)
+    stop(paste0(name.foldh, "[[", name.classe, "]] must have at least two columns (the grouping variable and the classes)."))
+  
+  x <- xf[[2]]
+  j.group <- which(colnames(x) == attr(xf, "keys"))
+  if (j.group != ncol(x))
+    x <- data.frame(x[-j.group], x[j.group])
+  classe <- xf[[1]][c(attr(xf, "keys"), class.var)]
+  
   # Number of variables:
   p <- ncol(x)-1
+
+  if (!prod(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
+    stop(paste0("Non numeric variable(s) in ", name.foldh, "$", name.x, "\n",
+                "Only the grouping variable should be a factor. The other variables must be numeric."))
 
   # If necessary: change the last variable of x (the groups) into a factor:
   if (!is.factor(x[, p+1]))  x[, p+1] <- as.factor(x[, p+1])
@@ -108,22 +132,22 @@ if (crit == 1)  {
     # Case: multivariate, gaussian distribution and estimated parameters
     mg.. =
         {for (i in levels(group))
-           {Wf[i] <- l2d.gp(moy.x[[i]],var.x[[i]],moy.x[[i]],var.x[[i]])
+           {Wf[i] <- l2dpar(moy.x[[i]],var.x[[i]],moy.x[[i]],var.x[[i]])
             for (j in levels(classe[, 2]))
-              Wfg[i,j]<-l2d.gp(moy.x[[i]],var.x[[i]],moy.cl[[j]],var.cl[[j]])
+              Wfg[i,j]<-l2dpar(moy.x[[i]],var.x[[i]],moy.cl[[j]],var.cl[[j]])
            }
          for (j in levels(classe[, 2]))
-            Wg[j] <- l2d.gp(moy.cl[[j]],var.cl[[j]],moy.cl[[j]],var.cl[[j]])
+            Wg[j] <- l2dpar(moy.cl[[j]],var.cl[[j]],moy.cl[[j]],var.cl[[j]])
          },
     # Case univariate, gaussian distributions with parametres internally estimed 
     ug.. =  
         {for (i in levels(group))
-           {Wf[i] <- l2d.gp.u(moy.x[[i]],var.x[[i]],moy.x[[i]],var.x[[i]])
+           {Wf[i] <- l2dpar(moy.x[[i]],var.x[[i]],moy.x[[i]],var.x[[i]])
             for (j in levels(classe[, 2]))
-              Wfg[i,j]<-l2d.gp.u(moy.x[[i]],var.x[[i]],moy.cl[[j]],var.cl[[j]])
+              Wfg[i,j]<-l2dpar(moy.x[[i]],var.x[[i]],moy.cl[[j]],var.cl[[j]])
            }
          for (j in levels(classe[, 2]))
-            Wg[j] <- l2d.gp.u(moy.cl[[j]],var.cl[[j]],moy.cl[[j]],var.cl[[j]])
+            Wg[j] <- l2dpar(moy.cl[[j]],var.cl[[j]],moy.cl[[j]],var.cl[[j]])
          },
     # Case: multivariate, non Gaussian distribution, density estimated using 
     # Gaussian kernel and AMISE window 
@@ -143,7 +167,7 @@ if (crit == 1)  {
           {n.x <- group.name[i]
           ind.i <- which(x[, p+1]==n.x)
           xi<-x[ind.i,1:p]
-          Wf[n.x] <- l2d.kgw(xi,varLwL.f[[i]],xi,varLwL.f[[i]])
+          Wf[n.x] <- l2d(xi, xi, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.f[[i]])
           for(j in 1:nb.classe)
            {n.cl <- classe.name[j]
            #Test if the determinant of 
@@ -152,14 +176,14 @@ if (crit == 1)  {
               stop("The matrices are not invertible")
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wfg[n.x, n.cl]<-l2d.kgw(xi,varLwL.f[[i]],xj,varLwL.g[[j]])
+            Wfg[n.x, n.cl]<-l2d(xi, xj, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.g[[j]])
            }
           }
         for(j in 1:nb.classe)
           {n.cl <- classe.name[j]
            ind.j <- which(x[, p+2]==n.cl)
            xj<-x[ind.j,1:p]
-           Wg[n.cl] <- l2d.kgw(xj,varLwL.g[[j]],xj,varLwL.g[[j]])}
+           Wg[n.cl] <- l2d(xj, xj, method="kern", varw1=varLwL.g[[j]], varw2=varLwL.g[[j]])}
         },
     # Case univariate, non gaussian distributions estimated by gaussian kernel
     # method, and AMISE windows 
@@ -179,7 +203,7 @@ if (crit == 1)  {
           {n.x <- group.name[i]
           ind.i <- which(x[, p+1]==n.x)
           xi<-x[ind.i,1:p]
-          Wf[n.x] <- l2d.kgw.u(xi,varLwL.f[[i]],xi,varLwL.f[[i]])
+          Wf[n.x] <- l2d(xi, xi, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.f[[i]])
           for(j in 1:nb.classe)
             {n.cl <- classe.name[j]
             # Test if the variances are different from zero
@@ -188,14 +212,14 @@ if (crit == 1)  {
               }
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wfg[n.x,n.cl]<-l2d.kgw.u(xi,varLwL.f[[i]],xj,varLwL.g[[j]])
+            Wfg[n.x,n.cl]<-l2d(xi, xj, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.g[[j]])
             }
           };
         for(j in 1:nb.classe)
           {n.cl <- classe.name[j]
           ind.j <- which(x[, p+2]==n.cl)
           xj<-x[ind.j,1:p]
-          Wg[n.cl] <- l2d.kgw.u(xj,varLwL.g[[j]],xj,varLwL.g[[j]])}
+          Wg[n.cl] <- l2d(xj, xj, method="kern", varw1=varLwL.g[[j]], varw2=varLwL.g[[j]])}
         },
     # Case: multivariate, non gaussian distributions estimed by gaussian kernel
     # method, and bandwith parameter, common to all densities, given by the user
@@ -213,7 +237,7 @@ if (crit == 1)  {
           {n.x <- group.name[i]
            ind.i <- which(x[, p+1]==n.x)
            xi<-x[ind.i,1:p]
-           Wf[n.x] <- l2d.kgw(xi,varLwL.f[[i]],xi,varLwL.f[[i]])
+           Wf[n.x] <- l2d(xi, xi, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.f[[i]])
            for(j in 1:nb.classe)
            {n.cl <- classe.name[j]
             # Test if the determinant of
@@ -222,14 +246,14 @@ if (crit == 1)  {
               stop("The matrices are not invertible")
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wfg[n.x,n.cl]<-l2d.kgw(xi,varLwL.f[[i]],xj,varLwL.g[[j]])
+            Wfg[n.x,n.cl]<-l2d(xi, xj, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.g[[j]])
            }
           }
           for(j in 1:nb.classe)
            {n.cl <- classe.name[j]
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wg[n.cl] <- l2d.kgw(xj,varLwL.g[[j]],xj,varLwL.g[[j]])}
+            Wg[n.cl] <- l2d(xj, xj, method="kern", varw1=varLwL.g[[j]], varw2=varLwL.g[[j]])}
         },
     # Case univariate, non gaussian distributions estimed by gaussian kernel
     # method, and bandwith parameter, common to all densities, given by the user    
@@ -247,7 +271,7 @@ if (crit == 1)  {
           {n.x <- group.name[i]
            ind.i <- which(x[, p+1]==n.x)
            xi<-x[ind.i,1:p]
-           Wf[n.x] <- l2d.kgw.u(xi,varLwL.f[[i]],xi,varLwL.f[[i]])
+           Wf[n.x] <- l2d(xi, xi, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.f[[i]])
           for(j in 1:nb.classe)
            {n.cl <- classe.name[j]
            # Test if the variances are different from zero
@@ -256,14 +280,14 @@ if (crit == 1)  {
               }
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wfg[n.x,n.cl]<-l2d.kgw.u(xi,varLwL.f[[i]],xj,varLwL.g[[j]])
+            Wfg[n.x,n.cl]<-l2d(xi, xj, method="kern", varw1=varLwL.f[[i]], varw2=varLwL.g[[j]])
            }
           }
           for(j in 1:nb.classe)
            {n.cl <- classe.name[j]
             ind.j <- which(x[, p+2]==n.cl)
             xj<-x[ind.j,1:p]
-            Wg[n.cl] <- l2d.kgw.u(xj,varLwL.g[[j]],xj,varLwL.g[[j]])}
+            Wg[n.cl] <- l2d(xj, xj, method="kern", varw1=varLwL.g[[j]], varw2=varLwL.g[[j]])}
         }
     )
 }
@@ -281,7 +305,7 @@ if (crit %in% 2:3)
               if (abs(det(var.x[[i]]+var.x[[j]])) < .Machine$double.eps)
                 {stop(paste(c("Singular covariance matrix (group ", unique(names(var.x)[c(i, j)]), ")"), collapse = ""))
                 }
-                W[i,j]<-l2d.gp(moy.x[[i]],var.x[[i]],moy.x[[j]],var.x[[j]])
+                W[i,j]<-l2dpar(moy.x[[i]],var.x[[i]],moy.x[[j]],var.x[[j]])
               }
            }
          },
@@ -293,7 +317,7 @@ if (crit %in% 2:3)
             if (abs(var.x[[i]]+var.x[[j]]) < .Machine$double.eps)
               {stop(paste(c("Singular covariance matrix (group ", unique(names(var.x)[c(i, j)]), ")"), collapse = ""))
               }
-            W[i,j]<-l2d.gp.u(moy.x[[i]],var.x[[i]],moy.x[[j]],var.x[[j]])
+            W[i,j]<-l2dpar(moy.x[[i]],var.x[[i]],moy.x[[j]],var.x[[j]])
             }
           }
         },
@@ -316,7 +340,7 @@ if (crit %in% 2:3)
               stop("The matrices are not invertible")
             ind.j <- which(x[, p+1]==group.name[j])
             xj<-x[ind.j,1:p]
-            W[i,j]<-l2d.kgw(xi,varLwL[[i]],xj,varLwL[[j]])
+            W[i,j]<-l2d(xi, xj, method="kern", varw1=varLwL[[i]], varw2=varLwL[[j]])
            }
           }
         },
@@ -340,7 +364,7 @@ if (crit %in% 2:3)
               }
             ind.j <- which(x[, p+1]==group.name[j])
             xj<-x[ind.j,1:p]
-            W[i,j]<-l2d.kgw.u(xi,varLwL[[i]],xj,varLwL[[j]])
+            W[i,j]<-l2d(xi, xj, method="kern", varw1=varLwL[[i]], varw2=varLwL[[j]])
             }
           };
         },
@@ -358,7 +382,7 @@ if (crit %in% 2:3)
           for(j in 1:i)
            {ind.j <- which(x[, p+1]==group.name[j])
            xj<-x[ind.j,1:p]
-           W[i,j]<-l2d.kgw(xi,varLwL[[i]],xj,varLwL[[j]])
+           W[i,j]<-l2d(xi, xj, method="kern", varw1=varLwL[[i]], varw2=varLwL[[j]])
            }
           }
         },
@@ -376,7 +400,7 @@ if (crit %in% 2:3)
           for(j in 1:i)
            {ind.j <- which(x[, p+1]==group.name[j])
             xj<-x[ind.j,1:p]
-            W[i,j]<-l2d.kgw.u(xi,varLwL[[i]],xj,varLwL[[j]]) }};
+            W[i,j]<-l2d(xi, xj, method="kern", varw1=varLwL[[i]], varw2=varLwL[[j]]) }};
         }
     )
     for (i in 1:(nb.groups-1))
@@ -404,13 +428,13 @@ if (crit %in% 2:3)
               switch(choix,
                 # Case: multivariate, gaussian distribution and estimated parameters
                 mg.. =
-                   {Wfg.tmp<-l2d.gp(moy.x[[n.x]],var.x[[n.x]],moy.cl.tmp,var.cl.tmp)
-                    Wg.tmp <- l2d.gp(moy.cl.tmp,var.cl.tmp,moy.cl.tmp,var.cl.tmp)
+                   {Wfg.tmp<-l2dpar(moy.x[[n.x]],var.x[[n.x]],moy.cl.tmp,var.cl.tmp)
+                    Wg.tmp <- l2dpar(moy.cl.tmp,var.cl.tmp,moy.cl.tmp,var.cl.tmp)
                     },
                 # Case univariate, gaussian distributions with parametres internally estimed 
                 ug.. =  
-                    {Wfg.tmp<-l2d.gp.u(moy.x[[n.x]],var.x[[n.x]],moy.cl.tmp,var.cl.tmp)
-                     Wg.tmp <- l2d.gp.u(moy.cl.tmp,var.cl.tmp,moy.cl.tmp,var.cl.tmp)
+                    {Wfg.tmp<-l2dpar(moy.x[[n.x]],var.x[[n.x]],moy.cl.tmp,var.cl.tmp)
+                     Wg.tmp <- l2dpar(moy.cl.tmp,var.cl.tmp,moy.cl.tmp,var.cl.tmp)
                      },
                 # Case: multivariate, non Gaussian distribution, density estimated using 
                 # Gaussian kernel and AMISE window 
@@ -419,8 +443,8 @@ if (crit %in% 2:3)
                     wL <- bandwidth.parameter(p,nbL)
                     # Multiplication of the variance by the window parameter
                     varLwL.tmp <- var.cl.tmp*(wL^2)
-                    Wfg.tmp<-l2d.kgw(x[ind.x, 1:p],varLwL.f[[n.x]],x[ind.cl, 1:p],varLwL.tmp)
-                    Wg.tmp <- l2d.kgw(x[ind.cl, 1:p],varLwL.tmp,x[ind.cl, 1:p],varLwL.tmp)
+                    Wfg.tmp<-l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp)
+                    Wg.tmp <- l2d(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                     },
                 # Case univariate, non gaussian distributions estimated by gaussian kernel
                 # method, and AMISE windows 
@@ -429,8 +453,8 @@ if (crit %in% 2:3)
                     wL <- bandwidth.parameter(p,nbL)
                     # Multiplication of the variance by the window parameter
                     varLwL.tmp <- var.cl.tmp*(wL^2)
-                    Wfg.tmp <- l2d.kgw.u(x[ind.x, 1:p],varLwL.f[[n.x]],x[ind.cl, 1:p],varLwL.tmp) 
-                    Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p],varLwL.tmp, x[ind.cl, 1:p],varLwL.tmp)
+                    Wfg.tmp <- l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp) 
+                    Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                     },
                 # Case: multivariate, non gaussian distributions estimed by gaussian kernel
                 # method, and bandwith parameter, common to all densities, given by the user
@@ -438,8 +462,8 @@ if (crit %in% 2:3)
                     {nbL <- length(ind.cl)
                     # Multiplication of the variance by the window parameter
                     varLwL.tmp <- var.cl.tmp*(windowh^2)
-                    Wfg.tmp <- l2d.kgw(x[ind.x, 1:p],varLwL.f[[n.x]],x[ind.cl, 1:p],varLwL.tmp) 
-                    Wg.tmp <- l2d.kgw(x[ind.cl, 1:p],varLwL.tmp, x[ind.cl, 1:p],varLwL.tmp)
+                    Wfg.tmp <- l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp) 
+                    Wg.tmp <- l2d(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                     },
                 # Case univariate, non gaussian distributions estimed by gaussian kernel
                 # method, and bandwith parameter, common to all densities, given by the user    
@@ -447,8 +471,8 @@ if (crit %in% 2:3)
                     {nbL <- length(ind.cl)
                     # Multiplication of the variance by the window parameter
                     varLwL.tmp <- var.cl.tmp*(windowh^2)
-                    Wfg.tmp <- l2d.kgw.u(x[ind.x, 1:p],varLwL.f[[n.x]],x[ind.cl, 1:p],varLwL.tmp)
-                    Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p],varLwL.tmp, x[ind.cl, 1:p],varLwL.tmp)
+                    Wfg.tmp <- l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp)
+                    Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                     }
                 )
               }
