@@ -1,0 +1,43 @@
+\name{summary.foldermtg}
+\alias{summary.foldermtg}
+%\alias{summary}
+\title{
+    Summary of an object of class \code{foldermtg}
+}
+\description{
+    Summary method for S3 class \code{foldermtg}.
+}
+\usage{
+\method{summary}{foldermtg}(object, ...)
+}
+\arguments{
+  \item{object}{
+     an object of class \code{\link{foldermtg}}.
+}
+  \item{...}{
+      optional arguments to \code{summary} methods.
+}
+}
+\details{
+    The summary of the data frames containing the vertices of each class and the values of the features on these vertices.
+}
+\references{
+    Cokelaer, T. and Pradal, C. (2010). \href{http://openalea.gforge.inria.fr/doc/vplants/newmtg/doc/_build/html/user/syntax.html}{MTG user guide}
+}
+
+\author{
+Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
+}
+
+\seealso{
+\code{\link{read.mtg}}: reads a MTG file and creates an object of class \code{"foldermtg"}.
+}
+\examples{
+mtgfile1 <- system.file("extdata/plant1.mtg", package = "dad")
+x1 <- read.mtg(mtgfile1)
+summary(x1)
+
+mtgfile2 <- system.file("extdata/plant2.mtg", package = "dad")
+x2 <- read.mtg(mtgfile2)
+summary(x2)
+}

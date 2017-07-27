@@ -5,7 +5,7 @@
 Functional PCA of probability densities
 }
 \description{
-Performs functional principal component analysis of probability densities, in order to describe a data table consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fpcad}.
+Performs functional principal component analysis of probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fpcad}.
 }
 \usage{
 fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,

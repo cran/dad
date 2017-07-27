@@ -13,12 +13,12 @@ fdiscd.misclass(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh 
   \item{xf}{
        object of class \code{\link{folderh}} with two data frames:
        \itemize{
-         \item The first one has at least two columns. One column contains the names of the \eqn{T} groups (all the names must be different). An other column is a factor with \eqn{K} levels partitionning the T groups into K classes..
+         \item The first one has at least two columns. One column contains the names of the \eqn{T} groups (all the names must be different). An other column is a factor with \eqn{K} levels partitionning the T groups into K classes.
          \item The second one has \eqn{(p+1)} columns. The first \eqn{p} columns are numeric (otherwise, there is an error). The last column is a factor with \eqn{T} levels defining \eqn{T} groups. Each group, say \eqn{t}, consists of \eqn{n_t} individuals.
        }
 }       
   \item{class.var}{
-       string. The name of the classes variable.
+       string. The name of the class variable.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.

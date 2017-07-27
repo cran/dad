@@ -12,6 +12,9 @@ function(xf, gaussiand=TRUE, windowh=NULL, kern = NULL, normed=FALSE,
 if (!is.folder(xf)){
   stop("fmdsd applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fmdsd apply to a data frame.")
 }
+if (!attr(xf, "same.cols")){
+  stop("fmdsd applies to an object of class 'folder' in which the data frames have the same column names.")
+}
 x <- as.data.frame(xf)
 
 # p denotes the dimension of the data

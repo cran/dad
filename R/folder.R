@@ -121,7 +121,8 @@ function(x1, x2 = NULL, ..., cols.select = "intersect")
   # so that they all have the same columns and colnames.
   if (cols.select == "union") {
     cnames <- unique(unlist(lapply(fold, names)))
-    adjcnames <- as.data.frame(t(vector(length = length(cnames))))
+    adjcnames <- as.data.frame(matrix(nrow = 0, ncol = length(cnames)))
+    #as.data.frame(t(vector(length = length(cnames))))
     colnames(adjcnames) <- cnames
     for (n in 1:ndata) {
       foldn <- merge(fold[[n]], adjcnames, all = TRUE, sort = FALSE)[1:nrow(fold[[n]]), ]

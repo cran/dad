@@ -44,7 +44,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 
 \seealso{
 \code{\link{is.folder}} to test if an object is of class \code{folder}.
-\code{\link{folderh}} to build a folder of two data frames with a hierarchic relation between the two datasets.
+\code{\link{folderh}} to build a folder of several data frames with a hierarchic relation between each pair of consecutive data frames.
 }
 \examples{
 # First example              

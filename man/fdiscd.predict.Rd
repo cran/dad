@@ -21,7 +21,7 @@ fdiscd.predict(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh =
        Notice that for the versions earlier than 2.0, fdiscd.predict applied to two data frames.
 }       
   \item{class.var}{
-       string. The name of the classes variable.
+       string. The name of the class variable.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.

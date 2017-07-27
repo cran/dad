@@ -16,7 +16,7 @@
     \item{\code{castles.nondated$stones}: }{this first data frame has 2542 cases (rows) and 5 variables (columns) that are named
      \code{height, width, eidgen, boss} (numeric) and \code{castle} (factor).}
 
-    \item{\code{castles.nondated$period}: }{this second data frame has 135 cases and 2 variables named \code{castle} and \code{period}; the column \code{castle} corresponds to the levels of the factor \code{castle} of the first data frame; the column \code{period} is a factor indicating NA as the building period is unknown.}
+    \item{\code{castles.nondated$periods}: }{this second data frame has 135 cases and 2 variables named \code{castle} and \code{period}; the column \code{castle} corresponds to the levels of the factor \code{castle} of the first data frame; the column \code{period} is a factor indicating NA as the building period is unknown.}
 }
   Notice that the data frames corresponding to the castles whose building period is known are those in \code{\link{castles.dated}}.
 }

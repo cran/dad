@@ -34,7 +34,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 
 \seealso{
-\code{\link{folder}} to create an object is of class \code{folder}.
+\code{\link{folder}} to create an object of class \code{folder}.
 \code{\link{var.folder}}, \code{\link{cor.folder}}, \code{\link{skewness.folder}}, \code{\link{kurtosis.folder}} for other statistics for \code{folder} objects.
 }
 \examples{

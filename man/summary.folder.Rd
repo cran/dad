@@ -19,10 +19,11 @@
 }
 
 \value{
- An object of class \code{summary.folder}.
- 
- An object of class \code{summary.folder} is a list, each element of it containing the summary of the corresponding element of \code{object}.
- This object has two attributes \code{attr(, "same.cols")} and \code{attr(, "same.rows")}.
+% An object of class \code{summary.folder}.
+% 
+% An object of class \code{summary.folder} is a
+ A list, each element of it containing the summary of the corresponding element of \code{object}.
+ This list has two attributes \code{attr(, "same.cols")} and \code{attr(, "same.rows")}.
 }
 
 \author{

@@ -19,10 +19,11 @@
 }
 
 \value{
- An object of class \code{summary.folderh}.
- 
- An object of class \code{summary.folderh} is a list, each element of it containing the summary of the corresponding element of \code{object}.
- This object has an attribute \code{attr(, "keys")} (see \code{\link{folderh}}).
+% An object of class \code{summary.folderh}.
+% 
+% An object of class \code{summary.folderh} is a
+ A list, each element of it containing the summary of the corresponding element of \code{object}.
+ This list has an attribute \code{attr(, "keys")} (see \code{\link{folderh}}).
 }
 
 \author{

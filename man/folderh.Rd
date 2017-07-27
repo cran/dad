@@ -51,10 +51,9 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 
 \seealso{
-\code{\link{is.folderh}} to test if an object is of class \code{folder}.
+\code{\link{is.folderh}} to test if an object is of class \code{folderh}.
 \code{\link{folder}} for a folder of data frames with no hierarchic relation between them.
-\code{\link{as.folder.folderh}} to build an object of class \code{folder} from an object of class \code{folderh}, 
-\code{\link{as.data.frame.folderh}} to build a data frame.
+\code{\link{as.folder.folderh}} (or \code{\link{as.data.frame.folderh}}) to build an object of class \code{folder} (or a data frame) from an object of class \code{folderh}, 
 }
 \examples{
 # First example: rose flowers

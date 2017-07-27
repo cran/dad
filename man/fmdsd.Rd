@@ -5,7 +5,7 @@
 Multidimensional scaling of probability densities
 }
 \description{
-Applies the multidimensional scaling (MDS) method to probability densities, in order to describe a three-way data table, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fmdsd}. It applies \code{\link{cmdscale}} to the distance matrix between the \eqn{T} densities.
+Applies the multidimensional scaling (MDS) method to probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fmdsd}. It applies \code{\link{cmdscale}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
 fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
