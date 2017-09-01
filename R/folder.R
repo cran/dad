@@ -24,7 +24,7 @@ function(x1, x2 = NULL, ..., cols.select = "intersect")
   # ... :        other data.frames (optional)
   
   # Checking the class or value of each argument
-  
+
   if (!is.list(x1))
     stop("x1 must be a data frame or a list of data frames.")
   
@@ -71,8 +71,7 @@ function(x1, x2 = NULL, ..., cols.select = "intersect")
       ndata <- 2
   
       # Names of the elements of the folder
-      namesfold <- c(as.character(match.call(expand.dots = FALSE))[2],
-                     as.character(match.call(expand.dots = FALSE))[3])
+      namesfold <- c(deparse(substitute(x1)), deparse(substitute(x2)))
       names(fold) <- namesfold
     },
     d3 = {
@@ -86,9 +85,8 @@ function(x1, x2 = NULL, ..., cols.select = "intersect")
       ndata <- length(fold)
       
       # Names of the elements of the folder
-      namesfold <- c(as.character(match.call(expand.dots = FALSE))[2],
-                     as.character(match.call(expand.dots = FALSE))[3])
-      namesfold <- c(namesfold, as.character(match.call(expand.dots = FALSE)$...))
+      namesfold <- c(deparse(substitute(x1)), deparse(substitute(x2)))
+      namesfold <- c(namesfold, deparse(substitute(...)))
       names(fold) <- namesfold
     },
     l = {

@@ -4,17 +4,13 @@ function(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL,
   # xf:     object of class 'folderh' with 2 data frames.
   # class.var: character. Name of the column of xf[[1]] containing the class variable.
                                
-  name.foldh <- as.character(match.call())[2]
-  name.x <- names(xf)[2]
-  name.classe <- names(xf)[1]
-  
   if (!is.folderh(xf))
     stop("fdiscd.predict applies to a folderh.\nNotice that for versions earlier than 2.0, fdiscd.predict applied to two data frames.")
   if (length(xf) != 2)
     stop("fdiscd.predict applies to a folderh with only two data frames.")
-  if (ncol(xf[[2]]) < 2)
-    stop(paste0(name.foldh, "[[", name.classe, "]] must have at least two columns (the grouping variable and the classes)."))
-  
+  if (ncol(xf[[1]]) < 2)
+    stop(paste0("The 1st data frame of xf must have at least two columns (the grouping variable and the classes)."))
+
   x <- xf[[2]]
   j.group <- which(colnames(x) == attr(xf, "keys"))
   if (j.group != ncol(x))
@@ -25,7 +21,7 @@ function(xf, class.var, crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL,
   p <- ncol(x)-1
   
   if (!prod(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
-    stop(paste0("Non numeric variable(s) in ", name.foldh, "$", name.x, "\n",
+    stop(paste0("The 2nd data frame of xf includes non numeric variable(s).\n",
                 "Only the grouping variable should be a factor. The other variables must be numeric."))
 
   # If necessary: change the last variable of x (the groups) into a factor:

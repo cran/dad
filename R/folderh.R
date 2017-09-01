@@ -1,8 +1,6 @@
-folderh <- function(df1, key1, df2=NULL, ..., na.rm = TRUE) {
-  # df1 :  list of data frames (2 or more) or a data frame with at least
-  #        2 column.
-  # df2 :  if df1 is a data frame, df2 is a data frame. It contains
-  #        the data.
+folderh <- function(df1, key1, df2, ..., na.rm = TRUE) {
+  # df1 :  a data frame with at least 2 columns.
+  # df2 :  a data frame.
   #        If df1 is a list, df2 must be NULL.
   # keys  : string vector.
   #        - If df1 and df2 are data frames, keys is a single
@@ -37,108 +35,114 @@ folderh <- function(df1, key1, df2=NULL, ..., na.rm = TRUE) {
   # - If there are only two data frames df1 and df2: key1.
   # - If there are more than two data frames: c(key1, key2, ...).
 
-  name.1 <- as.character(match.call())[2]
-  name.2 <- as.character(match.call())[4]
+  # get the names of the arguments
+  name.1 <- deparse(substitute(df1))
+  name.2 <- deparse(substitute(df2))
+  name.key <- deparse(substitute(key1))
+  matchcall <- as.character(match.call()[-1])
+  name.dots <- matchcall[! matchcall %in% c(name.1, name.2, name.key, key1, "na.rm")]
   dots <- list(...)
-  name.others <- as.character(match.call())[-(1:4)]
-  name.dots <- name.others[name.others != "na.rm"]
-
+  
+  # Names of the first and third arguments
   name.df <- c(name.1, name.2)
 
-  if (!is.data.frame(df1))
-    stop(name.1, " is not a data frame.")
-
-  if (!is.data.frame(df2))
-    stop(name.2, " is not a data frame.")
-
+  # Initialisation of the list: list of the two first data frames and key of the relation
   X <- list(df1, df2)
+  names(X) <- name.df
   keys <- key1
 
-  if (length(dots) > 0) {
+  # Add supplementary elements to lists of data frames and keys
+  if (length(dots) > 0)
+   {
+    # Add the names of supplementary data frames to the names of the elements of the folderh
     name.X.supp <- name.dots[seq(2, length(dots), by = 2)]
-    X.supp <- dots[seq(2, length(dots), by = 2)]
-
-    name.keys.supp <- name.dots[seq(1, length(dots), by = 2)]
-    keys.supp <- unlist(dots[seq(1, length(dots), by = 2)])
-
     name.df <- c(name.df, name.X.supp)
 
-    is.df <- unlist(lapply(X.supp, is.data.frame))
-    if (!prod(is.df))
-      warning(paste("Argument(s)", name.X.supp[!is.df],
-            "is/are no data frame(s).\n", name.dots,
-            "arguments will not be used."))
+    # Add the supplementary data frames to the list
+    X.supp <- dots[seq(2, length(dots), by = 2)]
+    X <- c(X, X.supp)
+    names(X) <- name.df
 
-    is.atom <- unlist(lapply(keys.supp, is.atomic))
-    if (!prod(is.atom))
-      warning(paste("Argument(s)", name.keys.supp[!is.df],
-            "is/are no atomic.\n", name.dots,
-            "arguments will not be used."))
+    # The keys
+    name.keys.supp <- name.dots[seq(1, length(dots), by = 2)]
+    name.key <- c(name.key, name.keys.supp)
+    keys.supp <- dots[seq(1, length(dots), by = 2)]
+    keys <- c(list(keys), keys.supp)
+   }
 
-    if (prod(is.df) & prod(is.df))
-      X <- c(X, X.supp)
-      names(X) <- c(name.1, name.2, name.X.supp)
-      keys <- c(keys, keys.supp)
-  }
+  # Test if all elements of the list are data frames:
+  is.df <- sapply(X, is.data.frame)
+  if (!prod(is.df))
+    stop(paste("Argument(s)", name.df[!is.df],
+          "is/are no data frame(s)."))
+          
+  # Test if all data frames have at least 2 columns
+  ncolX <- sapply(X, ncol)
+  less2col <- sapply(ncolX, "<", 2)
+  if (any(less2col))
+    stop("The data frame arguments must have at least 2 columns.")
 
-  if (length(X) > 2){
-    args.fh <- c(list(df2), dots, na.rm = na.rm)
-    names(args.fh)[1:3] <- c("df1", "key1", "df2")
-    fh.temp <- do.call(folderh, args = args.fh)
-    foldh <- appendtofolderh(fh.temp, X[[1]], keys[1], after = FALSE)
-  } else {
-    # Checking the values of the arguments
+  # Test if all keys are atomic
+  is.atom <- sapply(keys, is.atomic)
+  if (!prod(is.atom))
+    stop(paste("Argument(s)", name.keys.supp[!is.atom],
+          "is/are no atomic.\n"))
+  lgkeys <- sapply(keys, length)
+  if (any(lgkeys > 1))
+    keys <- lapply(keys, head, 1)
+  keys <- unlist(keys)
+  
+  # Is each key the name of a column in the two corresponding adjacent data frames
+  for (k in 1:length(keys))
+   {
+    keyg <- keys[k]
+    dfg1 <- X[[k]]
+    dfg2 <- X[[k+1]]
+    # Is keyg the name of a column of dfg1 data frame?
+    if (! keyg %in% colnames(dfg1))
+      stop(paste("There is no", keyg, "variable in", names(X)[k]))
+      
+    # Is keyg the name of a column of dfg2 data frame?
+    if (! keyg %in% colnames(dfg2))
+      stop(paste("There is no", keyg, "variable in", names(X)[k+1]))
+      
+    # In df1 data frame: check if each group in keyg occurs only once
+    if (max(table(dfg1[, keyg])) > 1)
+      stop(paste("A level of", names(X)[k], "[,", keyg, "] cannot occur more than once."))
 
-    df1 <- X[[1]]
-    df2 <- X[[2]]
-
-    # Are df2 and df1 data frames ?
-    if (!is.data.frame(df2))
-      stop(paste(name.2, "is not a data frame."))
-    if (!is.data.frame(df1))
-      stop(paste(name.1, "is not a data frame."))
-
-    keyg <- keys[1]
-
-    # Is keyg the name of a column of df1 data frame?
-    if (! keyg %in% colnames(df1))
-      stop(paste("There is no", keyg, "variable in", name.1))
-
-    # Is keyg the name of a column of df2 data frame?
-    if (! keyg %in% colnames(df2))
-      stop(paste("There is no", keyg, "variable in", name.2))
-
-    # Checking the number of columns of df1 and df2
-    if (ncol(df1) < 2)
-      stop(paste(name.1, "must be a data frame with at least two column."))
-    if (ncol(df2) < 2)
-      stop(paste(name.2, "must be a data frame with at least two columns."))
-
-    # Check if each group in keyg occurs only once
-    if (max(table(df1[, keyg])) > 1)
-      stop(paste("A level of", name.1, "[,", keyg, "] cannot occur more than once."))
-
-    # If nag.rm = TRUE: suppression of the lines for which df1[, keyg] is NA
+    # If na.rm = TRUE: suppression of the lines for which dfg1[, keyg] is NA
     if (na.rm) {
-      df1.ret <- df1[!is.na(df1[, keyg]), ]
-    } else {
-      df1.ret <- df1
+      X[[k]] <- dfg1[!is.na(dfg1[, keyg]), ]
     }
-
-    # If nax.rm = TRUE: suppression of the lines for which df2[, keyg] is NA
+  
+    # If na.rm = TRUE: suppression of the lines for which dfg2[, keyg] is NA
     if (na.rm) {
-      df2.ret <- df2[!is.na(df2[, keyg]), ]
-    } else {
-      df2.ret <- df2
+      X[[k+1]] <- dfg2[!is.na(dfg2[, keyg]), ]
     }
-
-    # Creation of the folder
-    foldh <- list(df1 = df1.ret, df2 = df2.ret)
-
+   }
+  
+  # End of the tests
+  
+  
+  # Folderh of the first two data frames (df1 and df2)
+    keyg <- key1
+  
+    # Creation of the folderh
+    foldh <- list(X[[1]], X[[2]])
     names(foldh) <- c(name.1,name.2)
     class(foldh) <- "folderh"
     attr(foldh, "keys") <- keyg
-  }
+
+  # If there are more than 2 data frames: add the supplementary data frames
+  if (length(X) > 2) 
+   {
+    for (k in 3:length(X))
+     {
+      # Append X[[k]] to the folderh
+      Xk <- X[[k]]
+      foldh <- appendtofolderh(fh = foldh, df = Xk, key = keys[k-1], after = TRUE)
+     }
+   }
 
   names(foldh) <- name.df
 

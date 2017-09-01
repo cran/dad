@@ -1,7 +1,7 @@
 as.data.frame.folder <- function(x, row.names = NULL, optional = FALSE, ..., group.name = "group") {
   
   fold <- x
-  name.fold <- as.character(match.call()$x)
+  name.fold <- deparse(substitute(x))
   
   # Check of the arguments
   if (!is.folder(fold))

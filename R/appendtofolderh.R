@@ -17,25 +17,29 @@ appendtofolderh <- function(fh, df, key, after = FALSE)
 #          of fh.
 {
 
-  name.fh <- as.character(match.call())[2]
-  name.df <- as.character(match.call())[3]
+  name.fh <- deparse(substitute(fh))
+  name.df <- deparse(substitute(df))
 
-  i.add <- 1 - after + length(fh)*after
+  if (!is.folderh(fh))
+    stop("fh must be an object of class 'folderh'.")
 
   if (!(key %in% colnames(df)))
     stop("There is no ", key, " column in ", name.df, " data frame.")
 
-  if (!(key %in% colnames(fh[[i.add]])))
-    stop("There is no ", key, " column in ", paste(names(fh)[i.add], collapse = ", "), " data frame of ", name.fh, ".")
-
   if (!after) {
+    if (!(key %in% colnames(fh[[1]])))
+      stop(paste0("There is no ", key, " column in ", paste(names(fh)[1], collapse = ", "),
+          " data frame of ", name.fh, "."))
     fh.ret <- c(list(df), fh)
     keys <- c(key, attr(fh, "keys"))
     names(fh.ret)[1] <- name.df
   } else {
+    if (!(key %in% colnames(fh[[length(fh)]])))
+      stop(paste0("There is no ", key, " column in ", paste(names(fh)[length(fh)],
+          collapse = ", "), " data frame of ", name.fh, "."))
     fh.ret <- c(fh, list(df))
     keys <- c(attr(fh, "keys"), key)
-    names(fh.ret)[i.add+1] <- name.df
+    names(fh.ret)[length(fh)+1] <- name.df
   }
 
   class(fh.ret) <- "folderh"

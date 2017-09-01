@@ -28,6 +28,7 @@ as.folderh.foldermtg <- function(x, classes) {
   tab <- data.frame(rownames(tab), tab, stringsAsFactors = FALSE)
   colnames(tab)[1] <- classes[1]
   listdf <- list(tab)
+  names(listdf) <- classes[1]
   
   for (k in 1:(length(classes)-1)) {
     # The k-th class and the (k+1)-th scale:
@@ -63,19 +64,20 @@ as.folderh.foldermtg <- function(x, classes) {
     listdf[[k]][, 2] <- as.factor(listdf[[k]][, 2])
   }
   
-  # Arguments to be passed to function folderh()
-  argsfolderh <- c(listdf[1], list(classes[1]), listdf[2])
-  names(argsfolderh) <- c("df1", "key1", "df2")
-  if (length(classes) > 2){
-    dots <- list()
-    for (k in 3:length(classes))
-      dots <- c(dots, list(classes[k-1]), listdf[k])
-    argsfolderh <- c(argsfolderh, "..." = dots)
-  }
-  argsfolderh <- c(argsfolderh, na.rm = list(TRUE))
-  
   # Building of the returned folderh
-  foldh <- do.call(folderh, argsfolderh)
+  foldh <- folderh(listdf[[1]], classes[1], listdf[[2]], na.rm = TRUE)
+  
+  if (length(classes) > 2)
+   {
+    for (k in 2:(length(classes)-1))
+     {
+      keyk <- classes[k]
+      dfk <- listdf[[k+1]]
+      foldh <- appendtofolderh(fh=foldh, df=dfk, key=keyk, after = TRUE)
+     }
+   }
+  
+#  foldh <- do.call(folderh, argsfolderh)
   names(foldh) <- classes
   names(attr(foldh,"keys")) = NULL
   

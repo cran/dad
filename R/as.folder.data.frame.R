@@ -1,7 +1,7 @@
 as.folder.data.frame <- function(x, ..., groups = tail(colnames(x), 1)) {
   
-  name.x <- as.character(match.call()$x)
-  name.g <- as.character(match.call()$groups)
+  name.x <- deparse(substitute(x))
+  name.g <- deparse(substitute(groups))
   
   # Checking of the arguments
   if (!is.data.frame(x))
