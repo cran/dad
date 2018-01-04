@@ -10,11 +10,12 @@ Performs functional hierarchic cluster analysis of probability densities. It ret
 \usage{
 fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FALSE,
          data.centered=FALSE, data.scaled=FALSE,  common.variance = FALSE,
-         sub.title="", filename=NULL, method.hclust = "complete", members = NULL)
+         sub.title="", filename=NULL, method.hclust = "complete",% members = NULL,
+         group.name = "group")
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{folder}}. Its elements are numeric data frames with \eqn{p} columns.
+       object of class \code{\link{folder}}. Its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
 }       
@@ -43,7 +44,8 @@ fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FA
        logical. If \code{TRUE} (default is \code{FALSE}), a common covariance matrix (or correlation matrix if \code{data.scaled = TRUE}), computed on the whole data, is used. If \code{FALSE} (default), a covariance (or correlation) matrix per group is used.
 }
   \item{sub.title}{
-       string. Subtitle for the graphs (default \code{NULL}).
+       string. If provided, the subtitle for the graphs.
+%       string. Subtitle for the graphs (default \code{NULL}).
 }
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) the results are not saved.
@@ -51,8 +53,12 @@ fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FA
   \item{method.hclust}{
        the agglomeration method to be used for the clustering. See the \code{method} argument of the \code{\link{hclust}} function.
 }
-  \item{members}{
-       \code{NULL} or a vector with length size of d. See \code{\link{hclust}}.
+%  \item{members}{
+%       \code{NULL} or a vector with length the number of groups, i.e. the length of \code{xf}. See \code{\link{hclust}}.
+%       \code{NULL} or a vector with length size of d. See \code{\link{hclust}}.
+%}
+  \item{group.name}{
+       string. Name of the grouping variable. Default: \code{group.name  = "group"}.
 }
 }
 \details{ 
@@ -81,7 +87,11 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 \examples{
 data(castles.dated)
-xf <- as.folder(castles.dated$stones)
+stones <- castles.dated$stones
+periods <- castles.dated$periods
+
+\dontrun{
+xf <- as.folder(stones)
 result <- fhclustd(xf)
 print(result)
 print(result, dist.print = TRUE)
@@ -92,4 +102,20 @@ plot(result, hang = -1)
 cutree(result$clust, k = 1:5)
 cutree(result$clust, k = 5)
 cutree(result$clust, h = 0.18)
+}
+
+periods123 <- periods[periods$period \%in\% 1:3, "castle"]
+stones123 <- stones[stones$castle \%in\% periods123, ]
+stones123$castle <- as.factor(as.character(stones123$castle))
+yf <- as.folder(stones123)
+result123 <- fhclustd(yf)
+print(result123)
+print(result123, dist.print = TRUE)
+plot(result123)
+plot(result123, hang = -1)
+
+# Use cutree (stats package) to get the partition
+cutree(result123$clust, k = 1:4)
+cutree(result123$clust, k = 5)
+cutree(result123$clust, h = 0.041)
 }

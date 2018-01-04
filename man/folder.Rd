@@ -4,7 +4,7 @@
   Folder of data sets
 }
 \description{
-  Creates an object of class folder, that is a list of data frames which have the same column names.
+  Creates an object of class \code{"folder"} (called folder below), that is a list of data frames which have the same column names.
 }
 \usage{
 folder(x1, x2 = NULL, ..., cols.select = "intersect")
@@ -26,8 +26,8 @@ folder(x1, x2 = NULL, ..., cols.select = "intersect")
   \item{cols.select}{
      string. Gives the method used to choose the column names of the data frames of the folder. This argument can be:
      \describe{
-     \item{\code{"intersect"}}{the data frames of the folder have the column names which are the intersection of the column names of all the date frames given as arguments.}
-     \item{\code{"union"}}{the data frames of the folder have the column names which are the union of the column names of all the date frames given as arguments. When necessary, the rows of the data frames returned are completed by NA.}
+     \item{\code{"intersect"}}{the column names of the data frames in the folder are the intersection of the column names of all the data frames given as arguments.}
+     \item{\code{"union"}}{the column names of the data frames in the folder are the union of the column names of all the data frames given as arguments. When necessary, the rows of the returned data frames are completed by NA.}
      }
 }
 }

@@ -5,7 +5,7 @@
   Coerce to a folder
 }
 \description{
-  Coerces a data frame or an object of class \code{folderh} to a data frame.
+  Coerces a data frame or an object of class \code{"folderh"} to an object of class \code{"folder"}.
 }
 \usage{
 as.folder(x, ..., groups = NULL)

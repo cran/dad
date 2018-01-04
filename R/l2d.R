@@ -29,8 +29,16 @@ l2d <- function(x1, x2, method="gaussiand", check=FALSE, varw1=NULL, varw2=NULL)
     }
 
   if (p == 1)
-    choix <- paste0(choix, "u") else
-    choix <- paste0(choix, "p")
+    {
+     choix <- paste0(choix, "u")
+     if (is.data.frame(x1)) x1 <- x1[, 1]
+     if (is.data.frame(x2)) x2 <- x2[, 1]
+     if (is.matrix(x1)) x1 <- drop(x1)
+     if (is.matrix(x2)) x2 <- drop(x2)
+    } else
+    {
+     choix <- paste0(choix, "p")
+    }
 
   switch(choix,
     g.u = { # Univariate Gaussian densities:

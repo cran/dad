@@ -15,7 +15,7 @@
   
   \itemize{
     \item{\code{castles.dated$stones}: }{this first data frame has 1262 cases (rows) and 5 variables (columns) that are named
-     \code{height, width, eidgen, boss} (numeric) and \code{castle} (factor).}
+     \code{height, width, edging, boss} (numeric) and \code{castle} (factor).}
 
     \item{\code{castles.dated$periods}: }{this second data frame has 68 cases and 2 variables named \code{castle} and \code{period}; the column \code{castle} corresponds to the levels of the factor \code{castle} of the first data frame; the column \code{period} is a factor with 6 levels indicating the approximative building period. Thus this factor defines 6 classes of castles.}
 }

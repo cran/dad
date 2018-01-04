@@ -56,12 +56,12 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 mtgfile1 <- system.file("extdata/plant1.mtg", package = "dad")
 xmtg1 <- read.mtg(mtgfile1)
 print(xmtg1)
-print(xmtg1, topology = FALSE)
+print(xmtg1, topology = TRUE)
 print(xmtg1, coordinates = TRUE)
 
 mtgfile2 <- system.file("extdata/plant2.mtg", package = "dad")
 xmtg2 <- read.mtg(mtgfile2)
 print(xmtg2)
-print(xmtg2, topology = FALSE)
+print(xmtg2, topology = TRUE)
 print(xmtg2, coordinates = TRUE)
 }

@@ -11,11 +11,12 @@ Performs functional principal component analysis of probability densities in ord
 fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
     centered = FALSE, data.centered = FALSE, data.scaled = FALSE,
     common.variance = FALSE, nb.factors = 3, nb.values = 10, sub.title = "",
-    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, filename = NULL)
+    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, group.name = "group",
+    filename = NULL)
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{folder}}. Its elements are numeric data frame with \eqn{p} columns.
+       object of class \code{\link{folder}}. Its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
        
@@ -54,7 +55,8 @@ fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
        numerical. Number of returned eigenvalues (default \code{nb.values = 10}).
 }
   \item{sub.title}{
-       string. Subtitle for the graphs (default \code{NULL}).
+       string. If provided, the subtitle for the graphs.
+%       string. Subtitle for the graphs (default \code{NULL}).
 }
   \item{plot.eigen}{
        logical. If \code{TRUE} (default), the barplot of the eigenvalues is plotted.
@@ -64,6 +66,9 @@ fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
 }
   \item{nscore}{
        numeric vector. If \code{plot.score = TRUE}, the numbers of the principal scores which are plotted. By default it is equal to \code{nscore = 1:3}. Its components cannot be greater than \code{nb.factors}. 
+}
+  \item{group.name}{
+       string. Name of the grouping variable. Default: \code{groupname  = "group"}.
 }
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) the results are not saved.

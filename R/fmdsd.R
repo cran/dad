@@ -2,7 +2,8 @@ fmdsd <-
 function(xf, gaussiand=TRUE, windowh=NULL, kern = NULL, normed=FALSE,
       data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
-			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL)
+			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL,
+			group.name="group")
 {
 #require(e1071)
 
@@ -15,7 +16,7 @@ if (!is.folder(xf)){
 if (!attr(xf, "same.cols")){
   stop("fmdsd applies to an object of class 'folder' in which the data frames have the same column names.")
 }
-x <- as.data.frame(xf)
+x <- as.data.frame(xf, group.name = group.name)
 
 # p denotes the dimension of the data
 p<-ncol(x)-1;

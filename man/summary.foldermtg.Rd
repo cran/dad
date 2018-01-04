@@ -18,7 +18,7 @@
       optional arguments to \code{summary} methods.
 }
 }
-\details{
+\value{
     The summary of the data frames containing the vertices of each class and the values of the features on these vertices.
 }
 \references{

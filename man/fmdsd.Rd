@@ -11,11 +11,11 @@ Applies the multidimensional scaling (MDS) method to probability densities in or
 fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
     data.centered = FALSE, data.scaled = FALSE, common.variance = FALSE,
     nb.factors = 3, nb.values = 10, sub.title = "", plot.eigen = TRUE,
-    plot.score = FALSE, nscore = 1:3, filename = NULL)
+    plot.score = FALSE, nscore = 1:3, filename = NULL, group.name = "group")
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{folder}}. Its elements are numeric data frame with \eqn{p} columns.
+       object of class \code{\link{folder}}. Its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.             
        
@@ -64,6 +64,9 @@ fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
 }
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) they are not saved.
+}
+  \item{group.name}{
+       string. Name of the grouping variable. Default: \code{groupname  = "group"}.
 }
 }
 \details{ 

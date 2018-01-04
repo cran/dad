@@ -17,14 +17,15 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 3.0.1\cr
-Date: \tab 2017-09-01\cr
+Version: \tab 3.1.0\cr
+Date: \tab 2018-01-04\cr
 License: \tab GPL-2\cr
 }
 To cite \code{dad}, use \code{citation("dad")}.
 
 The main functions applying to the probability densities are: \itemize{
 \item{\code{\link{fpcad}}: functional principal component analysis,}
+\item{\code{\link{fpcat}}: functional principal component analysis applied to data indexed according to time,}
 \item{\code{\link{fmdsd}}: multidimensional scaling,}
 \item{\code{\link{fhclustd}}: hierarchical clustering,}
 \item{\code{\link{fdiscd.misclass}}: functional discriminant analysis in order to compute the misclassification ratio with the one-leave-out method,}
@@ -41,7 +42,9 @@ We also introduce classes of objects and tools in order to handle collections of
 
 The following functions apply to a folder and compute some statistics on the columns of its elements: \code{\link{mean.folder}}, \code{\link{var.folder}}, \code{\link{cor.folder}}, \code{\link{skewness.folder}} or \code{\link{kurtosis.folder}}.}
 \item{\code{\link{folderh}} creates an object of class \code{folderh}, that is a list of data frames with a hierarchic relation between each pair of consecutive data frames.}
-\item{\code{\link{read.mtg}}} creates an object of class \code{foldermtg} from an MTG (Multiscale Tree Graph) file containing plant architecture data.}
+\item{\code{\link{foldert}} creates an object of class \code{foldert}, that is a list of data frames indexed according to time, concerning the same individuals and variables or not.}
+\item{\code{\link{read.mtg}} creates an object of class \code{foldermtg} from an MTG (Multiscale Tree Graph) file containing plant architecture data.}
+}
 }
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard with the contributions from Gilles Hunault, Julie Bourbeillon and Besnik Pumo

@@ -57,7 +57,7 @@ function(x, y, font.size=12, layout = NULL)
     npages <- max(pages)
 
     for (n.p in 1:npages)
-      {if (.Device %in% c("null device", "X11", "windows", "quartz"))
+      {if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD"))
           {dev.new(title = colnames(y)[j])
           }
       trellis.par.set(list(fontsize = list(text=font.size)))

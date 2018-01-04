@@ -17,7 +17,7 @@ matdistl2d(x, method = "gaussiand", varwL = NULL)
 }
 \arguments{
   \item{x}{
-       data frame with \eqn{p+1} columns containing the data. The last column is a factor (the groups). The first \eqn{p} columns contain numeric data (observations of the probability densities).
+       object of class "folder" containing the data. Its elements have only numeric variables (observations of the probability densities).
 }
   \item{method}{
        string.  It can be:
@@ -44,10 +44,10 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
     data(roses)
     
     # Multivariate:
-    X <- roses[,c("Sha","Den","Sym","rose")]
+    X <- as.folder(roses[,c("Sha","Den","Sym","rose")], groups = "rose")
     summary(X)
-    mean.X <- as.list(by(X[, 1:3], X$rose, colMeans))
-    var.X <- as.list(by(X[, 1:3], X$rose, var))
+    mean.X <- mean(X)
+    var.X <- var.folder(X)
     
     # Parametrically estimated Gaussian densities:
     matdistl2d(X)
@@ -61,10 +61,10 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
     }
 
     # Univariate :
-    X1 <- roses[,c("Sha","rose")]
+    X1 <- as.folder(roses[,c("Sha","rose")], groups = "rose")
     summary(X1)
-    mean.X1 <- by(X1$Sha, X1$rose, mean)
-    var.X1 <- by(X1$Sha, X1$rose, var)
+    mean.X1 <- mean(X1)
+    var.X1 <- var.folder(X1)
     
     # Parametrically estimated Gaussian densities:
     matdistl2d(X1)

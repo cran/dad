@@ -2,7 +2,8 @@ fhclustd <-
 function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
 			normed=TRUE, centered=FALSE, data.centered=FALSE, data.scaled=FALSE,
       common.variance=FALSE, sub.title="", filename=NULL,
-      method.hclust = "complete", members = NULL)
+      method.hclust = "complete",# members = NULL, 
+			group.name="group")
 {
 #require(stats)
 
@@ -10,9 +11,9 @@ function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
 # Preliminaries
 #---------------
 if (!is.folder(xf)){
-  stop("fpcad applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fpcad applied to a data frame.")
+  stop("fhclustd applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fhclustd applied to a data frame.")
 }
-x <- as.data.frame(xf)
+x <- as.data.frame(xf, group.name = group.name)
 
 # p denotes the dimension of the data
 p<-ncol(x)-1;
@@ -175,21 +176,21 @@ choix = paste(choix, collapse = "")
 switch(choix,
   # Case: multivariate, gaussian distributions
   mg.. =
-      {xdist <- matdistl2d(x, method = "gaussiand")
+      {xdist <- matdistl2d(xf, method = "gaussiand")
        },
   # Case univariate, gaussian distributions 
   ug.. =  
-      {xdist <- matdistl2d(x, method = "gaussiand")
+      {xdist <- matdistl2d(xf, method = "gaussiand")
       },
   # Case: multivariate, non Gaussian distribution, density estimated using 
   # Gaussian kernel and AMISE window 
   mnga =
-      {xdist <- matdistl2d(x, method = "kern")
+      {xdist <- matdistl2d(xf, method = "kern")
       },
   # Case univariate, non gaussian distributions estimated by gaussian kernel
   # method, and AMISE windows 
   unga =
-      {xdist <- matdistl2d(x, method = "kern")
+      {xdist <- matdistl2d(xf, method = "kern")
       },
   # Case: multivariate, non gaussian distributions estimed by gaussian kernel
   # method, and bandwith parameter, common to all densities, given by the user
@@ -199,7 +200,7 @@ switch(choix,
       varLwL<-varL
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-      xdist <- matdistl2d(x, method = "kern", varwL = varLwL)
+      xdist <- matdistl2d(xf, method = "kern", varwL = varLwL)
       },
   # Case univariate, non gaussian distributions estimed by gaussian kernel
   # method, and bandwith parameter, common to all densities, given by the user    
@@ -209,24 +210,24 @@ switch(choix,
       varLwL<-varL
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-      xdist <- matdistl2d(x, method = "kern", varwL = varLwL)
+      xdist <- matdistl2d(xf, method = "kern", varwL = varLwL)
       },
   # Case: multivariate, non gaussian distributions estimated by gaussian kernel
   # method, and windows given as a list of matrices
   mngl =
-      {xdist <- matdistl2d(x, method = "kern", varwL = windowh)
+      {xdist <- matdistl2d(xf, method = "kern", varwL = windowh)
       },
   
     # Case univariate, non gaussian distributions estimated by gaussian kernel
     # method, and windows given as a list of numbers
   ungl =
-      {xdist <- matdistl2d(x, method = "kern", varwL = windowh)
+      {xdist <- matdistl2d(xf, method = "kern", varwL = windowh)
       }
   )
 # End of the computation of the distance matrix
 
 #Creation of the tree
-xclust <- hclust(xdist, method = method.hclust, members = members)
+xclust <- hclust(xdist, method = method.hclust, members = NULL)
 
 results <- list(distances = xdist, clust = xclust)
 class(results) <- "fhclustd"

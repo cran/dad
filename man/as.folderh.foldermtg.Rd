@@ -4,7 +4,7 @@
   Build a hierarchic folder from an object of class foldermtg
 }
 \description{
-  Creates an object of class \code{\link{folderh}} from an object of class \code{\link{foldermtg}}, the classes of vertices.
+  Creates an object of class \code{\link{folderh}} from an object of class \code{\link{foldermtg}}.
 }
 \usage{
 \method{as.folderh}{foldermtg}(x, classes)
@@ -14,9 +14,12 @@
      object of class \code{\link{foldermtg}}.
 }
   \item{classes}{
-     character vector. Codes of the vertex classes which will be in the returned folderh. These codes are the names of elements of \code{x} containing the features on vertices.
+     character vector. Codes of the vertex classes in the returned folderh.
+     These codes are the names of the elements (data frames) of \code{x} containing the features on the vertices corresponding to the codes.
      
-     The elements of \code{classes} must be distinct, and the classes must have distinct scales (see \code{\link{foldermtg}}). Otherwise, there is an error.
+     These codes must be distinct, and the corresponding classes must have distinct scales (see \code{\link{foldermtg}}). Otherwise, there is an error.
+     
+     These codes, except the one with the highest scale, are the keys of the returned folderh.
 }
 }
 \value{

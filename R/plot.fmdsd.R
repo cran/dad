@@ -9,7 +9,7 @@ group=x$scores[, 1]
 ind=combn(nscore, 2)
 for (j in 1:ncol(ind)) 
   {i1=ind[1, j]; i2=ind[2, j]
-  if (.Device %in% c("null device", "X11", "windows", "quartz"))
+  if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD"))
     {dev.new()
     }
   par(ps=12);

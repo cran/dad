@@ -20,7 +20,7 @@ l2d(x1, x2, method = "gaussiand", check = FALSE, varw1, varw2)
        a matrix or data frame of \eqn{n_1}{n1} rows (observations) and \eqn{p} columns (variables) or a vector of length \eqn{n_1}{n1}.
 }
   \item{x2}{
-       matrix or data frame of \eqn{n_2}{n2} rows and \eqn{p} columns or vector of length \eqn{n_1}{n1}.
+       matrix or data frame of \eqn{n_2}{n2} rows and \eqn{p} columns or vector of length \eqn{n_2}{n1}.
 }
   \item{method}{
        string.  It can be:

@@ -9,7 +9,7 @@
 }
 \usage{data("varietyleaves")}
 \format{
-  \code{varietyleaves} is an object of class \code{"foldermtg"}, that is a list of two data frames:
+  \code{varietyleaves} is an object of class \code{"folderh"}, that is a list of two data frames:
   \itemize{
     \item{\code{varietyleaves$variety}: }{data frame with 31 rows and 2 columns (factors) named
      \code{rose} and \code{variety}.}
