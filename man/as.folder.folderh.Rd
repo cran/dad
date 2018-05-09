@@ -6,7 +6,7 @@
   Hierarchic folder to folder
 }
 \description{
-  Creates an object of class \code{folder}, that is a list of data frames whose columns are the same, from a \code{folderh}.
+  Creates an object of class \code{folder}, that is a list of data frames with the same column names, from a \code{folderh}.
 }
 \usage{
 \method{as.folder}{folderh}(x, ..., elt = names(x)[2], key = attr(x, "keys")[1])

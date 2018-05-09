@@ -26,7 +26,6 @@ as.folder.data.frame <- function(x, ..., groups = tail(colnames(x), 1)) {
   
   # Creation of the folder
   class(fold) <- "folder"
-  attr(fold, "same.cols") <- TRUE
   attr(fold, "same.rows") <- FALSE
   
   return(fold)

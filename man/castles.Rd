@@ -2,7 +2,7 @@
 \alias{castles}
 \docType{data}
 \title{
-   Castles by year of building
+   Alsacian castles by year of building
 }
 \description{
   The data were collected by J.M. Rudrauf on Alsacian castles whose building year is known (even approximatively).

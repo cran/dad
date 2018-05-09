@@ -7,10 +7,10 @@
 \alias{mat.dist.l2d.kgw}
 \alias{mat.dist.l2d.kgw.u}
 \title{
-    Matrix of \eqn{L^2} distances
+    Matrix of \eqn{L^2} distances between probability densities
 }
 \description{
-    Computes the matrix of \eqn{L^2} distances between several \eqn{p}-dimensional probability densities (\eqn{p \geq 1}), using \code{\link{distl2d}}.
+    Computes the matrix of the \eqn{L^2} distances between several multivariate (\eqn{p > 1}) or univariate (\eqn{p = 1}) probability densities, estimated from samples.
 }
 \usage{
 matdistl2d(x, method = "gaussiand", varwL = NULL)
@@ -18,6 +18,7 @@ matdistl2d(x, method = "gaussiand", varwL = NULL)
 \arguments{
   \item{x}{
        object of class "folder" containing the data. Its elements have only numeric variables (observations of the probability densities).
+       If there are non numeric variables, there is an error.
 }
   \item{method}{
        string.  It can be:
@@ -27,7 +28,7 @@ matdistl2d(x, method = "gaussiand", varwL = NULL)
        }
 }
   \item{varwL}{
-       list of matrices. The smoothing bandwidths for the estimation of each probability density. If they are omitted, the smoothing bandwidths are computed using the normal reference rule matrix bandwidth (see details).
+       list of matrices. The smoothing bandwidths for the estimation of each probability density. If they are omitted, the smoothing bandwidths are computed using the normal reference rule matrix bandwidth (see details of the \code{\link{l2d}} function).
 }
 }
 \value{
@@ -38,6 +39,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 \seealso{
    \code{\link{distl2d}}.
+   
    \code{\link{matdistl2dpar}} when the probability densities are Gaussian, given the parameters (means and variances).
 }
 \examples{

@@ -11,7 +11,7 @@
 }
 \arguments{
   \item{object}{
-     object of class \code{\link{folder}} that is a list of data frames. These data frames have the same column names.
+     object of class \code{\link{folder}} that is a list of data frames with the same column names.
 }
   \item{...}{
      further arguments passed to or from other methods.
@@ -20,7 +20,7 @@
 
 \value{
  A list, each element of it contains the summary of the corresponding element of \code{object}.
- This list has two attributes \code{attr(, "same.cols")} and \code{attr(, "same.rows")}.
+ This list has an attribute \code{attr(, "same.rows")}.
 }
 
 \author{

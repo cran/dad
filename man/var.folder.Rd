@@ -12,7 +12,7 @@ var.folder(x, na.rm = FALSE, use = "everything")
 }
 \arguments{
   \item{x}{
-     an object of class \code{\link{folder}}. The attribute \code{attr(,"same.cols")} must be \code{TRUE} (otherwise, there is an error).
+     an object of class \code{\link{folder}} that is a list of data frames with the same column names.
 }
   \item{na.rm}{
      logical. Should missing values be removed? (see \code{\link{var}})
@@ -22,8 +22,7 @@ var.folder(x, na.rm = FALSE, use = "everything")
 }
 }
 \details{
- This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
- 
+% This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
  It uses \code{\link{var}} to compute the variance matrix of the numeric columns of each element of the folder. If some columns of the data frames are not numeric, there is a warning, and the variances are computed on the numeric columns only.
 }
 \value{
@@ -46,7 +45,7 @@ print(iris.vars)
 
 # Second example: roses
 data(roses)
-roses.fold <- as.folder(roses, "Lot")
+roses.fold <- as.folder(roses, "rose")
 roses.vars <- var.folder(roses.fold)
 print(roses.vars)
 }

@@ -6,9 +6,7 @@ as.data.frame.folder <- function(x, row.names = NULL, optional = FALSE, ..., gro
   # Check of the arguments
   if (!is.folder(fold))
     stop(paste(name.fold, "is not of class 'folder'."))
-  if (!attr(fold, "same.cols"))
-    stop("The elements of the 'folder' must have the same number of columns and the same column names.")
-  
+
   # The grouping variable (given by the names of the elements of the folder)
   g <- names(fold)
   

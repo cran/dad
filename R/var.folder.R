@@ -3,11 +3,11 @@ var.folder <- function(x, na.rm = FALSE, use = "everything") {
   # - x: object of class 'folder'.
   # - use:  see 'var()'. Default: "everything".
   
-  fold <- x
-  
   # Check the arguments
-  if (!attr(fold, "same.cols"))
-    stop("'var.folder' cannot be applied to a folder with different column names.")
+  if (!is.folder(x))
+    stop("x must be an object of class 'folder'.")
+  
+  fold <- x
   
   x <- fold[[1]]
   jnum <- logical(ncol(x))

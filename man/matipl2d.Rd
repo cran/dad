@@ -7,10 +7,10 @@
 \alias{mat.ip.l2d.kgw}
 \alias{mat.ip.l2d.kgw.u}
 \title{
-    Matrix of \eqn{L^2} inner products 
+    Matrix of \eqn{L^2} inner products of probability densities
 }
 \description{
-    Computes the matrix of \eqn{L^2} inner products between several \eqn{p}-dimensional probability densities, using \code{\link{l2d}}.
+    Computes the matrix of the \eqn{L^2} inner products between several multivariate (\eqn{p > 1}) or univariate (\eqn{p = 1}) probability densities, estimated from samples, using \code{\link{l2d}}.
 }
 \usage{
 matipl2d(x, method = "gaussiand", varwL = NULL)
@@ -18,6 +18,7 @@ matipl2d(x, method = "gaussiand", varwL = NULL)
 \arguments{
   \item{x}{
        object of class "folder" containing the data. Its elements have only numeric variables (observations of the probability densities).
+       If there are non numeric variables, there is an error.
 }
   \item{method}{
        string.  It can be:
@@ -37,6 +38,11 @@ matipl2d(x, method = "gaussiand", varwL = NULL)
 
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
+}
+\seealso{
+   \code{\link{l2d}}.
+   
+   \code{\link{matipl2dpar}} when the probability densities are Gaussian, given the parameters (means and variances).
 }
 \examples{
     data(roses)

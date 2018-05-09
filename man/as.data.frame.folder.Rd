@@ -13,7 +13,7 @@
 }
 \arguments{
   \item{x}{
-     object of class \code{\link{folder}} that is a list of data frames. These data frames have the same column names.
+     object of class \code{\link{folder}} that is a list of data frames with the same column names.
 }
   \item{row.names, optional}{
      for consistency with \code{\link{as.data.frame}}. \code{as.data.frame.folder} does not take them into account.

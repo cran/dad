@@ -5,7 +5,7 @@
     Scores of the \code{fpcad}, \code{fpcat} or \code{fmdsd} function vs. moments of the densities
 }
 \description{
-    This function provides a tool for the interpretation of the results of \code{fpcad}, \code{fpcat} or \code{fmdsd} function.
+    This generic function provides a tool for the interpretation of the results of \code{fpcad}, \code{fpcat} or \code{fmdsd} function.
 }
 \usage{
 interpret(x, nscore = 1:3, moment = "mean")

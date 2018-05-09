@@ -12,9 +12,6 @@ function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
 if (!is.folder(xf)){
   stop("fpcad applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fpcad applied to a data frame.")
 }
-if (!attr(xf, "same.cols")){
-  stop("fpcad applies to an object of class 'folder' in which the data frames have the same column names.")
-}
 x <- as.data.frame(xf, group.name = group.name)
 
 # p denotes the dimension of the data
@@ -41,7 +38,7 @@ if (max(is.na(x)) == 1)
 if (!is.null(windowh))
   {if (is.numeric(windowh))
     {if (length(windowh) > 1)
-      {stop("windowh must be either a numeric value, either a list of matrix")
+      {stop("windowh must be either a numeric value, or a list of matrix")
       }
     if (windowh < .Machine$double.eps)
       {stop("windowh must be strictly positive!")

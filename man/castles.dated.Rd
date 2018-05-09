@@ -2,7 +2,7 @@
 \alias{castles.dated}
 \docType{data}
 \title{
-   Dated castles
+   Dated Alsacian castles
 }
 \description{
   The data were collected by J.M. Rudrauf on Alsacian castles whose building period is

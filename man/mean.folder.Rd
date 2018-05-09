@@ -12,7 +12,7 @@
 }
 \arguments{
   \item{x}{
-     an object of class \code{\link{folder}}. The attribute \code{attr(,"same.cols")} must be \code{TRUE} (otherwise, there is an error).
+     an object of class \code{\link{folder}} that is a list of data frames with the same column names.
 }
   \item{...}{
      further arguments passed to or from other methods.
@@ -22,8 +22,7 @@
 }
 }
 \details{
- This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
- 
+% This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
  It uses \code{\link{colMeans}} to compute the mean by numeric column of each element of the folder. If some columns of the data frames are not numeric, there is a warning, and the means are computed on the numeric columns only.
 }
 \value{

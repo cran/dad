@@ -1,7 +1,7 @@
 matipl2d <-
 function(x, method = "gaussiand", varwL = NULL)  {
   if (is.data.frame(x))
-    stop("matipl2d() now applies to an object of class 'folder'.")
+    stop("matipl2d now applies to an object of class 'folder'.\nNotice that for versions earlier than 3.1, matipl2d apply to a data frame'.")
   if (!is.folder(x))
     stop("x must be an object of class 'folder'.")
   if (any(!apply(x[[1]], 2, is.numeric)))

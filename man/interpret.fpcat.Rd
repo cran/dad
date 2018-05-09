@@ -57,31 +57,10 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
    \link{fpcat}; \link{plot.fpcat}.
 }
 \examples{
-# First example: a normed non-centred PCA of Gaussian densities
-# (data: stones of castles)
-data(castles.dated)
-stones <- castles.dated$stones
-periods <- castles.dated$periods
-period1 <- periods[periods$period == 1, "castle"]
-castles1 <- stones[stones$castle \%in\% period1, 1:4]
-period2 <- periods[periods$period == 2, "castle"]
-castles2 <- stones[stones$castle \%in\% period2, 1:4]
-period3 <- periods[periods$period == 3, "castle"]
-castles3 <- stones[stones$castle \%in\% period3, 1:4]
-period4 <- periods[periods$period == 4, "castle"]
-castles4 <- stones[stones$castle \%in\% period4, 1:4]
-period5 <- periods[periods$period == 5, "castle"]
-castles5 <- stones[stones$castle \%in\% period5, 1:4]
-period6 <- periods[periods$period == 6, "castle"]
-castles6 <- stones[stones$castle \%in\% period6, 1:4]
-castperiod <- foldert(list(castles1, castles2, castles3, castles4, castles5, castles6),
-                      times = ordered(1:6))
-fpcacastle <- fpcat(castperiod, group.name = "period")
-interpret(fpcacastle)
-
-# Second example: the same castles, with their building year
+# Alsacian castles with their building year
 data(castles)
 castyear <- foldert(lapply(castles, "[", 1:4))
 fpcayear <- fpcat(castyear, group.name = "year")
 interpret(fpcayear)
+interpret(fpcayear, moment="var")
 }

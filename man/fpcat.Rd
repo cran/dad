@@ -16,7 +16,7 @@ fpcat(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{foldert}}. Its elements are data frames with \eqn{p} numeric columns.
+       object of class \code{\link{foldert}} that is a list of data frames with the same column names, each of them corresponding to a time of observation. Its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} time of observation.
 }
@@ -107,33 +107,14 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
     \link{bandwidth.parameter}
 }
 \examples{
-# First example: a normed non-centred PCA of Gaussian densities
-# (data: stones of castles)
-data(castles.dated)
-stones <- castles.dated$stones
-periods <- castles.dated$periods
-period1 <- periods[periods$period == 1, "castle"]
-castles1 <- stones[stones$castle \%in\% period1, 1:4]
-period2 <- periods[periods$period == 2, "castle"]
-castles2 <- stones[stones$castle \%in\% period2, 1:4]
-period3 <- periods[periods$period == 3, "castle"]
-castles3 <- stones[stones$castle \%in\% period3, 1:4]
-period4 <- periods[periods$period == 4, "castle"]
-castles4 <- stones[stones$castle \%in\% period4, 1:4]
-period5 <- periods[periods$period == 5, "castle"]
-castles5 <- stones[stones$castle \%in\% period5, 1:4]
-period6 <- periods[periods$period == 6, "castle"]
-castles6 <- stones[stones$castle \%in\% period6, 1:4]
-castperiod <- foldert(list(castles1, castles2, castles3, castles4, castles5, castles6),
-                      times = ordered(1:6))
-fpcacastle <- fpcat(castperiod, group.name = "period")
-print(fpcacastle)
-plot(fpcacastle)
-
-# Second example: the same castles, with their building year
-data(castles)
-castyear <- foldert(lapply(castles, "[", 1:4))
-fpcayear <- fpcat(castyear, group.name = "year")
-print(fpcayear)
-plot(fpcayear)
+times <- as.Date(c("2017-03-01", "2017-04-01", "2017-05-01", "2017-06-01"))
+x1 <- data.frame(z1=rnorm(6,1,5), z2=rnorm(6,3,3))
+x2 <- data.frame(z1=rnorm(6,4,6), z2=rnorm(6,5,2))
+x3 <- data.frame(z1=rnorm(6,7,2), z2=rnorm(6,8,4))
+x4 <- data.frame(z1=rnorm(6,9,3), z2=rnorm(6,10,2))
+ft <- foldert(x1, x2, x3, x4, times = times, rows.select="intersect")
+print(ft)
+result <- fpcat(ft)
+print(result)
+plot(result)
 }

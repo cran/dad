@@ -28,19 +28,24 @@ function(x, nscore=1:3, sub.title=NULL, fontsize.points = 1.5, ...)
     arrows(coor[-ngroup,i1], coor[-ngroup,i2], coor[-1,i1], coor[-1,i2], length = 0.1)
   }
   
+  if ("Date" %in% class(times))
+    times <- as.POSIXct(times)
+  
   for (i in nscore) {
     if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD")) {
       dev.new()
     }
     par(ps=12);
-    plot(numtimes,coor[,i],type="n",
+    if ("Date" %in% class(times))
+      times <- as.POSIXct(times)
+    plot(times,coor[,i],type="l",
          main="Functional PCA of probability densities",sub=sub.title,
-         xlab = "time",ylab=paste("PC", i, " (", inertia[i], "%)"),
-         xaxt = "n", ...);
-    axis(1, numtimes, times)
+         xlab = "time",ylab=paste("PC", i, " (", inertia[i], "%)"), ...);
+         # , xaxt = "n")
+    # axis(1, numtimes, times)
 #    par(ps=10);
 #    text(times, coor[,i], as.character(group), cex=fontsize.points, font=2);
-    arrows(numtimes[-ngroup], coor[-ngroup,i], numtimes[-1], coor[-1,i], length = 0.1)
+    # arrows(numtimes[-ngroup], coor[-ngroup,i], numtimes[-1], coor[-1,i], length = 0.1)
   }
   
   return(invisible(NULL))

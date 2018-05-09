@@ -3,20 +3,20 @@
 \alias{mat.dist.l2d.gp}
 \alias{mat.dist.l2d.gp.u}
 \title{
-    Matrix of \eqn{L^2} distances
+    Matrix of \eqn{L^2} distances between Gaussian densities given their parameters
 }
 \description{
-    Computes the matrix of \eqn{L^2} distances between several \eqn{p}-dimensional Gaussian probability densities, given their means and variances.
+     Computes the matrix of the \eqn{L^2} distances between several multivariate (\eqn{p > 1}) or univariate (\eqn{p = 1}) Gaussian densities, given their parameters (mean vectors and covariance matrices if the densities are multivariate, or means and variances if univariate).
 }
 \usage{
 matdistl2dpar(meanL, varL)
 }
 \arguments{
   \item{meanL}{
-       list of the means of the probability densities.
+       list of the means (\eqn{p = 1}) or vector means (\eqn{p > 1}) of the Gaussian densities.
 }
   \item{varL}{
-       list of the variances (\eqn{p=1}) or covariance matrices (\eqn{p>1}) of the probability densities.
+       list of the variances (\eqn{p = 1}) or covariance matrices (\eqn{p > 1}) of the Gaussian densities.
 }
 }
 \value{
@@ -27,6 +27,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 \seealso{
    \code{\link{distl2dpar}}.
+   
    \code{\link{matdistl2d}} for the distance matrix between probability densities which are estimated from the data.
 }
 \examples{

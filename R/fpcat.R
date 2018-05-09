@@ -7,9 +7,7 @@ function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
 if (!is.foldert(xf)){
   stop("fpcat applies to an object of class 'foldert'.")
 }
-if (!attr(xf, "same.cols")){
-  stop("fpcat applies to an object of class 'foldert' in which the data frames have the same column names.")
-}
+
 times <- attr(xf, "times")
 
 # Perform the FPCA, using fpcad()

@@ -1,11 +1,11 @@
 kurtosis.folder <- function(x, na.rm = FALSE, type = 3) {
   # 'kurtosis' method for objects of class 'folder': kurtosis coefficient per column for each data frame.
   
-  fold <- x
-  
   # Check the arguments
-  if (!attr(fold, "same.cols"))
-    stop("'kurtosis.folder' cannot be applied to a folder with different column names.")
+  if (!is.folder(x))
+    stop("x must be an object of class 'folder'.")
+  
+  fold <- x
   
   x <- fold[[1]]
   jnum <- logical(ncol(x))

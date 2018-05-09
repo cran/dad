@@ -4,11 +4,11 @@ cor.folder <- function(x, use = "everything", method = "pearson") {
   # - use:    see 'cor()'. Default: "everything".
   # - method: "pearson", "kendall" or "spearman"; see 'cor()'. Default: "pearson".
   
-  fold <- x
-  
   # Check the arguments
-  if (!attr(fold, "same.cols"))
-    stop("'cor.folder' cannot be applied to a folder with different column names.")
+  if (!is.folder(x))
+    stop("x must be an object of class 'folder'.")
+  
+  fold <- x
   
   x <- fold[[1]]
   jnum <- logical(ncol(x))

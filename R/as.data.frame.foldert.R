@@ -1,10 +1,12 @@
 as.data.frame.foldert <- function(x, row.names = NULL, optional = FALSE, ..., group.name = "time") {
+
+  name.fold <- deparse(substitute(x))
+
+  # Check of the arguments
+  if (!is.foldert(x))
+    stop(paste(name.fold, "is not of class 'foldert'."))
+
   class(x) <- "folder"
-  if (!attr(x, "same.cols"))
-    stop("x must be a 'foldert' with the same column names.")
-  
-  if (!attr(x, "same.rows"))
-    stop("x must be a 'foldert' with the same row names.")
   
   datf <- as.data.frame(x, row.names = NULL, optional = FALSE, ..., group.name = group.name)
   

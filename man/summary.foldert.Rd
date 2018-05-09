@@ -20,7 +20,7 @@
 
 \value{
  A list, each element of it contains the summary of the corresponding element of \code{object}.
- This list has three attributes \code{attr(, "times")}, \code{attr(, "same.cols")} and \code{attr(, "same.rows")}.
+ This list has two attributes \code{attr(, "times")} and \code{attr(, "same.rows")}.
 }
 
 \author{
@@ -29,7 +29,8 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 
 \seealso{
 \code{\link{foldert}}: object of class \code{foldert}.
-%\code{\link{as.foldert.data.frame}}: build an object of class \code{foldert} from a data frame.
+\code{\link{as.foldert.data.frame}}: build an object of class \code{foldert} from a data frame.
+\code{\link{as.foldert.array}}: build an object of class \code{foldert} from a \eqn{3d}-array.
 }
 \examples{
 # 1st example

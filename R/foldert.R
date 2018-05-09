@@ -1,4 +1,5 @@
-foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.select = "", same.rows = (rows.select %in% c("union", "intersect")))
+foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect", rows.select = "")
+  #, same.rows = (rows.select %in% c("union", "intersect"))  
 {
   # x1:          list of data frames or data frame
   # x2:          data frame; defaults to NULL (not considered if x1 is a list of data frame)
@@ -11,10 +12,6 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
   #                - "intersect": the colnames of the data frames in the returned foldert
   #                  are the intersect of the colnames of the data frame arguments.
   #                  Therefore we have: same.cols = TRUE.
-  #                - "": the colnames of each data frame in the returned foldert
-  #                  are the colnames of the corresponding data frame among the argument
-  #                  Then we check if the column names are the same.
-  #                  If they are, we have : same.cols = TRUE. Otherwise, same.cols = FALSE.
   #                - A character vector, its elements being column names of the data frames.
   #                  If it is so, the columns with names given by rows.select are the selected
   #                  and are the columns of the data frame elements of the returned "foldert".
@@ -27,6 +24,9 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
   #                - "": the rownames are not considered to be the same.
   #                  A unique name is computed for each individual.
   #                  Therefore: same.rows = FALSE.
+  #              Dans tous les cas, les data frames du foldert auront tous les mêmes noms de colonnes.
+  #              Donc l'attribut "same.cols" est supprimé :
+  #              il n'a plus de raison d'être car il serait toujours TRUE.
   #
   # Arguments which will be added later: data.times, data.rows, data.cols (data frames).
   
@@ -93,16 +93,18 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
     times = 1:nb.data.frames
   }
       
-  if (! ((is.ordered(times)) | (is.numeric(times)) | ("Date" %in% class(times))))
-    stop("times must be either an ordered factor or a numeric vector or a Date object.")
+  if (! ((is.ordered(times)) | (is.numeric(times)) | 
+         ("Date" %in% class(times)) | 
+      ("POSIXlt" %in% class(times)) | ("POSIXct" %in% class(times))))
+    stop("times must be either an ordered factor or a numeric vector or a Date, POSIXlt or POSIXct object.")
   
   if (! rows.select %in% c("union", "intersect", ""))
     rows.select <- ""
   
-  if ((same.rows) & (rows.select == "")) {
-    warning("If rows.select is not 'union' nor 'intersect', same.rows cannot be TRUE")
-    same.rows <- FALSE
-  }
+  # if ((same.rows) & (rows.select == "")) {
+  #   warning("If rows.select is not 'union' nor 'intersect', same.rows cannot be TRUE")
+  #   same.rows <- FALSE
+  # }
   
   switch(class.arg,
          d2 = {
@@ -149,7 +151,7 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
   
   # If cols.select is a character vector:
   # Select the corresponding columns in each elements of fold
-  if (! cols.select[1] %in% c("", "union", "intersect")) {
+  if (! cols.select[1] %in% c("union", "intersect")) {
     for (n in 1:ndata) {
       fold[[n]] <- fold[[n]][intersect(cols.select, colnames(fold[[n]]))]
     }
@@ -168,7 +170,7 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
     for (n in 1:ndata) {
       fold[[n]] <- fold[[n]][cnames]
     }
-    same.cols <- TRUE
+    # same.cols <- TRUE
   }
 
   # If (cols.select == "union"): add columns to each element of 'fold',
@@ -187,61 +189,63 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "", rows.sel
         fold[[n]] <- as.data.frame(foldn)
       }
     }
-    same.cols <- TRUE
+    # same.cols <- TRUE
   }
   
-  # If (cols.select == ""): check if all elements of 'fold' have the same column names.
-  # If they have, same.cols = TRUE. Otherwise same.cols = FALSE.
-  if (cols.select == "") {
-    sameCols <- sapply(lapply(fold[2:ndata], colnames), identical, colnames(fold[[1]]))
-#    for (n in 2:ndata) {
-#      if (!identical(colnames(fold[[1]]), colnames(fold[[n]])))
-#        same.cols <- FALSE
-#    }
-    same.cols <- all(sameCols)
-  }
+#   # If (cols.select == ""): check if all elements of 'fold' have the same column names.
+#   # If they have, same.cols = TRUE. Otherwise same.cols = FALSE.
+#   if (cols.select == "") {
+#     sameCols <- sapply(lapply(fold[2:ndata], colnames), identical, colnames(fold[[1]]))
+# #    for (n in 2:ndata) {
+# #      if (!identical(colnames(fold[[1]]), colnames(fold[[n]])))
+# #        same.cols <- FALSE
+# #    }
+#     same.cols <- all(sameCols)
+#   }
   
-  if (same.rows) { # If same.rows is TRUE, select the rows of the data frames
-    # If (rows.select == "intersect"): only the rows whose names are common
-    # to each element of 'fold' will be kept.
-    if (rows.select == "intersect"){
-      rnames.l <- lapply(fold, rownames)
-      rnames <- rnames.l[[1]]
-      for (n in 2:ndata)
-        rnames <- intersect(rnames, rnames.l[[n]])
-      rnames <- sort(rnames)
-      for (n in 1:ndata) {
-        fold[[n]] <- fold[[n]][rnames, ]
-      }
+  # if (same.rows) { # If same.rows is TRUE, select the rows of the data frames
+  
+  # If (rows.select == "intersect"): only the rows whose names are common
+  # to each element of 'fold' will be kept.
+  if (rows.select == "intersect"){
+    rnames.l <- lapply(fold, rownames)
+    rnames <- rnames.l[[1]]
+    for (n in 2:ndata)
+      rnames <- intersect(rnames, rnames.l[[n]])
+    rnames <- sort(rnames)
+    for (n in 1:ndata) {
+      fold[[n]] <- fold[[n]][rnames, , drop = FALSE]
+    }
     same.rows <- TRUE
-    }
-    # If (rows.select == "union"): add columns to each element of 'fold',
-    # so that they all have the same rows and rownames.
-    if (rows.select == "union") {
-      rnames <- sort(unique(unlist(lapply(fold, rownames))))
-      for (n in 1:ndata) {
-        foldn <- fold[[n]]
-        adjrnames <- rnames[! rnames %in% rownames(foldn)]
-        if (length(adjrnames) > 0) {
-          adjrows <- as.data.frame(matrix(NA, nrow = length(adjrnames), ncol = ncol(foldn), dimnames = list(adjrnames, colnames(foldn))))
-          foldn <- rbind(foldn, adjrows)
-        }
-        fold[[n]] <- foldn[rnames, ]
+  }
+  # If (rows.select == "union"): add columns to each element of 'fold',
+  # so that they all have the same rows and rownames.
+  if (rows.select == "union") {
+    rnames <- sort(unique(unlist(lapply(fold, rownames))))
+    for (n in 1:ndata) {
+      foldn <- fold[[n]]
+      adjrnames <- rnames[! rnames %in% rownames(foldn)]
+      if (length(adjrnames) > 0) {
+        adjrows <- as.data.frame(matrix(NA, nrow = length(adjrnames), ncol = ncol(foldn), dimnames = list(adjrnames, colnames(foldn))))
+        foldn <- rbind(foldn, adjrows)
       }
-      same.rows <- TRUE
+      fold[[n]] <- foldn[rnames, , drop = FALSE]
     }
-  } else {
+    same.rows <- TRUE
+  }
+  if (rows.select == "") {
     # For each element of fold, all the lines are kept, and they are made unique by adding the name of this element
     for (n in 1:ndata) {
       if (nrow(fold[[n]]) > 0)
         rownames(fold[[n]]) <- paste(names(fold)[n], rownames(fold[[n]]), sep = ".")
     }
+    same.rows <- FALSE
   }
   
   # times: dates of observations.
   names(fold) <- times
   attr(fold, "times") <- times
-  attr(fold, "same.cols") <- same.cols
+  # attr(fold, "same.cols") <- same.cols
   attr(fold, "same.rows") <- same.rows
   
   class(fold)  <- "foldert"

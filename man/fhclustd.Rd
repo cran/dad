@@ -5,13 +5,14 @@
 Hierarchic cluster analysis of probability densities
 }
 \description{
-Performs functional hierarchic cluster analysis of probability densities. It returns an object of class \code{\link{hclust}}.
+Performs functional hierarchic cluster analysis of probability densities. It returns an object of class \code{\link{fhclustd}}. It applies \code{\link{hclust}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FALSE,
-         data.centered=FALSE, data.scaled=FALSE,  common.variance = FALSE,
-         sub.title="", filename=NULL, method.hclust = "complete",% members = NULL,
-         group.name = "group")
+fhclustd(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL,
+			normed=(distance == "l2"), data.centered=FALSE, data.scaled=FALSE,
+      common.variance=FALSE, sub.title="", filename=NULL,
+      method.hclust = "complete", 
+			group.name="group")
 }
 \arguments{
   \item{xf}{
@@ -19,20 +20,34 @@ fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FA
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
 }       
+  \item{distance}{
+       The distance or divergence used to compute the distance matrix between the densities.
+       It can be:
+       \itemize{
+       \item \code{"l2"} the \eqn{L^2} distance
+       \item \code{"hellinger"} the Hellinger (Matusita) distance
+       \item \code{"jeffreys"} the Jeffreys measure (symmetrised Kullback-Leibler divergence)
+       }
+}
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
+       
+       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
 }
   \item{kern}{
        string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
+
+       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
 }                                                                                                        
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
+       
+       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
 }
   \item{normed}{
-       logical. If \code{TRUE} (default), the densities are normed before computing the distances; anyway, that does not change the result of the clustering.
-}
-  \item{centered}{
-       logical. If \code{TRUE} (default is \code{FALSE}), the densities are centered.
+       logical. If \code{TRUE} (default if \code{distance="l2"}), the densities are normed before computing the distances; anyway, that does not change the result of the clustering.
+       
+       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{normed} is necessarily \code{FALSE} (see Details).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -62,13 +77,18 @@ fhclustd(xf, gaussiand=TRUE, kern = NULL, windowh=NULL, normed=TRUE, centered=FA
 }
 }
 \details{ 
+    In order to compute the distances/dissimilarities between the groups, the \eqn{T} probability densities \eqn{f_t} corresponding to the \eqn{T} groups of individuals are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to be used. Notice that in the multivariate case (\eqn{p}>1), the bandwidths are positive-definite matrices.
     The distances between the \eqn{T} groups of individuals are given by the \eqn{L^2}-distances between the \eqn{T} probability densities \eqn{f_t} corresponding to these groups. The \code{\link{hclust}} function is then applied to the distance matrix to perform the hierarchical clustering on the \eqn{T} groups.
     
-    The probability densities are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to use. Notice that in the multivariate case (\eqn{p}>1) the bandwidths are positive-definite matrices.
-
     If \code{windowh} is a numerical value, the matrix bandwidth is of the form \eqn{h S}, where \eqn{S} is either the square root of the covariance matrix (\eqn{p}>1) or the standard deviation of the estimated density.  
     
     If \code{windowh = NULL} (default), \eqn{h} in the above formula is computed using the \code{\link{bandwidth.parameter}} function.
+
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance or the Jeffreys measure (symmetrised Kullback-Leibler divergence).
+    \itemize{
+    \item If it is the \code{L^2} distance (\code{distance="l2"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}) or the Jeffreys measure (\code{distance="jeffreys"}), the densities are considered Gaussian and necessarily parametrically estimated.
+    }
 }
 \value{
     Returns an object of class \code{fhclustd}, that is a list including:
@@ -91,6 +111,8 @@ stones <- castles.dated$stones
 periods <- castles.dated$periods
 
 \dontrun{
+# L2-distance:
+
 xf <- as.folder(stones)
 result <- fhclustd(xf)
 print(result)
@@ -118,4 +140,32 @@ plot(result123, hang = -1)
 cutree(result123$clust, k = 1:4)
 cutree(result123$clust, k = 5)
 cutree(result123$clust, h = 0.041)
+
+
+# Hellinger distance:
+
+resulthel <- fhclustd(yf, distance = "hellinger")
+print(resulthel)
+print(resulthel, dist.print = TRUE)
+plot(resulthel)
+plot(resulthel, hang = -1)
+
+# Use cutree (stats package) to get the partition
+cutree(resulthel$clust, k = 1:4)
+cutree(resulthel$clust, k = 5)
+cutree(resulthel$clust, h = 0.041)
+
+
+# Jeffreys measure:
+
+resultjef <- fhclustd(yf)
+print(resultjef)
+print(resultjef, dist.print = TRUE)
+plot(resultjef)
+plot(resultjef, hang = -1)
+
+# Use cutree (stats package) to get the partition
+cutree(resultjef$clust, k = 1:4)
+cutree(resultjef$clust, k = 5)
+cutree(resultjef$clust, h = 0.041)
 }

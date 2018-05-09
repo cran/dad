@@ -25,7 +25,7 @@
 }
 }
 \value{
- \code{as.folder.data.frame} returns an object of class \code{\link{folder}} that is a list of data frames which have the same column names.
+ \code{as.folder.data.frame} returns an object of class \code{\link{folder}} that is a list of data frames with the same column names.
  
  Each element of the folder contains the data corresponding to one level of \code{x[, groups]}.
 }

@@ -12,7 +12,7 @@
 }
 \arguments{
   \item{x}{
-     object of class \code{\link{foldert}} with the same column and row names. An object of class \code{foldert} is a list of data frames, the elements of which indexed by time.
+     object of class \code{\link{foldert}} with the same row names. An object of class \code{foldert} is a list of data frames with the same column names, each of them corresponding to a time of observation.
 }
   \item{row.names, optional}{
      for consistency with \code{\link{as.data.frame}}. \code{as.data.frame.foldert} does not take them into account.
@@ -40,7 +40,8 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 
 \seealso{
 \code{\link{foldert}}: object of class \code{foldert}.
-%\code{\link{as.foldert.data.frame}}: build an object of class \code{foldert} from a data frame.
+\code{\link{as.foldert.data.frame}}: build an object of class \code{foldert} from a data frame.
+\code{\link{as.foldert.array}}: build an object of class \code{foldert} from a \eqn{3d}-array.
 }
 \examples{
 data(floribundity)

@@ -12,7 +12,7 @@ cor.folder(x, use = "everything", method = "pearson")
 }
 \arguments{
   \item{x}{
-     an object of class \code{\link{folder}}. The attribute \code{attr(,"same.cols")} must be \code{TRUE} (otherwise, there is an error).
+     an object of class \code{\link{folder}} that is a list of data frames with the same column names.
 }
   \item{use}{
      an optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings "everything", "all.obs", "complete.obs", "na.or.complete", or "pairwise.complete.obs" (see \code{\link{var}}).
@@ -22,8 +22,7 @@ cor.folder(x, use = "everything", method = "pearson")
 }
 }
 \details{
- This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
- 
+% This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
  It uses \code{\link{cor}} to compute the variance matrix of the numeric columns of each element of the folder. If some columns of the data frames are not numeric, there is a warning, and the variances are computed on the numeric columns only.
 }
 \value{
@@ -46,7 +45,7 @@ print(iris.cor)
 
 # Second example: roses
 data(roses)
-roses.fold <- as.folder(roses, "Lot")
+roses.fold <- as.folder(roses, "rose")
 roses.cor <- cor.folder(roses.fold)
 print(roses.cor)
 }

@@ -8,7 +8,7 @@ Multidimensional scaling of probability densities
 Applies the multidimensional scaling (MDS) method to probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fmdsd}. It applies \code{\link{cmdscale}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
+fmdsd(xf, distance = "l2", gaussiand = TRUE, kern = NULL, windowh=NULL, normed = FALSE,
     data.centered = FALSE, data.scaled = FALSE, common.variance = FALSE,
     nb.factors = 3, nb.values = 10, sub.title = "", plot.eigen = TRUE,
     plot.score = FALSE, nscore = 1:3, filename = NULL, group.name = "group")
@@ -20,18 +20,35 @@ fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.             
        
        Notice that for the versions earlier than 2.0, fmdsd applied to a data frame.
-}       
+}
+  \item{distance}{
+       The distance or divergence used to compute the distance matrix between the densities.
+       It can be:
+       \itemize{
+       \item \code{"l2"} the \eqn{L^2} distance
+       \item \code{"hellinger"} the Hellinger (Matusita) distance
+       \item \code{"jeffreys"} the Jeffreys measure (symmetrised Kullback-Leibler divergence)
+       }
+}
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
+       
+       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
 }
   \item{kern}{
-       string. If \code{gaussiand = FALSE}, this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
-}                                                                                                        
+       string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
+       
+       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
+}                                                                  
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
+       
+       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
 }
    \item{normed}{
-       logical. If \code{TRUE} (default), the densities are normed before computing the distances.
+       logical. If \code{TRUE} (default is \code{FALSE}), the densities are normed before computing the distances.
+       
+       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{normed} is necessarily \code{FALSE} (see Details).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -69,19 +86,25 @@ fmdsd(xf, gaussiand = TRUE, windowh = NULL, kern = NULL, normed = FALSE,
        string. Name of the grouping variable. Default: \code{groupname  = "group"}.
 }
 }
-\details{ 
-    The \eqn{T} probability densities \eqn{f_t} corresponding to the \eqn{T} groups of individuals are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to be used. Notice that in the multivariate case (\eqn{p}>1), the bandwidths are positive-definite matrices.
+\details{
+    In order to compute the distances/dissimilarities between the groups, the \eqn{T} probability densities \eqn{f_t} corresponding to the \eqn{T} groups of individuals are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to be used. Notice that in the multivariate case (\eqn{p}>1), the bandwidths are positive-definite matrices.
 
     If \code{windowh} is a numerical value, the matrix bandwidth is of the form \eqn{h S}, where \eqn{S} is either the square root of the covariance matrix (\eqn{p}>1) or the standard deviation of the estimated density.  
     
     If \code{windowh = NULL} (default), \eqn{h} in the above formula is computed using the \code{\link{bandwidth.parameter}} function.
+
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance or the Jeffreys measure (symmetrised Kullback-Leibler divergence).
+    \itemize{
+    \item If it is the \code{L^2} distance (\code{distance="l2"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}) or the Jeffreys measure (\code{distance="jeffreys"}), the densities are considered Gaussian and necessarily parametrically estimated.
+    }
 }
 \value{
     Returns an object of class \code{fmdsd}, i.e. a list including:
     
     \item{inertia}{data frame of the eigenvalues and percentages of inertia.}
     \item{scores}{data frame of the coordinates along the \code{nb.factors} first principal components.}
-    \item{norm }{vector of the \eqn{L^2} norms of the densities.}
+    \item{norm }{vector of the \eqn{L^2} norms of the densities (only if the distance used is the \eqn{L^2}-distance: \code{distance="l2"}).}
     \item{means }{list of the means.}
     \item{variances }{list of the covariance matrices.}
     \item{correlations }{list of the correlation matrices.}
@@ -110,7 +133,19 @@ data(roses)
 rosesfold <- as.folder(roses)
 
 # MDS on Gaussian densities (on sensory data)
-result2 <- fmdsd(rosesfold)
-print(result2)
-plot(result2)
+
+# using the L2-distance:
+resultl2 <- fmdsd(rosesfold)
+print(resultl2)
+plot(resultl2)
+
+# using the Hellinger distance:
+resulthellin <- fmdsd(rosesfold, distance = "hellinger")
+print(resulthellin)
+plot(resulthellin)
+
+# using the Jeffreys measure:
+resultjeff <- fmdsd(rosesfold, distance = "jeffreys")
+print(resultjeff)
+plot(resultjeff)
 }

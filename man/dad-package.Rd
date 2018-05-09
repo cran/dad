@@ -17,8 +17,8 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 3.1.0\cr
-Date: \tab 2018-01-04\cr
+Version: \tab 3.1.1\cr
+Date: \tab 2018-05-09\cr
 License: \tab GPL-2\cr
 }
 To cite \code{dad}, use \code{citation("dad")}.

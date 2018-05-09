@@ -3,10 +3,6 @@ mean.folder <- function(x, ..., na.rm = FALSE) {
   
   fold <- x
   
-  # Check the arguments
-  if (!attr(fold, "same.cols"))
-    stop("'mean' cannot be applied to a folder with different column names.")
-  
   x <- fold[[1]]
   jnum <- logical(ncol(x))
   for (j in 1:ncol(x)) {
