@@ -9,7 +9,7 @@ if (!is.fpcad(x))
 coor <- x$scores
 group.name <- coor[[1]]
 rownames(coor)=group.name
-matcoor=as.data.frame(coor[,1+nscore])
+matcoor=coor[1+nscore]
 
 colnoms=x$variables
 p = length(colnoms)

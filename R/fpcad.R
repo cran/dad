@@ -17,10 +17,6 @@ x <- as.data.frame(xf, group.name = group.name)
 # p denotes the dimension of the data
 p<-ncol(x)-1;
 
-# The initial data is preserved in x0
-# (if the data are centered or reduced, x will contain them)
-x0<-x
-
 # Rename the last column of x as group
 last.column.name=colnames(x)[ncol(x)]
 colnames(x)[ncol(x)] <- "group"
@@ -30,9 +26,9 @@ group.name<-levels(group);
 
 # Control and error message
 # on data
-if (!prod(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
+if (!all(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
   stop("The variables must be numeric!")
-if (max(is.na(x)) == 1)
+if (any(is.na(x)))
   stop("There are NAs in the folder")
 # on the window or window parameter
 if (!is.null(windowh))

@@ -1,5 +1,5 @@
 fhclustd <-
-function(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL,
+function(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
 			normed=(distance == "l2"), data.centered=FALSE, data.scaled=FALSE,
       common.variance=FALSE, sub.title="", filename=NULL,
       method.hclust = "complete",# members = NULL, 
@@ -66,14 +66,14 @@ if (!is.null(windowh))
 }
 }
 
-# Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance)
-# or "jeffreys" (symmetric Kullback-Leibler divergence).
-if (! distance %in% c("l2", "hellinger", "jeffreys"))
-  stop("'distance' argument must be 'l2', 'hellinger' or 'jeffreys'.")
+# Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance),
+# "jeffreys" (symmetric Kullback-Leibler divergence) or "wasserstein" (Wasserstein distance).
+if (! distance %in% c("l2", "hellinger", "jeffreys", "wasserstein"))
+  stop("'distance' argument must be 'l2', 'hellinger', 'jeffreys' or 'wasserstein'.")
 
-if (distance %in% c("hellinger", "jeffreys"))
+if (distance %in% c("hellinger", "jeffreys", "wasserstein"))
 {
-  # For the Hellinger distance or the Jeffreys divergence,
+  # For the Hellinger distance, the Jeffreys divergence or the Wasserstein distance,
   # the densities are considered Gaussian, and the densities are estimated
   # using the parametric method.
   if (!gaussiand)
@@ -302,6 +302,9 @@ switch(distance,
        },
        "jeffreys" = {
          matdist <- matjeffreys(xf)
+       },
+       "wasserstein" = {
+         matdist <- matwasserstein(xf)
        })
 
 #Creation of the tree

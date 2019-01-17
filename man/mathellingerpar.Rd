@@ -27,8 +27,6 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
    \code{\link{hellingerpar}}.
    
    \code{\link{mathellinger}} for the distance matrix between probability densities which are estimated from the data.
-   
-   \code{\link{matdistl2d}}, \code{\link{matdistl2dpar}} for the matrix of \eqn{L^2}-distances.
 }
 \examples{
     data(roses)

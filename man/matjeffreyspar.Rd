@@ -24,11 +24,9 @@ matjeffreyspar(meanL, varL)
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \seealso{
-   \code{\link{hellingerpar}}.
+   \code{\link{jeffreyspar}}.
    
    \code{\link{matjeffreys}} for the matrix of Jeffreys divergences between probability densities which are estimated from the data.
-   
-   \code{\link{matdistl2d}}, \code{\link{matdistl2dpar}} for the matrix of \eqn{L^2}-distances.
 }
 \examples{
     data(roses)

@@ -25,8 +25,6 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
    \code{\link{hellinger}}.
    
    \code{\link{mathellingerpar}} when the probability densities are Gaussian, given the parameters (means and variances).
-   
-   \code{\link{matdistl2d}}, \code{\link{matdistl2dpar}} for the matrix of \eqn{L^2}-distances.
 }
 \examples{
     data(roses)

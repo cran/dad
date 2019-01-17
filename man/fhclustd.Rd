@@ -8,7 +8,7 @@ Hierarchic cluster analysis of probability densities
 Performs functional hierarchic cluster analysis of probability densities. It returns an object of class \code{\link{fhclustd}}. It applies \code{\link{hclust}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fhclustd(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL,
+fhclustd(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
 			normed=(distance == "l2"), data.centered=FALSE, data.scaled=FALSE,
       common.variance=FALSE, sub.title="", filename=NULL,
       method.hclust = "complete", 
@@ -24,30 +24,31 @@ fhclustd(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL,
        The distance or divergence used to compute the distance matrix between the densities.
        It can be:
        \itemize{
-       \item \code{"l2"} the \eqn{L^2} distance
+       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence)
        \item \code{"hellinger"} the Hellinger (Matusita) distance
-       \item \code{"jeffreys"} the Jeffreys measure (symmetrised Kullback-Leibler divergence)
+       \item \code{"wasserstein"} the Wasserstein distance
+       \item \code{"l2"} the \eqn{L^2} distance
        }
 }
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
        
-       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
+       If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
 }
   \item{kern}{
        string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
 
-       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
+       Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
 }                                                                                                        
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
        
-       Omitted when \code{distance} is \code{"hellinger"} or \code{jeffreys} (see Details).
+       Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
 }
   \item{normed}{
        logical. If \code{TRUE} (default if \code{distance="l2"}), the densities are normed before computing the distances; anyway, that does not change the result of the clustering.
        
-       If \code{distance} is \code{"hellinger"} or \code{jeffreys}, \code{normed} is necessarily \code{FALSE} (see Details).
+       If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{normed} is necessarily \code{FALSE} (see Details).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -84,10 +85,10 @@ fhclustd(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL,
     
     If \code{windowh = NULL} (default), \eqn{h} in the above formula is computed using the \code{\link{bandwidth.parameter}} function.
 
-    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance or the Jeffreys measure (symmetrised Kullback-Leibler divergence).
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
     \itemize{
     \item If it is the \code{L^2} distance (\code{distance="l2"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
-    \item If it is the Hellinger distance (\code{distance="hellinger"}) or the Jeffreys measure (\code{distance="jeffreys"}), the densities are considered Gaussian and necessarily parametrically estimated.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (distance = "wasserstein"), the densities are considered Gaussian and necessarily parametrically estimated.
     }
 }
 \value{
@@ -110,36 +111,24 @@ data(castles.dated)
 stones <- castles.dated$stones
 periods <- castles.dated$periods
 
-\dontrun{
-# L2-distance:
-
-xf <- as.folder(stones)
-result <- fhclustd(xf)
-print(result)
-print(result, dist.print = TRUE)
-plot(result)
-plot(result, hang = -1)
-
-# Use cutree (stats package) to get the partition
-cutree(result$clust, k = 1:5)
-cutree(result$clust, k = 5)
-cutree(result$clust, h = 0.18)
-}
-
 periods123 <- periods[periods$period \%in\% 1:3, "castle"]
 stones123 <- stones[stones$castle \%in\% periods123, ]
 stones123$castle <- as.factor(as.character(stones123$castle))
 yf <- as.folder(stones123)
-result123 <- fhclustd(yf)
-print(result123)
-print(result123, dist.print = TRUE)
-plot(result123)
-plot(result123, hang = -1)
+
+
+# Jeffreys measure (default):
+
+resultjef <- fhclustd(yf)
+print(resultjef)
+print(resultjef, dist.print = TRUE)
+plot(resultjef)
+plot(resultjef, hang = -1)
 
 # Use cutree (stats package) to get the partition
-cutree(result123$clust, k = 1:4)
-cutree(result123$clust, k = 5)
-cutree(result123$clust, h = 0.041)
+cutree(resultjef$clust, k = 1:4)
+cutree(resultjef$clust, k = 5)
+cutree(resultjef$clust, h = 0.041)
 
 
 # Hellinger distance:
@@ -156,16 +145,34 @@ cutree(resulthel$clust, k = 5)
 cutree(resulthel$clust, h = 0.041)
 
 
-# Jeffreys measure:
+\dontrun{
+# L2-distance:
 
-resultjef <- fhclustd(yf)
-print(resultjef)
-print(resultjef, dist.print = TRUE)
-plot(resultjef)
-plot(resultjef, hang = -1)
+xf <- as.folder(stones)
+result <- fhclustd(xf, distance = "l2")
+print(result)
+print(result, dist.print = TRUE)
+plot(result)
+plot(result, hang = -1)
 
 # Use cutree (stats package) to get the partition
-cutree(resultjef$clust, k = 1:4)
-cutree(resultjef$clust, k = 5)
-cutree(resultjef$clust, h = 0.041)
+cutree(result$clust, k = 1:5)
+cutree(result$clust, k = 5)
+cutree(result$clust, h = 0.18)
+}
+
+periods123 <- periods[periods$period \%in\% 1:3, "castle"]
+stones123 <- stones[stones$castle \%in\% periods123, ]
+stones123$castle <- as.factor(as.character(stones123$castle))
+yf <- as.folder(stones123)
+result123 <- fhclustd(yf, distance = "l2")
+print(result123)
+print(result123, dist.print = TRUE)
+plot(result123)
+plot(result123, hang = -1)
+
+# Use cutree (stats package) to get the partition
+cutree(result123$clust, k = 1:4)
+cutree(result123$clust, k = 5)
+cutree(result123$clust, h = 0.041)
 }

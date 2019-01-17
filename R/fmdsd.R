@@ -1,5 +1,5 @@
 fmdsd <-
-function(xf, distance = "l2", gaussiand=TRUE, kern = NULL, windowh=NULL, normed=FALSE,
+function(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL, normed=FALSE,
       data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL,
@@ -66,14 +66,14 @@ if (!is.null(windowh))
     }
   }
 
-# Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance)
-# or "jeffreys" (symmetric Kullback-Leibler divergence).
-if (! distance %in% c("l2", "hellinger", "jeffreys"))
-  stop("'distance' argument must be 'l2', 'hellinger' or 'jeffreys'.")
+# Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance),
+# "jeffreys" (symmetric Kullback-Leibler divergence) or "wasserstein" (Wasserstein distance).
+if (! distance %in% c("l2", "hellinger", "jeffreys", "wasserstein"))
+  stop("'distance' argument must be 'l2', 'hellinger', 'jeffreys' or 'wasserstein'.")
 
-if (distance %in% c("hellinger", "jeffreys"))
+if (distance %in% c("hellinger", "jeffreys", "wasserstein"))
 {
-  # For the Hellinger distance or the Jeffreys divergence,
+  # For the Hellinger or Wasserstein distance or the Jeffreys divergence,
   # the densities are considered Gaussian, and the densities are estimated
   # using the parametric method.
   if (!gaussiand)
@@ -305,11 +305,14 @@ switch(distance,
          }
          matdist <- as.dist(matdist)
        },
+       "jeffreys" = {
+         matdist <- matjeffreys(xf)
+       },
        "hellinger" = {
          matdist <- mathellinger(xf)
        },
-       "jeffreys" = {
-         matdist <- matjeffreys(xf)
+       "wasserstein" = {
+         matdist <- matwasserstein(xf)
        })
 
 add.cst <- FALSE

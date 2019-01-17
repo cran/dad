@@ -67,7 +67,7 @@ for the first density.  Idem for the second density after making the necessary c
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \seealso{
-   \link{l2dpar} for Gaussian densities, the parameters being given.
+   \link{l2dpar} for Gaussian densities whose parameters are given.
 }
 \examples{
 require(MASS)

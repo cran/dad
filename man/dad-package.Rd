@@ -17,8 +17,8 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 3.1.1\cr
-Date: \tab 2018-05-09\cr
+Version: \tab 3.2.0\cr
+Date: \tab 2019-01-17\cr
 License: \tab GPL-2\cr
 }
 To cite \code{dad}, use \code{citation("dad")}.
@@ -50,7 +50,7 @@ The following functions apply to a folder and compute some statistics on the col
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard with the contributions from Gilles Hunault, Julie Bourbeillon and Besnik Pumo
 }
 \references{
-    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliquée, XLVI (2), 5-20.
+    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliqu?e, XLVI (2), 5-20.
 
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
     
@@ -60,7 +60,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard with 
     
     Delicado, P. (2011). Dimensionality reduction when data are density functions. Computational Statistics & Data Analysis, 55, 401-420.
     
-    Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
+    Rudrauf, J.M., Boumaza, R. (2001). Contribution ? l'?tude de l'architecture m?di?vale: les caract?ristiques des pierres ? bossage des ch?teaux forts alsaciens. Centre de Recherches Arch?ologiques M?di?vales de Saverne, 5, 5-38.
 
     Yousfi, S., Boumaza, R., Aissani, D., Adjabi, S. (2014). Optimal bandwith matrices in functional principal component analysis of density function. Journal of Statistical Computation and Simulation, 85 (11), 2315-2330.   
 }

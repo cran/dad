@@ -1,15 +1,15 @@
-interpret.fmdsd <-
+interpret.dstatis <-
 function(x, nscore=1:3, moment="mean")
 { 
-# Check if x is an object of "fpcad" class
-if (!is.fmdsd(x))
-  stop("arg1 must be an object of class 'fmdsd'!")
+# Check if x is an object of "dstatis" class
+if (!is.dstatis(x))
+  stop("arg1 must be an object of class 'dstatis'!")
 
 # Read scores
 coor <- x$scores
 group.name <- coor[[1]]
 rownames(coor)=group.name
-matcoor=as.data.frame(coor[1+nscore])
+matcoor=as.data.frame(coor[,1+nscore])
 
 colnoms=x$variables
 p = length(colnoms)
@@ -73,7 +73,7 @@ for (mom in moment)
             matmoments=cbind(matmoments, matcov[,num.col.cov])
             colNames=append(colNames, nom.col.cov)
           } else
-          { stop("The covariances cannot be computed\n(The densities are univariate)")
+          { stop("The covariances cannot be computed\n(The variables are univariate)")
           }
      },
     cor=
@@ -96,7 +96,7 @@ for (mom in moment)
             colNames=append(colNames, nom.col.cor)
             matmoments=cbind(matmoments, matcor)
           } else
-          { stop("The correlations cannot be computed\n(The densities are univariate)")
+          { stop("The correlations cannot be computed\n(The variables are univariate)")
           }
      },
     skewness=

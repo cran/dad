@@ -1,5 +1,5 @@
 fdiscd.misclass <-
-function(xf, class.var, distance = "l2", crit = 1, gaussiand = TRUE, kern = NULL, windowh = NULL)  
+function(xf, class.var, gaussiand = TRUE, distance = "jeffreys", crit = 1, kern = NULL, windowh = NULL)  
 {
   # xf:     object of class 'folderh' with 2 data frames.
   # class.var: character. Name of the column of xf[[1]] containing the class variable.
@@ -42,14 +42,14 @@ function(xf, class.var, distance = "l2", crit = 1, gaussiand = TRUE, kern = NULL
    {stop("The names of the groups in the two data frames (x and classe arguments are different).")
    }
    
-  # Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance)
-  # or "jeffreys" (symmetrised Kullback-Leibler divergence).
-  if (! distance %in% c("l2", "hellinger", "jeffreys"))
-    stop("'distance' argument must be 'l2', 'hellinger' or 'jeffreys'.")
+  # Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance),
+  # "jeffreys" (symmetrised Kullback-Leibler divergence) or "wasserstein" (Wasserstein distance).
+  if (! distance %in% c("l2", "hellinger", "jeffreys", "wasserstein"))
+    stop("'distance' argument must be 'l2', 'hellinger', 'jeffreys' or 'wasserstein'.")
   
-  if (distance %in% c("hellinger", "jeffreys"))
+  if (distance %in% c("hellinger", "jeffreys", "wasserstein"))
   {
-    # For the Hellinger distance or the Jeffreys measure,
+    # For the Hellinger distance, the Jeffreys measure or the Wasserstein distance,
     # the densities are considered Gaussian, and the densities are estimated
     # using the parametric method.
     if (!gaussiand)
@@ -62,7 +62,7 @@ function(xf, class.var, distance = "l2", crit = 1, gaussiand = TRUE, kern = NULL
       warning(paste0("The kernel method is not available when distance=", distance, ".\nThe parametric (Gaussian) method is used for the estimation of the densities."))
     }
     
-    # For the Hellinger distance or the Jeffreys measure,
+    # For the Hellinger distance, the Jeffreys measure or the Wasserstein distance,
     # only crit=1 is available
     if (crit != 1)
     {
@@ -590,6 +590,30 @@ function(xf, class.var, distance = "l2", crit = 1, gaussiand = TRUE, kern = NULL
                  var.cl.tmp <- var(as.data.frame(x[ind.cl, 1:p]))
                }
                distances[n.x, n.cl] <- jeffreyspar(moy.x[[n.x]], var.x[[n.x]], moy.cl.tmp, var.cl.tmp)
+             }
+           }
+         },
+         "wasserstein" = {
+           # Computation of the distances between groups and classes:
+           distances <- matrix(nrow = nrow(classe), ncol = nlevels(classe[, 2]),
+                               dimnames = list(as.character(classe[, 1]), levels(classe[, 2])))
+           
+           # Criterion 1. Affinity to classe representative:
+           for (n.x in rownames(distances))  if (sum(x[, p+1] == n.x) > 0)  {
+             for (n.cl in colnames(distances))  {
+               # Computation of the group-classe distances:
+               if (!n.x %in% classe[classe[, 2] == n.cl, 1])
+               {
+                 moy.cl.tmp <- moy.cl[[n.cl]]
+                 var.cl.tmp <- var.cl[[n.cl]]
+               } else
+               {
+                 # ind.x <- which(x[, p+1] == n.x)
+                 ind.cl <- which((x[, p+2] == n.cl)&(x[, p+1] != n.x))
+                 moy.cl.tmp <- colMeans(as.data.frame(x[ind.cl, 1:p]))
+                 var.cl.tmp <- var(as.data.frame(x[ind.cl, 1:p]))
+               }
+               distances[n.x, n.cl] <- wassersteinpar(moy.x[[n.x]], var.x[[n.x]], moy.cl.tmp, var.cl.tmp)
              }
            }
          }

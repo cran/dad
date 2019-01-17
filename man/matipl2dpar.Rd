@@ -27,7 +27,7 @@ matipl2dpar(meanL, varL)
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \seealso{
-   \code{\link{distl2dpar}}.
+   \code{\link{l2dpar}}.
    
    \code{\link{matipl2d}} for the distance matrix between probability densities which are estimated from the data.
 }
