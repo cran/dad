@@ -590,8 +590,10 @@ function(xf, class.var, gaussiand = TRUE, distance = "jeffreys", crit = 1, kern 
                  var.cl.tmp <- var(as.data.frame(x[ind.cl, 1:p]))
                }
                distances[n.x, n.cl] <- jeffreyspar(moy.x[[n.x]], var.x[[n.x]], moy.cl.tmp, var.cl.tmp)
+               # cat(n.x, " ", n.cl, " "); print(distances[n.x, n.cl])
              }
            }
+           # browser()
          },
          "wasserstein" = {
            # Computation of the distances between groups and classes:

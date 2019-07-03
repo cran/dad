@@ -8,7 +8,7 @@
     Applies to an object of class \code{fpcad}, plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
 }
 \usage{
-\method{interpret}{fpcad}(x, nscore = 1:3, moment = "mean")
+\method{interpret}{fpcad}(x, nscore = 1:3, moment = "mean", ...)
 }
 \arguments{
   \item{x}{
@@ -30,6 +30,9 @@
           \item \code{"kurtosis"} (kurtosis coefficients)
           \item \code{"all"} (for univariate densities only. It simultaneously considers means, standard deviations, variances and skewness and kurtosis coefficients)
        }
+}
+  \item{...}{
+       Arguments to be passed to methods.
 }
 }
 \details{

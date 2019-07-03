@@ -1,9 +1,9 @@
 fmdsd <-
-function(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL, normed=FALSE,
-      data.centered=FALSE, data.scaled=FALSE, 
-      common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
-			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL,
-			group.name="group")
+function(xf, gaussiand=TRUE, distance = c("jeffreys", "hellinger", "wasserstein", "l2", "l2norm"),
+         windowh=NULL, data.centered=FALSE, data.scaled=FALSE, common.variance=FALSE,
+         add = TRUE, nb.factors=3, nb.values=10, sub.title="",
+         plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, filename=NULL,
+         group.name="group")
 {
 #require(e1071)
 
@@ -13,23 +13,24 @@ function(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL, n
 if (!is.folder(xf)){
   stop("fmdsd applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fmdsd applied to a data frame.")
 }
+# Convert the data folder into a data frame
 x <- as.data.frame(xf, group.name = group.name)
 
 # p denotes the dimension of the data
 p<-ncol(x)-1;
 
-# The initial data is preserved in x0
-# (if the data are centered or reduced, x will contain them)
-x0<-x
+# # The initial data is preserved in x0
+# # (if the data are centered or reduced, x will contain them)
+# x0<-x
 
-# Rename the last column of x as group
+# Rename the last column of x as 'group'
 last.column.name=colnames(x)[ncol(x)]
 colnames(x)[ncol(x)] <- "group"
 group<-as.factor(x$group);
 nb.groups<-length(levels(group));
 group.name<-levels(group);
 
-# Control and error message
+# Controls and error messages
 # on data
 if (!all(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
   stop("The variables must be numeric!")
@@ -66,35 +67,23 @@ if (!is.null(windowh))
     }
   }
 
-# Only distances available: "l2" (L^2 distance), "hellinger" (Hellinger/Matusita distance),
-# "jeffreys" (symmetric Kullback-Leibler divergence) or "wasserstein" (Wasserstein distance).
-if (! distance %in% c("l2", "hellinger", "jeffreys", "wasserstein"))
-  stop("'distance' argument must be 'l2', 'hellinger', 'jeffreys' or 'wasserstein'.")
+# Only distances available: "l2" (L^2 distance), "l2norm" (L^2 distance between normalized densities),
+# "hellinger" (Hellinger/Matusita distance), "jeffreys" (symmetric Kullback-Leibler divergence)
+# or "wasserstein" (Wasserstein distance).
+distance <- match.arg(distance)
 
-if (distance %in% c("hellinger", "jeffreys", "wasserstein"))
-{
-  # For the Hellinger or Wasserstein distance or the Jeffreys divergence,
-  # the densities are considered Gaussian, and the densities are estimated
-  # using the parametric method.
-  if (!gaussiand)
-  {
-    warning(paste0("distance=", distance, " is only avalaible for Gaussian densities.\ngaussiand is set to TRUE"))
-    gaussiand <- TRUE
-  }
-  if (!is.null(windowh) | !is.null(kern))
-  {
-    warning(paste0("The kernel method is not available when distance=", distance, ".\nThe parametric (Gaussian) method is used for the estimation of the densities."))
-  }
-  
-  if (normed) {
-    warning("If distance=", distance, ", the densities cannot be normed.\n normed is set to FALSE.")
-    normed <- FALSE
-  }
+if ( (!gaussiand) & (distance %in% c("hellinger", "jeffreys", "wasserstein")) ) {
+  warning(paste0("distance=", distance, " is not avalaible for non-Gaussian densities.\nSo the argument distance is set to 'l2'."))
+  distance <- "l2"
+}
+
+if (gaussiand & !is.null(windowh)) {
+  warning("The argument windowh is not taken into account for Gaussian densities.")
 }
 
 # For now, the only choice of kernel is the Gaussian kernel.
 if (!gaussiand)
-  {if (is.null(kern))  kern = "gauss" }  else
+  {kern = "gauss"}  else
   kern = ""
 
 # Control and error message
@@ -102,11 +91,11 @@ if (min(table(group)) <= 1)
   stop("There should be more than one observation in each group")
 
 # Control of nb.factors and nb.values
-if (nb.groups < nb.values)
- {nb.values <- nb.groups ;
+if (nb.groups <= nb.values)
+ {nb.values <- nb.groups - 1
  }
-if (nb.groups < nb.factors)
- {nb.factors <- nb.groups
+if (nb.groups <= nb.factors)
+ {nb.factors <- nb.groups - 1
  }
 
 # Mean per group
@@ -135,7 +124,8 @@ if (p>1)
    }
 
 if(data.scaled)
- {varL<-corL
+ {# scaling data
+  varL<-corL
    for (i in 1:nb.groups)
      {x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p])
      }
@@ -147,177 +137,216 @@ if(common.variance)
    }
  }
  
-# Skewness et kurtosis coefficients per group
+# Skewness and kurtosis coefficients per group
 #require(e1071)
 skewnessL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, skewness)
 kurtosisL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, kurtosis)
 
-switch(distance,
-       "l2" = {
-         #---------------
-         # Calculus of the inner products matrix W
-         #---------------
-         choix = character(4)
-         # Choice of the dimension
-         # "m" : multivariate ; "u" : univariate
-         if (p > 1)              
-         {choix[1] = "m"
-         }  else
-         {choix[1] = "u"
+if (gaussiand) { # Gaussian case
+  
+  # If distance == "l2norm" (i.e. L^2-distance between normed densities) then:
+  #   - dist = "l2"
+  #   - normed = TRUE
+  if (distance == "l2norm") {
+    distance <- "l2"
+    normed <- TRUE
+  } else {
+    normed <- FALSE
+  }
+  switch(distance,
+         "l2" = {
+           W = matipl2dpar(moyL, varL)
+           norme<-vector("numeric",nb.groups);
+           for (i in 1:nb.groups) {
+             norme[i]<-sqrt(W[i,i])
+           }
+           if(normed) {
+             # Calculus of the matrix W of the normed pca
+             for (i in 1:nb.groups) {
+               for (j in 1:i) {
+                 W[i,j]<-W[i,j]/(norme[i]*norme[j])
+               }
+             }
+             for (i in 1:(nb.groups-1)) {
+               for (j in (i+1):nb.groups) {
+                 W[i,j]<-W[j,i]
+               }
+             }
+           }
+           
+           matdist <- diag(0, nb.groups, nb.groups)
+           dimnames(matdist) <- list(levels(group), levels(group))
+           if (!normed) {
+             for (i in 2:nb.groups)  for (j in 1:(i-1)) {
+               matdist[i, j] <- matdist[j, i] <- sqrt(W[i, i] + W[j, j] - 2*W[i, j])
+             }
+           }   else {
+             for (i in 2:nb.groups)  for (j in 1:(i-1)) {
+               matdist[i, j] <- matdist[j, i] <- sqrt(2 - 2*W[i, j])
+             }
+           }
+           matdist <- as.dist(matdist)
+         },
+         "jeffreys" = {
+           matdist <- matjeffreys(xf)
+         },
+         "hellinger" = {
+           matdist <- mathellinger(xf)
+         },
+         "wasserstein" = {
+           matdist <- matwasserstein(xf)
          }
-         # Choice of the distribution type
-         # "g" : gaussian distributions; "n" : non gaussian distributions 
-         if (gaussiand)           
-         {choix[2] = "g"                    
-         }  else
-         {choix[2] = "n"
-         }
-         # Choice of the kernel 
-         # "g" : gaussian kernel; "." : not applicable
-         # This option offers a limited choice as the only available kernel is the
-         # gaussian kernel 
-         if (kern == "gauss")
-         {choix[3] = "g"
-         }  else
-         {choix[3] = "."
-         }
-         # Choice of the window 
-         # The window is given by the user in the "windowh" parameter as 
-         # "l" : list of (definite positive) matrices
-         # "n" : positive number (common to all densities) with which the variance 
-         #       matrices are multiplied 
-         # "a" : NULL, that is the matrice variance of each density is multiplied by the 
-         #       AMISE window (internally computed by the "" function).
-         # "." : not applicable
-         if (gaussiand)        
-         {choix[4] = "."
-         }  else
-         {if (is.null(windowh))
-         {choix[4] = "a"
-         }  else
-         {if (p == 1)
-         {if (length(windowh) == 1)
-         {choix[4] = "n"
-         } else
-         {choix[4] = "l"
-         }
-         }  else
-         {if (is.list(windowh))
-         {choix[4] = "l"
-         }  else
-         {choix[4] = "n"
-         }
-         } 
-         }
-         }
-         
-         choix = paste(choix, collapse = "")
-         
-         # Calculus of the inner products between densities
-         switch(choix,
-                # Case: multivariate, gaussian distribution and estimated parameters
-                mg.. =
-                {W = matipl2dpar(moyL, varL)
-                },
-                # Case univariate, gaussian distributions with parametres internally estimed 
-                ug.. =  
-                {W = matipl2dpar(moyL, varL)
-                },
-                # Case: multivariate, non Gaussian distribution, density estimated using 
-                # Gaussian kernel and AMISE window 
-                mnga =
-                {nbL<-by(x[,1:p],INDICES=group,FUN=nrow);
-                wL<-bandwidth.parameter(p,nbL)
-                # Multiplication of the variance by the window parameter
-                varLwL<-varL
-                for (i in 1:nb.groups)
-                {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)}
-                W = matipl2d(x, method = "kern", varLwL)
-                },
-                # Case univariate, non gaussian distributions estimated by gaussian kernel
-                # method, and AMISE windows 
-                unga =
-                {nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
-                wL<-bandwidth.parameter(p,nbL)
-                # Multiplication of the variance by the window parameter
-                varLwL<-varL
-                for (i in 1:nb.groups)
-                {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
-                }
-                W = matipl2d(x, method = "kern", varLwL)
-                },
-                # Case: multivariate, non gaussian distributions estimed by gaussian kernel
-                # method, and bandwith parameter, common to all densities, given by the user
-                mngn =
-                {nbL<-by(x[,1:p],INDICES=group,FUN=nrow);
-                # Multiplication of the variance by the window parameter
-                varLwL<-varL
-                for (i in 1:nb.groups)
-                {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-                W = matipl2d(x, method = "kern", varLwL)
-                },
-                # Case univariate, non gaussian distributions estimed by gaussian kernel
-                # method, and bandwith parameter, common to all densities, given by the user    
-                ungn =
-                {nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
-                # Multiplication of the variance by the window
-                varLwL<-varL
-                for (i in 1:nb.groups)
-                {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-                W = matipl2d(x, method = "kern", varLwL)
-                },
-                # Case: multivariate, non gaussian distributions estimated by gaussian kernel
-                # method, and windows given as a list of matrices
-                mngl =
-                {W = matipl2d(x, method = "kern", windowh)
-                },
-                
-                # Case univariate, non gaussian distributions estimated by gaussian kernel
-                # method, and windows given as a list of numbers
-                ungl =
-                {W = matipl2d(x, method = "kern", windowh)
-                }
-         )
-         
-         norme<-vector("numeric",nb.groups);
-         for (i in 1:nb.groups)
-         {norme[i]<-sqrt(W[i,i])};
-         if(normed)
-         {# Calculus of the matrix W of the normed pca
-           for (i in 1:nb.groups)
-           {for (j in 1:i)
-           {W[i,j]<-W[i,j]/(norme[i]*norme[j])}};
-           for (i in 1:(nb.groups-1))
-           {for (j in (i+1):nb.groups)
-           {W[i,j]<-W[j,i]}};
-         }
-         
-         matdist <- diag(0, nb.groups, nb.groups)
-         dimnames(matdist) <- list(levels(group), levels(group))
-         if (!normed)
-         {for (i in 2:nb.groups)  for (j in 1:(i-1))
-         {matdist[i, j] <- matdist[j, i] <- sqrt(W[i, i] + W[j, j] - 2*W[i, j])
-         }
-         }   else
-         {for (i in 2:nb.groups)  for (j in 1:(i-1))
-         {matdist[i, j] <- matdist[j, i] <- sqrt(2 - 2*W[i, j])
-         }
-         }
-         matdist <- as.dist(matdist)
-       },
-       "jeffreys" = {
-         matdist <- matjeffreys(xf)
-       },
-       "hellinger" = {
-         matdist <- mathellinger(xf)
-       },
-       "wasserstein" = {
-         matdist <- matwasserstein(xf)
-       })
+  )
+} else { # non Gaussian case: Gaussian kernel method
+  
+  # kern <- "gauss"
+  
+  # If distance == "l2norm" (i.e. L^2-distance between normed densities) then:
+  #   - dist = "l2"
+  #   - normed = TRUE
+  if (distance == "l2norm") {
+    distance <- "l2"
+    normed <- TRUE
+  } else if (distance == "l2") {
+    normed <- FALSE
+  }
+  # For now, only L^2-distance is available.
+  # switch(distance,
+  #        "l2" = {
+           #---------------
+           # Calculus of the inner products matrix W
+           #---------------
+           choix = character(3)
+           # Choice of the dimension
+           # "m" : multivariate ; "u" : univariate
+           if (p > 1) {
+             choix[1] = "m"
+           } else{
+             choix[1] = "u"
+           }
+           
+           # Choice of the kernel 
+           # "g" : gaussian kernel; "." : not applicable
+           # This option offers a limited choice as the only available kernel is the
+           # gaussian kernel 
+           if (kern == "gauss") {
+             choix[2] = "g"
+           } else {
+             choix[2] = "."
+           }
+           # Choice of the window 
+           # The window is given by the user in the "windowh" parameter as 
+           # "l" : list of (definite positive) matrices
+           # "n" : positive number (common to all densities) with which the variance 
+           #       matrices are multiplied 
+           # "a" : NULL, that is the matrice variance of each density is multiplied by the 
+           #       AMISE window (internally computed by the "" function).
+           # "." : not applicable
+           if (is.null(windowh)) {
+             choix[3] = "a"
+           } else {
+             if (p == 1) {
+               if (length(windowh) == 1) {
+                 choix[3] = "n"
+               } else {
+                 choix[3] = "l"
+               }
+             } else {
+               if (is.list(windowh)) {
+                 choix[3] = "l"
+               } else {
+                 choix[3] = "n"
+               }
+             }
+           }
+           
+           choix = paste(choix, collapse = "")
+           
+           # Calculus of the inner products between densities
+           switch(choix,
+                  # Case: multivariate, non Gaussian distribution, density estimated using 
+                  # Gaussian kernel and AMISE window 
+                  mga = {
+                    nbL<-by(x[,1:p],INDICES=group,FUN=nrow);
+                    wL<-bandwidth.parameter(p,nbL)
+                    # Multiplication of the variance by the window parameter
+                    varLwL<-varL
+                    for (i in 1:nb.groups) {
+                      varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
+                    }
+                    W = matipl2d(xf, method = "kern", varLwL)
+                  },
+                  # Case univariate, non gaussian distributions estimated by gaussian kernel
+                  # method, and AMISE windows 
+                  uga = {
+                    nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+                    wL<-bandwidth.parameter(p,nbL)
+                    # Multiplication of the variance by the window parameter
+                    varLwL<-varL
+                    for (i in 1:nb.groups) {
+                      varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
+                    }
+                    W = matipl2d(xf, method = "kern", varLwL)
+                  },
+                  # Case: multivariate, non gaussian distributions estimed by gaussian kernel
+                  # method, and bandwith parameter, common to all densities, given by the user
+                  mgn = {
+                    nbL<-by(x[,1:p],INDICES=group,FUN=nrow);
+                    # Multiplication of the variance by the window parameter
+                    varLwL<-varL
+                    for (i in 1:nb.groups) {
+                      varLwL[[i]]<-varL[[i]]*(windowh^2)
+                    }
+                    W = matipl2d(xf, method = "kern", varLwL)
+                  },
+                  # Case univariate, non gaussian distributions estimed by gaussian kernel
+                  # method, and bandwith parameter, common to all densities, given by the user    
+                  ugn = {
+                    nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+                    # Multiplication of the variance by the window
+                    varLwL<-varL
+                    for (i in 1:nb.groups) {
+                      varLwL[[i]]<-varL[[i]]*(windowh^2)
+                    }
+                    W = matipl2d(xf, method = "kern", varLwL)
+                  },
+                  # Case: multivariate, non gaussian distributions estimated by gaussian kernel
+                  # method, and windows given as a list of matrices
+                  mgl = {
+                    W = matipl2d(xf, method = "kern", windowh)
+                  },
+                  
+                  # Case univariate, non gaussian distributions estimated by gaussian kernel
+                  # method, and windows given as a list of numbers
+                  ugl = {
+                    W = matipl2d(xf, method = "kern", windowh)
+                  }
+           )
+           
+           norme<-vector("numeric",nb.groups);
+           for (i in 1:nb.groups) {
+             norme[i]<-sqrt(W[i,i])
+           }
 
-add.cst <- FALSE
+           matdist <- diag(0, nb.groups, nb.groups)
+           dimnames(matdist) <- list(levels(group), levels(group))
+           if (!normed) {
+             for (i in 2:nb.groups)  for (j in 1:(i-1)) {
+               matdist[i, j] <- matdist[j, i] <- sqrt(W[i, i] + W[j, j] - 2*W[i, j])
+             }
+           }   else {
+             for (i in 2:nb.groups)  for (j in 1:(i-1)) {
+               matdist[i, j] <- matdist[j, i] <- sqrt(2 - 2*W[i, j])
+             }
+           }
+           matdist <- as.dist(matdist)
+         }
+#   )
+# }
 
-cmds <- cmdscale(matdist, k = nb.factors, eig = TRUE, add = add.cst, x.ret = TRUE)
+# add.cst <- FALSE
+
+cmds <- cmdscale(matdist, k = nb.factors, eig = TRUE, add = add, x.ret = TRUE)
 
 # Eigenvalues to display
 ep <- cmds$eig
@@ -339,22 +368,17 @@ results <- list( call=match.call(),
                  variables=colnames(x)[1:p],
                  d=distance,
                  inertia=data.frame(eigenvalue=epaff,
-          inertia=round(1000*epaff/sum(abs(ep)))/10),
-#  contributions=data.frame(group.name,PC=cont),
-#  qualities=data.frame(group.name,PC=qual),
-  scores=data.frame(group.name,PC=coor))
-if (distance == "l2")
-  results <- c(results, list(norm=data.frame(group.name,norm=norme)))
+                    inertia=round(1000*epaff/sum(abs(ep)))/10),
+                 scores=data.frame(group.name,PC=coor))
+# Change of the name of the grouping variable in the data frame of scores
+colnames(results$scores)[1]=last.column.name
+
+# Outputting the moments 
 results <- c(results, list(means=moyL,
                            variances=varL,
                            correlations=corL,
                            skewness=skewnessL,
                            kurtosis=kurtosisL))
-# Change of the name of the grouping variable in the data frames in results
-#colnames(results$contributions)[1]=last.column.name
-#colnames(results$qualities)[1]=last.column.name
-colnames(results$scores)[1]=last.column.name
-#colnames(results$norm)[1]=last.column.name
 class(results) <- "fmdsd"
 
 # Save this list in a file (if a filename is given)

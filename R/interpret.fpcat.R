@@ -1,5 +1,5 @@
 interpret.fpcat <-
-function(x, nscore=1:3, moment="mean")
+function(x, nscore=1:3, moment="mean", ...)
 {
   times <- x$times
   class(x) <- "fpcad"

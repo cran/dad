@@ -17,8 +17,8 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 3.2.0\cr
-Date: \tab 2019-01-17\cr
+Version: \tab 3.3.0\cr
+Date: \tab 2019-07-02\cr
 License: \tab GPL-2\cr
 }
 To cite \code{dad}, use \code{citation("dad")}.
@@ -29,12 +29,13 @@ The main functions applying to the probability densities are: \itemize{
 \item{\code{\link{fmdsd}}: multidimensional scaling,}
 \item{\code{\link{fhclustd}}: hierarchical clustering,}
 \item{\code{\link{fdiscd.misclass}}: functional discriminant analysis in order to compute the misclassification ratio with the one-leave-out method,}
-\item{\code{\link{fdiscd.predict}}: discriminant analysis in order to predict the class (synonymous with cluster, not to be confused with the class attribute of an R object) of each probability density whose class is unknown.}
+\item{\code{\link{fdiscd.predict}}: discriminant analysis in order to predict the class (synonymous with cluster, not to be confused with the class attribute of an R object) of each probability density whose class is unknown,}
+\item{\code{\link{mdsdd}}: multidimensional scaling of discrete probability distributions.}
 }
 The above functions are completed by: \itemize{
-\item{A \code{print()} method for objects of class \code{fpcad}, \code{fmdsd}, \code{fdiscd.misclass} or \code{fdiscd.predict}, in order to display the results of the corresponding function,}
-\item{A \code{plot()} method for objects of class \code{fpcad}, \code{fmdsd} or \code{fhclustd}, in order to display some useful graphics attached to the corresponding function,}
-\item{A generic function \code{\link{interpret}} that applies to objects of class \code{fpcad} or \code{fmdsd}, helps the user to interpret the scores returned by the corresponding function, in terms of moments.}
+\item{A \code{print()} method for objects of class \code{fpcad}, \code{fmdsd}, \code{fdiscd.misclass}, \code{fdiscd.predict} or \code{mdsdd}, in order to display the results of the corresponding function,}
+\item{A \code{plot()} method for objects of class \code{fpcad}, \code{fmdsd}, \code{fhclustd} or \code{mdsdd}, in order to display some useful graphics attached to the corresponding function,}
+\item{A generic function \code{\link{interpret}} that applies to objects of class \code{fpcad} \code{fmdsd} or \code{mdsdd}, helps the user to interpret the scores returned by the corresponding function, in terms of moments (\code{fpcad} or \code{fmdsd}) or in terms of marginal probability distributions (\code{mdsdd}).}
 }
 
 We also introduce classes of objects and tools in order to handle collections of data frames: \itemize{
@@ -60,7 +61,11 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard with 
     
     Delicado, P. (2011). Dimensionality reduction when data are density functions. Computational Statistics & Data Analysis, 55, 401-420.
     
+    Deza, M.M. and Deza E. (2013). Encyclopedia of distances. Springer.
+    
     Rudrauf, J.M., Boumaza, R. (2001). Contribution ? l'?tude de l'architecture m?di?vale: les caract?ristiques des pierres ? bossage des ch?teaux forts alsaciens. Centre de Recherches Arch?ologiques M?di?vales de Saverne, 5, 5-38.
+    
+    Rachev, S.T., Klebanov, L.B., Stoyanov, S.V. and Fabozzi, F.J. (2013). The methods of distances in the theory of probability and statistics. Springer.
 
     Yousfi, S., Boumaza, R., Aissani, D., Adjabi, S. (2014). Optimal bandwith matrices in functional principal component analysis of density function. Journal of Statistical Computation and Simulation, 85 (11), 2315-2330.   
 }

@@ -224,7 +224,7 @@ switch(distance,
                 varLwL<-varL
                 for (i in 1:nb.groups)
                 {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)}
-                W = matipl2d(x, method = "kern", varLwL)
+                W = matipl2d(xf, method = "kern", varLwL)
                 },
                 # Case univariate, non gaussian distributions estimated by gaussian kernel
                 # method, and AMISE windows 
@@ -236,7 +236,7 @@ switch(distance,
                 for (i in 1:nb.groups)
                 {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
                 }
-                W = matipl2d(x, method = "kern", varLwL)
+                W = matipl2d(xf, method = "kern", varLwL)
                 },
                 # Case: multivariate, non gaussian distributions estimed by gaussian kernel
                 # method, and bandwith parameter, common to all densities, given by the user
@@ -246,7 +246,7 @@ switch(distance,
                 varLwL<-varL
                 for (i in 1:nb.groups)
                 {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-                W = matipl2d(x, method = "kern", varLwL)
+                W = matipl2d(xf, method = "kern", varLwL)
                 },
                 # Case univariate, non gaussian distributions estimed by gaussian kernel
                 # method, and bandwith parameter, common to all densities, given by the user    
@@ -256,18 +256,18 @@ switch(distance,
                 varLwL<-varL
                 for (i in 1:nb.groups)
                 {varLwL[[i]]<-varL[[i]]*(windowh^2)}
-                W = matipl2d(x, method = "kern", varLwL)
+                W = matipl2d(xf, method = "kern", varLwL)
                 },
                 # Case: multivariate, non gaussian distributions estimated by gaussian kernel
                 # method, and windows given as a list of matrices
                 mngl =
-                {W = matipl2d(x, method = "kern", windowh)
+                {W = matipl2d(xf, method = "kern", windowh)
                 },
                 
                 # Case univariate, non gaussian distributions estimated by gaussian kernel
                 # method, and windows given as a list of numbers
                 ungl =
-                {W = matipl2d(x, method = "kern", windowh)
+                {W = matipl2d(xf, method = "kern", windowh)
                 }
          )
          

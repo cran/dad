@@ -18,7 +18,7 @@ for (j in 1:ncol(ind))
 	xlab = paste("PC", i1, " (", inertia[i1], "%)"),ylab=paste("PC", i2, 
          " (", inertia[i2], "%)"), ...)
   par(ps=10);
-  text(coor[,i1], coor[,i2], as.character(group), cex=1.5, font=2);
+  text(coor[,i1], coor[,i2], as.character(group), cex=fontsize.points, font=2);
   }
 return(invisible(NULL))
 }

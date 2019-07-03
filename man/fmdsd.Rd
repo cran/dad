@@ -8,10 +8,11 @@ Multidimensional scaling of probability densities
 Applies the multidimensional scaling (MDS) method to probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fmdsd}. It applies \code{\link{cmdscale}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
-    normed = FALSE, data.centered = FALSE, data.scaled = FALSE, common.variance = FALSE,
-    nb.factors = 3, nb.values = 10, sub.title = "", plot.eigen = TRUE,
-    plot.score = FALSE, nscore = 1:3, filename = NULL, group.name = "group")
+fmdsd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein", "l2",
+    "l2norm"), windowh=NULL, data.centered = FALSE, data.scaled = FALSE,
+    common.variance = FALSE, add = TRUE, nb.factors = 3, nb.values = 10, sub.title = "",
+    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, filename = NULL,
+    group.name = "group")
 }
 \arguments{
   \item{xf}{
@@ -21,35 +22,27 @@ fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
        
        Notice that for the versions earlier than 2.0, fmdsd applied to a data frame.
 }
-  \item{distance}{
-       The distance or divergence used to compute the distance matrix between the densities.
-       It can be:
-       \itemize{
-       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence)
-       \item \code{"hellinger"} the Hellinger (Matusita) distance
-       \item \code{"wasserstein"} the Wasserstein distance
-       \item \code{"l2"} the \eqn{L^2} distance
-       }
-}
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
-       
-       If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
 }
-  \item{kern}{
-       string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
+  \item{distance}{
+       The distance or divergence used to compute the distance matrix between the densities.
        
-       Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
-}                                                                  
+       If \code{gaussiand = TRUE}, the densities are parametrically estimated and the distance can be:
+       \itemize{
+       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
+       \item \code{"hellinger"} the Hellinger (Matusita) distance,
+       \item \code{"wasserstein"} the Wasserstein distance,
+       \item \code{"l2"} the \eqn{L^2} distance,
+       \item \code{"l2norm"} the densities are normed and the \eqn{L^2} distance between these normed densities is used;
+       }
+       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
+       \code{"l2"} (default) or \code{"l2norm"}.
+}
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
        
        Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
-}
-   \item{normed}{
-       logical. If \code{TRUE} (default is \code{FALSE}), the densities are normed before computing the distances.
-       
-       If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{normed} is necessarily \code{FALSE} (see Details).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -59,6 +52,9 @@ fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
 }
   \item{common.variance}{
        logical. If \code{TRUE} (default is \code{FALSE}), a common covariance matrix (or correlation matrix if \code{data.scaled = TRUE}), computed on the whole data, is used. If \code{FALSE} (default), a covariance (or correlation) matrix per group is used.
+}
+   \item{add}{
+       logical indicating if an additive constant should be computed and added to the non diagonal dissimilarities such that the modified dissimilarities are Euclidean (default \code{TRUE}; see \code{add} argument of \code{\link{cmdscale}}).
 }
   \item{nb.factors}{
        numeric. Number of returned principal coordinates (default \code{nb.factors = 3}).
@@ -96,7 +92,7 @@ fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
 
     The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
     \itemize{
-    \item If it is the \code{L^2} distance (\code{distance="l2"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
+    \item If it is the \code{L^2} distance (\code{distance="l2"} or \code{distance="l2norm"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
     \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
     }
 }
@@ -104,8 +100,7 @@ fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
     Returns an object of class \code{fmdsd}, i.e. a list including:
     
     \item{inertia}{data frame of the eigenvalues and percentages of inertia.}
-    \item{scores}{data frame of the coordinates along the \code{nb.factors} first principal components.}
-    \item{norm }{vector of the \eqn{L^2} norms of the densities (only if the distance used is the \eqn{L^2}-distance: \code{distance="l2"}).}
+    \item{scores}{data frame of the \code{nb.factors} first principal coordinates.}
     \item{means }{list of the means.}
     \item{variances }{list of the covariance matrices.}
     \item{correlations }{list of the correlation matrices.}
@@ -113,16 +108,16 @@ fmdsd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
     \item{kurtosis }{list of the kurtosis coefficients.}
 }
 \references{
-    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliquee, XLVI (2), 5-20.
-
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
     
     Delicado, P. (2011). Dimensionality reduction when data are density functions. Computational Statistics & Data Analysis, 55, 401-420.
     
     Yousfi, S., Boumaza, R., Aissani, D., Adjabi, S. (2014). Optimal bandwith matrices in functional principal component analysis of density function. Journal of Statistical Computation and Simulation, 85 (11), 2315-2330.
+    
+    Cox, T.F., Cox, M.A.A. (2001). Multimensional Scaling, second ed. Chapman & Hall/CRC.
 }
 \author{
-Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
+Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 
 \seealso{
@@ -131,27 +126,39 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 }
 \examples{
 data(roses)
-rosesfold <- as.folder(roses)
+rosesf <- as.folder(roses[,c("Sha","Den","Sym","rose")])
 
 # MDS on Gaussian densities (on sensory data)
 
 # using the Jeffreys measure (default):
-resultjeff <- fmdsd(rosesfold, distance = "jeffreys")
+resultjeff <- fmdsd(rosesf, distance = "jeffreys")
 print(resultjeff)
 plot(resultjeff)
 
 # using the Hellinger distance:
-resulthellin <- fmdsd(rosesfold, distance = "hellinger")
+resulthellin <- fmdsd(rosesf, distance = "hellinger")
 print(resulthellin)
 plot(resulthellin)
 
 # using the Wasserstein distance:
-resultwass <- fmdsd(rosesfold, distance = "wasserstein")
+resultwass <- fmdsd(rosesf, distance = "wasserstein")
 print(resultwass)
 plot(resultwass)
 
-# using the L2-distance:
-resultl2 <- fmdsd(rosesfold, distance = "l2")
+# Gaussian case, using the L2-distance:
+resultl2 <- fmdsd(rosesf, distance = "l2")
 print(resultl2)
 plot(resultl2)
+
+# Gaussian case, using the L2-distance between normed densities:
+resultl2norm <- fmdsd(rosesf, distance = "l2norm")
+print(resultl2norm)
+plot(resultl2norm)
+
+# Non Gaussian case, using the L2-distance,
+# the densities are estimated using the Gaussian kernel method:
+result <- fmdsd(rosesf, distance = "l2", gaussiand = FALSE, group.name = "rose")
+print(result)       
+plot(result)
+
 }

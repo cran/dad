@@ -8,11 +8,10 @@ Hierarchic cluster analysis of probability densities
 Performs functional hierarchic cluster analysis of probability densities. It returns an object of class \code{\link{fhclustd}}. It applies \code{\link{hclust}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fhclustd(xf, gaussiand=TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
-			normed=(distance == "l2"), data.centered=FALSE, data.scaled=FALSE,
-      common.variance=FALSE, sub.title="", filename=NULL,
-      method.hclust = "complete", 
-			group.name="group")
+fhclustd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
+             normed = (distance == "l2"), data.centered = FALSE, data.scaled = FALSE,
+             common.variance = FALSE, sub.title = "", filename = NULL,
+             method.hclust = "complete", group.name  = "group")
 }
 \arguments{
   \item{xf}{

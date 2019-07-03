@@ -10,7 +10,7 @@
     In the next version of the package, this function will be updated by some more graphics.
 }
 \usage{
-\method{interpret}{fpcat}(x, nscore = 1:3, moment = "mean")
+\method{interpret}{fpcat}(x, nscore = 1:3, moment = "mean", ...)
 }
 \arguments{
   \item{x}{
@@ -32,6 +32,9 @@
           \item \code{"kurtosis"} (kurtosis coefficients)
           \item \code{"all"} (for univariate densities only. It simultaneously considers means, standard deviations, variances and skewness and kurtosis coefficients)
        }
+}
+  \item{...}{
+       Arguments to be passed to methods.
 }
 }
 \details{

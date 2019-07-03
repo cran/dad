@@ -1,2 +1,2 @@
-interpret <- function(x, nscore=1:3, moment="mean")
+interpret <- function(x, nscore=1:3, ...)
   UseMethod("interpret")

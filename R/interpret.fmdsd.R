@@ -1,5 +1,5 @@
 interpret.fmdsd <-
-function(x, nscore=1:3, moment="mean")
+function(x, nscore=1:3, moment="mean", ...)
 { 
 # Check if x is an object of "fpcad" class
 if (!is.fmdsd(x))
