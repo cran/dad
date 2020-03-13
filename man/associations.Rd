@@ -17,7 +17,7 @@ tschuprow.data.frame(x, check = TRUE)
 }
 \arguments{
   \item{x}{
-     a data frame. Its columns should be factors.
+     a data frame (can also be a tibble). Its columns should be factors.
 }
   \item{check}{
      logical. If \code{TRUE} (default) the function checks if each column of \code{x} is a factor, and there is a warning if it is not.

@@ -10,7 +10,7 @@
     \code{\link{dstatis.inter}} function). Plots the scores.
 }
 \usage{
-\method{plot}{dstatis}(x, nscore = 1:3, sub.title = NULL, fontsize.points = 1.5, ...)
+\method{plot}{dstatis}(x, nscore = 1:3, sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
 }
 
 \arguments{
@@ -24,6 +24,9 @@
 }
   \item{sub.title}{
        string. Subtitle to be added to each graph.
+}
+  \item{color}{
+       When provided, the colour of the symbols of each group. Can be a vector with length equal to the number of groups.
 }
   \item{fontsize.points}{
        Numeric. Expansion of the characters (or symbols) of the groups on the graph. This works as a multiple of \code{par("cex")} (see \code{\link{points}}).

@@ -51,7 +51,7 @@ mtgrank <- function(x, classe, parent.class = NULL, sibling.classes = NULL,
   v.class <- data.frame(v.class, parent = character(nrow(v.class)), stringsAsFactors = FALSE)
   v.parent <- tabparent["Order"]
   if (!is.null(sibling.classes)) {
-    v.sibling <- data.frame(Order = numeric(0))
+    v.sibling <- data.frame(Order = numeric(0), stringsAsFactors = TRUE)
     for (cl in sibling.classes){
       v.sibling <- rbind(v.sibling, tabsibl[[cl]]["Order"])
     }
@@ -96,7 +96,7 @@ mtgrank <- function(x, classe, parent.class = NULL, sibling.classes = NULL,
   if (!is.null(sibling.classes)) {
     v.ranks <- rbind(v.ranks,
       data.frame(classe = "sibling", v.sibling["parent"], stringsAsFactors = FALSE))}
-  v.ranks <- data.frame(v.ranks, Rank = numeric(nrow(v.ranks)))
+  v.ranks <- data.frame(v.ranks, Rank = numeric(nrow(v.ranks)), stringsAsFactors = TRUE)
   v.ranks <- v.ranks[order(v.ranks$parent, row.names(v.ranks)), ]
   switch(method,
     oa = {
@@ -124,7 +124,8 @@ mtgrank <- function(x, classe, parent.class = NULL, sibling.classes = NULL,
   )
   
   # Add the ranks to the element of the foldermtg corresponding to classe
-  x[[classe]] <- data.frame(x[[classe]], Rank = v.ranks[row.names(x[[classe]]),"Rank"])
+  x[[classe]] <- data.frame(x[[classe]], Rank = v.ranks[row.names(x[[classe]]),"Rank"],
+                            stringsAsFactors = TRUE)
   if (rank.name != "Rank"){
     j.rank <- which(colnames(x[[classe]]) == "Rank")
     colnames(x[[classe]][j.rank]) <- rank.name

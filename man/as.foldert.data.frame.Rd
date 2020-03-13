@@ -81,11 +81,14 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 
 times <- as.Date(c("2017-03-01", "2017-04-01", "2017-05-01"))
 x1 <- data.frame(t=times[1], ind=1:6,
-                 f=c("a","a","a","b","b","b"), z1=rep(0,6), z2=rep(0,6))
+                 f=c("a","a","a","b","b","b"), z1=rep(0,6), z2=rep(0,6),
+                 stringsAsFactors = TRUE)
 x2 <- data.frame(t=times[2], ind=c(1,4,6),
-                 f=c("a","b","b"), z1=rnorm(3,1,1), z2=rnorm(3,3,2))
+                 f=c("a","b","b"), z1=rnorm(3,1,1), z2=rnorm(3,3,2),
+                 stringsAsFactors = TRUE)
 x3 <- data.frame(t=times[3], ind=c(1,3:6),
-                 f=c("a","a","a","b","b"), z1=rnorm(5,3,2), z2=rnorm(5,6,3))
+                 f=c("a","a","a","b","b"), z1=rnorm(5,3,2), z2=rnorm(5,6,3),
+                 stringsAsFactors = TRUE)
 x <- rbind(x1, x2, x3)
 
 ft1 <- as.foldert(x, method = 1, ind = "ind", timecol = "t", same.rows = TRUE)

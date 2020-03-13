@@ -8,7 +8,8 @@
     Applies to an object of class \code{dstatis}, plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
 }
 \usage{
-\method{interpret}{dstatis}(x, nscore = 1:3, moment = "mean", ...)
+\method{interpret}{dstatis}(x, nscore = 1:3, moment=c("mean", "sd", "var", "cov", "cor",
+    "skewness", "kurtosis", "all"), ...)
 }
 \arguments{
   \item{x}{
@@ -62,9 +63,11 @@ data(roses)
 rosesf <- as.folder(roses[,c("Sha","Den","Sym","rose")])
 
 # Dual STATIS on the covariance matrices
+\dontrun{
 result <- dstatis.inter(rosesf, group.name = "rose")
 interpret(result)
 interpret(result, moment = "var")
 interpret(result, moment = "cor")
 interpret(result, nscore = 1:2)
+}
 }

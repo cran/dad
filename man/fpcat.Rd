@@ -8,8 +8,8 @@ Functional PCA of probability densities among time
 Performs functional principal component analysis of probability densities in order to describe a data ``foldert'', consisting of individuals on which are observed \eqn{p} variables on \eqn{T} times. It returns an object of class \code{fpcat}.
 }
 \usage{
-fpcat(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
-    centered = FALSE, data.centered = FALSE, data.scaled = FALSE,
+fpcat(xf, gaussiand = TRUE, windowh = NULL, normed=TRUE,
+    centered=TRUE, data.centered = FALSE, data.scaled = FALSE,
     common.variance = FALSE, nb.factors = 3, nb.values = 10, sub.title = "",
     plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, group.name="time",
     filename = NULL)
@@ -24,9 +24,6 @@ All other arguments are the same as for \code{\link{fpcad}}, except \code{group.
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method (as \code{\link{fpcad}}).
 }
-  \item{kern}{
-       string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent (as \code{\link{fpcad}}).
-}                                                                                                        
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed (as \code{\link{fpcad}}). See Details.
 }
@@ -34,7 +31,7 @@ All other arguments are the same as for \code{\link{fpcad}}, except \code{group.
        logical. If \code{TRUE} (default), the densities are normed before computing the distances (as \code{\link{fpcad}}).
 }
   \item{centered}{
-       logical. If \code{TRUE} (default is \code{FALSE}), the densities are centered (as \code{\link{fpcad}}).
+       logical. If \code{TRUE} (default), the densities are centered (as \code{\link{fpcad}}).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered (as \code{\link{fpcad}}).
@@ -90,7 +87,7 @@ All other arguments are the same as for \code{\link{fpcad}}, except \code{group.
     \item{kurtosis }{list of the kurtosis coefficients.}
 }
 \references{
-    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliquée, XLVI (2), 5-20.
+    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliqu?e, XLVI (2), 5-20.
 
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
     

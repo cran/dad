@@ -8,8 +8,8 @@ Hierarchic cluster analysis of probability densities
 Performs functional hierarchic cluster analysis of probability densities. It returns an object of class \code{\link{fhclustd}}. It applies \code{\link{hclust}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fhclustd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
-             normed = (distance == "l2"), data.centered = FALSE, data.scaled = FALSE,
+fhclustd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein",
+             "l2", "l2norm"), windowh=NULL, data.centered = FALSE, data.scaled = FALSE,
              common.variance = FALSE, sub.title = "", filename = NULL,
              method.hclust = "complete", group.name  = "group")
 }
@@ -19,35 +19,28 @@ fhclustd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
 }       
-  \item{distance}{
-       The distance or divergence used to compute the distance matrix between the densities.
-       It can be:
-       \itemize{
-       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence)
-       \item \code{"hellinger"} the Hellinger (Matusita) distance
-       \item \code{"wasserstein"} the Wasserstein distance
-       \item \code{"l2"} the \eqn{L^2} distance
-       }
-}
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
        
        If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{gaussiand} is necessarily \code{TRUE} (see Details).
 }
-  \item{kern}{
-       string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
-
-       Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
-}                                                                                                        
+  \item{distance}{
+       The distance or divergence used to compute the distance matrix between the densities.
+       It can be:
+       \itemize{
+       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
+       \item \code{"hellinger"} the Hellinger (Matusita) distance,
+       \item \code{"wasserstein"} the Wasserstein distance,
+       \item \code{"l2"} the \eqn{L^2} distance,
+       \item \code{"l2norm"} the densities are normed and the \eqn{L^2} distance between these normed densities is used;
+       }
+       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
+       \code{"l2"} (default) or \code{"l2norm"}.
+}
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
        
        Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
-}
-  \item{normed}{
-       logical. If \code{TRUE} (default if \code{distance="l2"}), the densities are normed before computing the distances; anyway, that does not change the result of the clustering.
-       
-       If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{normed} is necessarily \code{FALSE} (see Details).
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -86,8 +79,8 @@ fhclustd(xf, gaussiand = TRUE, distance = "jeffreys", kern = NULL, windowh=NULL,
 
     The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
     \itemize{
-    \item If it is the \code{L^2} distance (\code{distance="l2"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
-    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (distance = "wasserstein"), the densities are considered Gaussian and necessarily parametrically estimated.
+    \item If it is the \code{L^2} distance (\code{distance="l2"} or \code{distance="l2norm"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
     }
 }
 \value{

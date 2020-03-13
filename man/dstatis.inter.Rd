@@ -9,7 +9,7 @@ Dual STATIS method (interstructure stage)
 Performs the first stage (interstructure) of the dual STATIS method in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{dstatis}.
 }
 \usage{
-dstatis.inter(xf, normed = TRUE, centered = FALSE, data.scaled = FALSE, nb.factors = 3,
+dstatis.inter(xf, normed = TRUE, centered = TRUE, data.scaled = FALSE, nb.factors = 3,
       nb.values = 10, sub.title = "", plot.eigen = TRUE, plot.score = FALSE,
       nscore = 1:3, group.name = "group", filename = NULL)
 }
@@ -23,7 +23,7 @@ dstatis.inter(xf, normed = TRUE, centered = FALSE, data.scaled = FALSE, nb.facto
        logical. If \code{TRUE} (default), the scalar products are normed.
 }
   \item{centered}{
-       logical. If \code{TRUE} (default is \code{FALSE}), the scalar products are centered.
+       logical. If \code{TRUE} (default), the scalar products are centered.
 }
   \item{data.scaled}{
        logical. If \code{TRUE}, the data of each group are centered and scaled. The analysis is then performed on the correlation matrices. If \code{FALSE} (default), the analysis is performed on the covariance matrices.

@@ -24,9 +24,9 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
   #                - "": the rownames are not considered to be the same.
   #                  A unique name is computed for each individual.
   #                  Therefore: same.rows = FALSE.
-  #              Dans tous les cas, les data frames du foldert auront tous les mêmes noms de colonnes.
-  #              Donc l'attribut "same.cols" est supprimé :
-  #              il n'a plus de raison d'être car il serait toujours TRUE.
+  #              Dans tous les cas, les data frames du foldert auront tous les m?mes noms de colonnes.
+  #              Donc l'attribut "same.cols" est supprim? :
+  #              il n'a plus de raison d'?tre car il serait toujours TRUE.
   #
   # Arguments which will be added later: data.times, data.rows, data.cols (data frames).
   
@@ -109,7 +109,7 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
   switch(class.arg,
          d2 = {
            # Creation of the list
-           fold <- list(x1, x2)
+           fold <- list(as.data.frame(x1, stringsAsFactors = TRUE), as.data.frame(x2, stringsAsFactors = TRUE))
            
            # Number of datasets in the folder
            ndata <- 2
@@ -120,10 +120,10 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
          },
          d3 = {
            # Creation of the list
-           fold <- list(x1, x2)
+           fold <- list(as.data.frame(x1, stringsAsFactors = TRUE), as.data.frame(x2, stringsAsFactors = TRUE))
            if (!prod(unlist(lapply(dots, is.data.frame))))
              stop("All arguments in '...' must be data frames")
-           fold <- c(fold, dots)
+           fold <- c(fold, lapply(dots, as.data.frame, stringsAsFactors = TRUE))
            
            # Number of data frames in the folder
            ndata <- length(fold)
@@ -142,7 +142,7 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
              stop("All elements of x1 must be data frames.")
            
            # Creation of the list
-           fold <- x1
+           fold <- lapply(x1, as.data.frame, stringsAsFactors = TRUE)
            
            # Number of datasets in the folder
            ndata <- length(fold)
@@ -177,16 +177,17 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
   # so that they all have the same columns and colnames.
   if (cols.select == "union") {
     cnames <- unique(unlist(lapply(fold, names)))
-    adjcnames <- as.data.frame(matrix(nrow = 0, ncol = length(cnames)))
+    adjcnames <- as.data.frame(matrix(nrow = 0, ncol = length(cnames)), stringsAsFactors = TRUE)
     colnames(adjcnames) <- cnames
     for (n in 1:ndata) {
       if (ncol(fold[[n]]) > 0) {
-        foldn <- merge(data.frame(".rownames" = rownames(fold[[n]]), fold[[n]]), adjcnames, all = TRUE, sort = FALSE)[1:nrow(fold[[n]]), , drop = FALSE]
+        foldn <- merge(data.frame(".rownames" = rownames(fold[[n]]), fold[[n]], stringsAsFactors = TRUE),
+                       adjcnames, all = TRUE, sort = FALSE)[1:nrow(fold[[n]]), , drop = FALSE]
         rownames(foldn) <- foldn$".rownames"
         fold[[n]] <- foldn[cnames]
       } else {
         foldn <- matrix(NA, nrow = nrow(fold[[n]]), ncol = ncol(adjcnames), dimnames = list(rownames(fold[[n]]), cnames))
-        fold[[n]] <- as.data.frame(foldn)
+        fold[[n]] <- as.data.frame(foldn, stringsAsFactors = TRUE)
       }
     }
     # same.cols <- TRUE
@@ -226,7 +227,9 @@ foldert <- function(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect",
       foldn <- fold[[n]]
       adjrnames <- rnames[! rnames %in% rownames(foldn)]
       if (length(adjrnames) > 0) {
-        adjrows <- as.data.frame(matrix(NA, nrow = length(adjrnames), ncol = ncol(foldn), dimnames = list(adjrnames, colnames(foldn))))
+        adjrows <- as.data.frame(matrix(NA, nrow = length(adjrnames), ncol = ncol(foldn),
+                                        dimnames = list(adjrnames, colnames(foldn))),
+                                 stringsAsFactors = TRUE)
         foldn <- rbind(foldn, adjrows)
       }
       fold[[n]] <- foldn[rnames, , drop = FALSE]

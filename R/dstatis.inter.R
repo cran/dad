@@ -1,4 +1,4 @@
-dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE, 
+dstatis.inter <- function(xf, normed = TRUE, centered = TRUE, data.scaled=FALSE, 
       nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, group.name="group", filename=NULL)
 {
@@ -8,7 +8,7 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
   if (!is.folder(xf)){
     stop("dstatis.inter applies to an object of class 'folder'.")
   }
-  x <- as.data.frame(xf, group.name = group.name)
+  x <- as.data.frame(xf, group.name = group.name, stringsAsFactors = TRUE)
   
   # p denotes the dimension of the data
   p<-ncol(x)-1;
@@ -22,7 +22,7 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
   
   # Control and error message
   # on data
-  if (!all(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
+  if (!all(apply(as.data.frame(x[,1:p], stringsAsFactors = TRUE), 2, is.numeric)))
     stop("The variables must be numeric!")
   if (any(is.na(x)))
     stop("There are NAs in the folder")
@@ -40,17 +40,17 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
    }
   
   # Mean per group
-  moyL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=colMeans);
+  moyL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=colMeans);
   moyL0<-moyL
   
   # Variance per group
-  varL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=var);
+  varL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=var);
   varL0<-varL
   
   # Correlation matrix or correlation coefficient per group
   corL=varL
   if (p>1)
-     {corL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=cor);
+     {corL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=cor);
      } else
      {for (i in 1:nb.groups)
        {corL[[i]]<-1
@@ -66,8 +66,8 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
   
   # Skewness et kurtosis coefficients per group
   #require(e1071)
-  skewnessL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, skewness)
-  kurtosisL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, kurtosis)
+  skewnessL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, skewness)
+  kurtosisL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, kurtosis)
   
   #---------------
   # Calculus of the matrix W to diagonalize
@@ -123,7 +123,7 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
   if(centered)
    {# Calculus of the matrix W of the centred pca
     moyW<-mean(W);
-    moycolW<-colMeans(as.data.frame(W));
+    moycolW<-colMeans(as.data.frame(W, stringsAsFactors = TRUE));
     for (i in 1:nb.groups)
      {for (j in 1:i)
        {W[i,j]<-W[i,j]-moycolW[[i]]-moycolW[[j]]+moyW}};
@@ -167,11 +167,12 @@ dstatis.inter <- function(xf, normed=TRUE, centered=FALSE, data.scaled=FALSE,
     group=last.column.name,
     variables=colnames(x)[1:p],
     inertia=data.frame(eigenvalue=epaff,
-            inertia=round(1000*epaff/sum(abs(ep$d)))/10),
-    contributions=data.frame(group.name,PC=cont),
-    qualities=data.frame(group.name,PC=qual),
-    scores=data.frame(group.name,PC=coor),
-    norm = data.frame(group.name,norm=norme),
+            inertia=round(1000*epaff/sum(abs(ep$d)))/10,
+            stringsAsFactors = TRUE),
+    contributions=data.frame(group.name,PC=cont, stringsAsFactors = TRUE),
+    qualities=data.frame(group.name,PC=qual, stringsAsFactors = TRUE),
+    scores=data.frame(group.name,PC=coor, stringsAsFactors = TRUE),
+    norm = data.frame(group.name,norm=norme, stringsAsFactors = TRUE),
     means=moyL,
     variances=varL,
     correlations=corL,

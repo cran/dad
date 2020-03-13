@@ -12,11 +12,11 @@ as.data.frame.folder <- function(x, row.names = NULL, optional = FALSE, ..., gro
   
   # Building of the data frame (the grouping variable on the last column):
   # - the first group
-  x <- data.frame(fold[[1]], group = g[1])
+  x <- data.frame(fold[[1]], group = g[1], stringsAsFactors = TRUE)
   # - and the next groups
   if (length(g) > 1) {
     for (n in 2:length(g)) {
-      x <- rbind(x, data.frame(fold[[n]], group = g[n]))
+      x <- rbind(x, data.frame(fold[[n]], group = g[n], stringsAsFactors = TRUE))
     }
   }
   colnames(x)[ncol(x)] <- group.name

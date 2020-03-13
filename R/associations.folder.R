@@ -1,6 +1,6 @@
 cramer.folder <- function(xf) {
   # convert xf to a data frame
-  x = as.data.frame(xf)
+  x = as.data.frame(xf, stringsAsFactors = TRUE)
   
   group = x[, "group"] # Factor: the groups
   x = x[, -ncol(x)] # Data frame of the variables
@@ -11,7 +11,7 @@ cramer.folder <- function(xf) {
 
 tschuprow.folder <- function(xf) {
   # convert xf to a data frame
-  x = as.data.frame(xf)
+  x = as.data.frame(xf, stringsAsFactors = TRUE)
   
   group = x[, "group"] # Factor: the groups
   x = x[, -ncol(x)] # Data frame of the variables
@@ -22,7 +22,7 @@ tschuprow.folder <- function(xf) {
 
 pearson.folder <- function(xf) {
   # convert xf to a data frame
-  x = as.data.frame(xf)
+  x = as.data.frame(xf, stringsAsFactors = TRUE)
   
   group = x[, "group"] # Factor: the groups
   x = x[, -ncol(x)] # Data frame of the variables
@@ -33,7 +33,7 @@ pearson.folder <- function(xf) {
 
 phi.folder <- function(xf) {
   # convert xf to a data frame
-  x = as.data.frame(xf)
+  x = as.data.frame(xf, stringsAsFactors = TRUE)
   
   group = x[, "group"] # Factor: the groups
   x = x[, -ncol(x)] # Data frame of the variables

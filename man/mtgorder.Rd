@@ -51,5 +51,6 @@ ymtg <- mtgorder(xmtg)
 print(ymtg)
 
 # Add the branching orders to the 'foldermtg'
-xmtg <- mtgorder(xmtg, display = TRUE)
+zmtg <- mtgorder(xmtg, display = TRUE)
+print(zmtg)
 }

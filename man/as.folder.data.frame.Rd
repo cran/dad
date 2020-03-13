@@ -9,19 +9,19 @@
   Builds an object of class \code{folder} from a data frame.
 }
 \usage{
-\method{as.folder}{data.frame}(x, ..., groups = tail(colnames(x), 1))
+\method{as.folder}{data.frame}(x, groups = tail(colnames(x), 1), ...)
 }
 \arguments{
   \item{x}{
      data frame.
 }
-  \item{...}{
-     further arguments passed to or from other methods.
-}
   \item{groups}{
      string. The name of the column of x containing the grouping variable. \code{x[, groups]} must be a factor, otherwise, there is an error.
      
      If omitted, the last column of \code{x} is used as grouping variable.
+}
+  \item{...}{
+     further arguments passed to or from other methods.
 }
 }
 \value{
@@ -46,6 +46,6 @@ print(iris.fold)
 
 # Second example: roses
 data(roses)
-roses.fold <- as.folder(roses, "Lot")
+roses.fold <- as.folder(roses, "rose")
 print(roses.fold)
 }

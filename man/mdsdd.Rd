@@ -88,7 +88,7 @@ mdsdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jensen"
     If the distance is \code{"l1"}, \code{"l2"} or \code{"lp"}, the distances are computed by the function \code{\link{matddlppar}}.
     Otherwise, it can be computed by \code{\link{matddchisqsympar}} (\code{"chisqsym"}), \code{\link{matddhellingerpar}} (\code{"hellinger"}), \code{\link{matddjeffreyspar}} (\code{"jeffreys"}) or \code{\link{matddjensenpar}} (\code{"jensen"}).
 
-    The association measures are computed accordingly to the value of the parameter \code{association}The computation uses the corresponding function of the package \code{DescTools} (see \code{\link{Assocs}}). Notice that an association measure between a constant variable with any other variable is set to zero. The association measure between each variable with itself is not computed and the diagonal of the returned association matrices is set to \code{NA}.
+    The association measures are computed accordingly to the value of the parameter \code{association}The computation uses the corresponding function of the package \code{DescTools} (see \code{\link{Assocs}}). Notice that an association measure between a constant variable with and other variable is set to zero. The association measure between each variable with itself is not computed and the diagonal of the returned association matrices is set to \code{NA}.
 }
 \value{
     Returns an object of class \code{mdsdd}, that is a list including:
@@ -119,13 +119,11 @@ Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
 }
 \examples{
 # Example 1 with a folder (10 groups) of 3 factors 
-# obtained by converting numeric variables 
+# obtained by converting numeric variables
 data(roses)
 xr = roses[,c("Sha", "Den", "Sym", "rose")]
-xr$Sha = cut(xr$Sha, breaks = c(0, 5, 7, 10))
-xr$Den = cut(xr$Den, breaks = c(0, 4, 6, 10))
-xr$Sym = cut(xr$Sym, breaks = c(0, 6, 8, 10))
 xf = as.folder(xr, groups = "rose")
+xf = cut(xf, breaks = list(c(0, 5, 7, 10), c(0, 4, 6, 10), c(0, 6, 8, 10)), cutcol = 1:3)
 a = mdsdd(xf)
 print(a)
 print(a$jointp)

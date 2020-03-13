@@ -13,13 +13,13 @@ cat("---------------------------------------------------------------\n")
 cat("qualities\n"); print(x$qualities, ...)
 cat("---------------------------------------------------------------\n")
 cat("scores\n"); print(x$scores, ...)
-# Affichage des moyennes et écarts-types par groupe (optionnel)
+# Affichage des moyennes et ?carts-types par groupe (optionnel)
 if (mean.print) 
   {n.group <- length(x$means)
    n.var <- length(x$means[[1]])
    Means <- matrix(unlist(x$means), nrow = n.group, ncol = n.var, byrow = TRUE, 
          dimnames = list(NULL, paste("mean", x$variables, sep = ".")))
-   Means <- data.frame(group=names(x$means), Means)
+   Means <- data.frame(group=names(x$means), Means, stringsAsFactors = TRUE)
    colnames(Means)[1]=colnames(x$contributions)[1]
    
    if (n.var > 1) {
@@ -28,8 +28,9 @@ if (mean.print)
      st.dev <- unlist(lapply(x$variances, sqrt))
    }
    Means <- data.frame(Means, matrix(st.dev, nrow = n.group, ncol = n.var, byrow = TRUE,
-                                     dimnames = list(NULL, paste("sd", x$variables))))
-   Means <- data.frame(Means, norm = x$norm$norm)
+                                     dimnames = list(NULL, paste("sd", x$variables))),
+                       stringsAsFactors = TRUE)
+   Means <- data.frame(Means, norm = x$norm$norm, stringsAsFactors = TRUE)
    cat("---------------------------------------------------------------\n")
    cat("means, standard deviations and norm by group\n") 
    print(Means, digits=digits, ...)

@@ -59,6 +59,7 @@ a <- mdsdd(xlista)
 interpret(a)
 
 # Example 3 with a list of 96 arrays (departments)
+\dontrun{
 data(dspgd2015)
 xd = dspgd2015
 res = mdsdd(xd, group.name = "coded")
@@ -76,4 +77,5 @@ text(coor$PC.1, coor$PC.2, coor$named, cex = 0.5)
 dev.new()
 plot(coor$PC.1, coor$PC.2, type ="n")
 text(coor$PC.1, coor$PC.2, coor$coder, cex = 0.7)
+}
 }

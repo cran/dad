@@ -10,8 +10,11 @@
 hellinger(x1, x2, check = FALSE)
 }
 \arguments{
-  \item{x1, x2}{
-       the samples from the probability densities.
+  \item{x1}{
+       a matrix or data frame of \eqn{n_1}{n1} rows (observations) and \eqn{p} columns (variables) (can also be a tibble) or a vector of length \eqn{n_1}{n1}.
+}
+  \item{x2}{
+       matrix or data frame (or tibble) of \eqn{n_2}{n2} rows and \eqn{p} columns or vector of length \eqn{n_2}{n2}.
 }
   \item{check}{
        logical. When \code{TRUE} (the default is \code{FALSE}) the function checks if the covariance matrices are not degenerate (multivariate case) or if the variances are not zero (univariate case).

@@ -20,6 +20,8 @@ as.foldert.data.frame <- function(x, method = 1, ind = 1, timecol = 2, nvar = NU
     ind <- colnames(x)[ind]
   if (is.numeric(timecol))
     timecol <- colnames(x)[timecol]
+  
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
 
   method <- paste0("method", method)
   switch(method,

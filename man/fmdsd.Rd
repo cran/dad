@@ -155,10 +155,11 @@ resultl2norm <- fmdsd(rosesf, distance = "l2norm")
 print(resultl2norm)
 plot(resultl2norm)
 
+\dontrun{
 # Non Gaussian case, using the L2-distance,
 # the densities are estimated using the Gaussian kernel method:
 result <- fmdsd(rosesf, distance = "l2", gaussiand = FALSE, group.name = "rose")
 print(result)       
 plot(result)
-
+}
 }

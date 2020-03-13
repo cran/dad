@@ -8,7 +8,8 @@
     Applies to an object of class \code{fpcad}, plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
 }
 \usage{
-\method{interpret}{fpcad}(x, nscore = 1:3, moment = "mean", ...)
+\method{interpret}{fpcad}(x, nscore = 1:3, moment=c("mean", "sd", "var", "cov", "cor",
+    "skewness", "kurtosis", "all"), ...)
 }
 \arguments{
   \item{x}{
@@ -62,7 +63,9 @@ data(roses)
 rosefold <- as.folder(roses[,c("Sha","Den","Sym","rose")])
 result1 <- fpcad(rosefold)
 interpret(result1)
+\dontrun{
 interpret(result1, moment = "var")
+}
 interpret(result1, moment = "cor")
 interpret(result1, nscore = 1:2)
 }

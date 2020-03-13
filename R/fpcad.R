@@ -1,6 +1,6 @@
 fpcad <-
-function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
-			normed=TRUE, centered=FALSE, data.centered=FALSE, data.scaled=FALSE, 
+function(xf, gaussiand=TRUE, windowh=NULL,
+			normed=TRUE, centered=TRUE, data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, group.name="group", filename=NULL)
 {
@@ -26,7 +26,7 @@ group.name<-levels(group);
 
 # Control and error message
 # on data
-if (!all(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
+if (!all(apply(as.data.frame(x[,1:p], stringsAsFactors = TRUE), 2, is.numeric)))
   stop("The variables must be numeric!")
 if (any(is.na(x)))
   stop("There are NAs in the folder")
@@ -63,7 +63,7 @@ if (!is.null(windowh))
 
 # For now, the only choice of kernel is the Gaussian kernel.
 if (!gaussiand)
-  {if (is.null(kern))  kern = "gauss" }  else
+  { kern = "gauss" }  else
   kern = ""
 
 # Control and error message
@@ -79,7 +79,7 @@ if (nb.groups < nb.factors)
  }
 
 # Mean per group
-moyL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=colMeans);
+moyL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=colMeans);
 moyL0<-moyL
 if(data.centered)
   {# Centering data
@@ -90,13 +90,13 @@ if(data.centered)
   }
 
 # Variance per group
-varL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=var);
+varL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=var);
 varL0<-varL
 
 # Correlation matrix or correlation coefficient per group
 corL=varL
 if (p>1)
-   {corL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=cor);
+   {corL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=cor);
    } else
    {for (i in 1:nb.groups)
      {corL[[i]]<-1
@@ -118,8 +118,8 @@ if(common.variance)
  
 # Skewness et kurtosis coefficients per group
 #require(e1071)
-skewnessL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, skewness)
-kurtosisL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, kurtosis)
+skewnessL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, skewness)
+kurtosisL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, kurtosis)
 
 #---------------
 # Calculus of the matrix W to diagonalize
@@ -231,7 +231,7 @@ switch(choix,
   # Case univariate, non gaussian distributions estimated by gaussian kernel
   # method, and AMISE windows 
   unga =
-      {nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+      {nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
       wL<-bandwidth.parameter(p,nbL)
       # Multiplication of the variance by the window parameter
       varLwL<-varL
@@ -273,7 +273,7 @@ switch(choix,
   # Case univariate, non gaussian distributions estimed by gaussian kernel
   # method, and bandwith parameter, common to all densities, given by the user    
   ungn =
-      {nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+      {nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
       # Multiplication of the variance by the window
       varLwL<-varL
       for (i in 1:nb.groups)
@@ -304,7 +304,7 @@ switch(choix,
     # Case univariate, non gaussian distributions estimated by gaussian kernel
     # method, and windows given as a list of numbers
   ungl =
-      {nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+      {nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
       for (i in 1:nb.groups)
         {gi = group.name[i]
         xi<-x[x$group==gi,1:p];
@@ -336,7 +336,7 @@ if(normed)
 if(centered)
  {# Calculus of the matrix W of the centred pca
   moyW<-mean(W);
-  moycolW<-colMeans(as.data.frame(W));
+  moycolW<-colMeans(as.data.frame(W, stringsAsFactors = TRUE));
   for (i in 1:nb.groups)
    {for (j in 1:i)
      {W[i,j]<-W[i,j]-moycolW[[i]]-moycolW[[j]]+moyW}};
@@ -380,11 +380,11 @@ results <- list( call=match.call(),
   group=last.column.name,
   variables=colnames(x)[1:p],
   inertia=data.frame(eigenvalue=epaff,
-          inertia=round(1000*epaff/sum(abs(ep$d)))/10),
-  contributions=data.frame(group.name,PC=cont),
-  qualities=data.frame(group.name,PC=qual),
-  scores=data.frame(group.name,PC=coor),
-  norm = data.frame(group.name,norm=norme),
+          inertia=round(1000*epaff/sum(abs(ep$d)))/10, stringsAsFactors = TRUE),
+  contributions=data.frame(group.name,PC=cont, stringsAsFactors = TRUE),
+  qualities=data.frame(group.name,PC=qual, stringsAsFactors = TRUE),
+  scores=data.frame(group.name,PC=coor, stringsAsFactors = TRUE),
+  norm = data.frame(group.name,norm=norme, stringsAsFactors = TRUE),
   means=moyL,
   variances=varL,
   correlations=corL,

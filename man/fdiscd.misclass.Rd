@@ -7,8 +7,9 @@
   Computes the one-leave-out misclassification ratio of the rule allocating \eqn{T} groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the \eqn{L^2} distances between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes. 
 }
 \usage{
-fdiscd.misclass(xf, class.var, gaussiand = TRUE, distance = "jeffreys", crit = 1, 
-                kern = NULL, windowh = NULL)
+fdiscd.misclass(xf, class.var, gaussiand = TRUE,
+           distance =  c("jeffreys", "hellinger", "wasserstein", "l2"),
+           crit = 1, windowh = NULL)
 }
 \arguments{
   \item{xf}{
@@ -22,14 +23,16 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE, distance = "jeffreys", crit = 1
        string. The name of the class variable.
 }
   \item{distance}{
-       The distance or divergence used to compute the differences between densities.
+       The distance or divergence used to compute the distance matrix between the densities.
        It can be:
        \itemize{
-       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence)
-       \item \code{"hellinger"} the Hellinger (Matusita) distance
-       \item \code{"wasserstein"} the Wasserstein distance
-       \item \code{"l2"} the \eqn{L^2} distance
+       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
+       \item \code{"hellinger"} the Hellinger (Matusita) distance,
+       \item \code{"wasserstein"} the Wasserstein distance,
+       \item \code{"l2"} the \eqn{L^2} distance,
        }
+       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
+       \code{"l2"} (default) or \code{"l2norm"}.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.
@@ -41,11 +44,6 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE, distance = "jeffreys", crit = 1
        
        If \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"}, \code{gaussiand} is necessarily \code{TRUE}.
 }
-  \item{kern}{
-       string. If \code{gaussiand = FALSE}, this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
-       
-       Omitted when \code{distance} is \code{"hellinger"}, \code{"jeffreys"} or \code{"wasserstein"} (see Details).
-}                                                                                                        
   \item{windowh}{
        strictly positive numeric value. If \code{windowh = NULL} (default), the bandwidths are computed using the \code{\link{bandwidth.parameter}} function.
        

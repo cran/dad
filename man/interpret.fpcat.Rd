@@ -10,7 +10,8 @@
     In the next version of the package, this function will be updated by some more graphics.
 }
 \usage{
-\method{interpret}{fpcat}(x, nscore = 1:3, moment = "mean", ...)
+\method{interpret}{fpcat}(x, nscore = 1:3, moment=c("mean", "sd", "var", "cov", "cor",
+    "skewness", "kurtosis", "all"), ...)
 }
 \arguments{
   \item{x}{
@@ -65,5 +66,7 @@ data(castles)
 castyear <- foldert(lapply(castles, "[", 1:4))
 fpcayear <- fpcat(castyear, group.name = "year")
 interpret(fpcayear)
+\dontrun{
 interpret(fpcayear, moment="var")
+}
 }

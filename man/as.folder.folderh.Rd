@@ -9,20 +9,20 @@
   Creates an object of class \code{folder}, that is a list of data frames with the same column names, from a \code{folderh}.
 }
 \usage{
-\method{as.folder}{folderh}(x, ..., elt = names(x)[2], key = attr(x, "keys")[1])
+\method{as.folder}{folderh}(x, elt = names(x)[2], key = attr(x, "keys")[1], ...)
 }
 \arguments{
   \item{x}{
      object of class \code{\link{folderh}} containing N (N>1) data frames: \code{x[[1]]},..., \code{x[[N]]}, related by (N-1) keys: \code{keys[1]},..., \code{keys[N-1]}.
-}
-  \item{...}{
-     further arguments passed to or from other methods.
 }
   \item{elt}{
      string. The name of one element of \code{x}, that is data frame, say the \code{j}-th, whose rows are distributed among the data frames of the returned folder. See details.
 }
   \item{key}{
      string. The name of an element of \code{attr(x, "keys")}, that is the key, say the \code{k}-th  with \code{k}<\code{j}, which is the factor whose levels are the names of the data frames of the returned folder. See details.
+}
+  \item{...}{
+     further arguments passed to or from other methods.
 }
 }
 \value{

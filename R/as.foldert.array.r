@@ -30,7 +30,7 @@ as.foldert.array <- function(x, ind = 1, var = 2, time = 3, ...)
   fold <- list()
   for (k in 1:ntimes) {
     xk <- x[,, k, drop = FALSE]
-    fold[[k]] <- as.data.frame(xk)
+    fold[[k]] <- as.data.frame(xk, stringsAsFactors = TRUE)
     colnames(fold[[k]]) <- colnames(xk)
   }
   names(fold) <- times

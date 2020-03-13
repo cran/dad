@@ -10,7 +10,8 @@
     \code{\link{fpcat}} function). Plots the scores.
 }
 \usage{
-\method{plot}{fpcat}(x, nscore = 1:3, sub.title = NULL, fontsize.points = 1.5, ...)
+\method{plot}{fpcat}(x, nscore = 1:3, main = "PCA of probability density functions",
+    sub.title = NULL, ...)
 }
 
 \arguments{
@@ -22,11 +23,11 @@
        
        Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fpcat}} function.
 }
+  \item{main}{
+       this argument to title has an useful default here.
+}
   \item{sub.title}{
        string. Subtitle to be added to each graph.
-}
-  \item{fontsize.points}{
-       Numeric. Expansion of the characters (or symbols) of the groups on the graph. This works as a multiple of \code{par("cex")} (see \code{\link{points}}).
 }
   \item{...}{
       optional arguments to \code{plot} methods.

@@ -8,15 +8,21 @@
     Plots a set of numeric variables vs. another set and prints the pairwise correlations. It uses the function \code{\link{xyplot}} of \code{lattice} package. 
 }
 \usage{
-plotframes(x, y, font.size = 12, layout = NULL)
+plotframes(x, y, xlab = NULL, ylab = NULL, font.size = 12, layout = NULL)
 }
 
 \arguments{
   \item{x}{
-       data frame. Variables on x coordinates.
+       data frame (can also be a tibble). Variables on x coordinates.
 }
   \item{y}{
-       data frame. Variables on y coordinates.
+       data frame (or tibble). Variables on y coordinates.
+}
+  \item{xlab}{
+       a label for the x axis, by default the column names of \code{y}.
+}
+  \item{ylab}{
+       a label for the y axis (by default there is no label).
 }
   \item{font.size}{
        integer. Size of the characters in the strips.% (See the \code{\link{xyplot}} function).

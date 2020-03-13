@@ -3,9 +3,9 @@ ddlp <- function(x1, x2, p = 1) {
   
   # If x1 and/or x2 are vectors, change them into data frames with 1 column
   if (is.vector(x1))
-    x1 <- data.frame(x = x1)
+    x1 <- data.frame(x = x1, stringsAsFactors = TRUE)
   if (is.vector(x2))
-    x2 <- data.frame(x = x2)
+    x2 <- data.frame(x = x2, stringsAsFactors = TRUE)
   
   if (!is.data.frame(x1))
     stop("x1 must be a data frame or a vector.")
@@ -21,16 +21,19 @@ ddlp <- function(x1, x2, p = 1) {
   if (!identical(colnames(x1), colnames(x2)))
     warning("x1 and x2 do not have the same column names.")
   
+  x1 <- as.data.frame(x1, stringsAsFactors = TRUE)
+  x2 <- as.data.frame(x2, stringsAsFactors = TRUE)
+  
   for (j in 1:ncol(x1)) {
     # If necessary, change the column into a factor
-    if (!is.factor(x1[, k]))
-      x1[, k] <- as.factor(x1[, k])
-    if (!is.factor(x2[, k]))
-      x2[, k] <- as.factor(x2[, k])
-    # x1[, k] and x2[, k] must be factors with the same levels
-    lev <- union(levels(x1[, k]), levels(x2[, k]))
-    x1[, k] <- factor(as.character(x1[, k]), levels = lev)
-    x2[, k] <- factor(as.character(x2[, k]), levels = lev)
+    if (!is.factor(x1[, j]))
+      x1[, j] <- as.factor(x1[, j])
+    if (!is.factor(x2[, j]))
+      x2[, j] <- as.factor(x2[, j])
+    # x1[, j] and x2[, j] must be factors with the same levels
+    lev <- union(levels(x1[, j]), levels(x2[, j]))
+    x1[, j] <- factor(as.character(x1[, j]), levels = lev)
+    x2[, j] <- factor(as.character(x2[, j]), levels = lev)
   }
   
   # Table of joint probabilities of the 1st data set

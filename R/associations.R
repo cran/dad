@@ -1,4 +1,7 @@
 cramer.data.frame <- function(x, check = TRUE) {
+  if (!is.data.frame(x))
+    stop(deparse(substitute(x)), " is not a data.frame")
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   if (check) {
     # Control and convert the variables to factors
     for (k1 in 1:ncol(x)) {
@@ -23,6 +26,9 @@ cramer.data.frame <- function(x, check = TRUE) {
 }
 
 tschuprow.data.frame <- function(x, check = TRUE) {
+  if (!is.data.frame(x))
+    stop(deparse(substitute(x)), " is not a data.frame")
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   if (check) {
     # Control and convert the variables to factors
     for (k1 in 1:ncol(x)) {
@@ -47,6 +53,9 @@ tschuprow.data.frame <- function(x, check = TRUE) {
 }
 
 pearson.data.frame <- function(x, check = TRUE) {
+  if (!is.data.frame(x))
+    stop(deparse(substitute(x)), " is not a data.frame")
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   if (check) {
     # Control and convert the variables to factors
     for (k1 in 1:ncol(x)) {
@@ -71,6 +80,9 @@ pearson.data.frame <- function(x, check = TRUE) {
 }
 
 phi.data.frame <- function(x, check = TRUE) {
+  if (!is.data.frame(x))
+    stop(deparse(substitute(x)), " is not a data.frame")
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   if (check) {
     # Control and convert the variables to factors
     for (k1 in 1:ncol(x)) {

@@ -11,13 +11,13 @@ folderh(df1, key1, df2, ..., na.rm = TRUE)
 }
 \arguments{
   \item{df1}{
-     data frame with at least two columns. It contains a factor (whose name is given by \code{key1} argument) whose levels are taken exactly once.
+     data frame (can also be a tibble) with at least two columns. It contains a factor (whose name is given by \code{key1} argument) whose levels are taken exactly once.
 }
   \item{key1}{
      character string. The name of the factor of the data frames \code{df1} and \code{df2} which contains the key of the relations "1 to N" between the two datasets.
 }
   \item{df2}{
-     data frame with at least two columns. It contains a factor column (named by \code{keys} argument) with the same levels as \code{df1[, key1]} (see Details).
+     data frame (or tibble) with at least two columns. It contains a factor column (named by \code{keys} argument) with the same levels as \code{df1[, key1]} (see Details).
 }
   \item{...}{
      optional. One or several supplementary character strings and data frames, ordered as follows: \code{key2, df3, ...}.

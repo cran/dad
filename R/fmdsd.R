@@ -32,7 +32,7 @@ group.name<-levels(group);
 
 # Controls and error messages
 # on data
-if (!all(apply(as.data.frame(x[,1:p]), 2, is.numeric)))
+if (!all(apply(as.data.frame(x[,1:p], stringsAsFactors = TRUE), 2, is.numeric)))
   stop("The variables must be numeric!")
 if (any(is.na(x)))
   stop("There are NAs in the folder")
@@ -99,7 +99,7 @@ if (nb.groups <= nb.factors)
  }
 
 # Mean per group
-moyL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=colMeans);
+moyL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=colMeans);
 moyL0<-moyL
 if(data.centered)
   {# Centering data
@@ -110,13 +110,13 @@ if(data.centered)
   }
 
 # Variance per group
-varL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=var);
+varL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=var);
 varL0<-varL
 
 # Correlation matrix or correlation coefficient per group
 corL=varL
 if (p>1)
-   {corL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=cor);
+   {corL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=cor);
    } else
    {for (i in 1:nb.groups)
      {corL[[i]]<-1
@@ -139,8 +139,8 @@ if(common.variance)
  
 # Skewness and kurtosis coefficients per group
 #require(e1071)
-skewnessL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, skewness)
-kurtosisL <- by(as.data.frame(x[, 1:p]), INDICES=group, FUN=apply, 2, kurtosis)
+skewnessL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, skewness)
+kurtosisL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, kurtosis)
 
 if (gaussiand) { # Gaussian case
   
@@ -279,7 +279,7 @@ if (gaussiand) { # Gaussian case
                   # Case univariate, non gaussian distributions estimated by gaussian kernel
                   # method, and AMISE windows 
                   uga = {
-                    nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+                    nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
                     wL<-bandwidth.parameter(p,nbL)
                     # Multiplication of the variance by the window parameter
                     varLwL<-varL
@@ -302,7 +302,7 @@ if (gaussiand) { # Gaussian case
                   # Case univariate, non gaussian distributions estimed by gaussian kernel
                   # method, and bandwith parameter, common to all densities, given by the user    
                   ugn = {
-                    nbL<-by(as.data.frame(x[,1:p]),INDICES=group,FUN=NROW);
+                    nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
                     # Multiplication of the variance by the window
                     varLwL<-varL
                     for (i in 1:nb.groups) {
@@ -368,8 +368,8 @@ results <- list( call=match.call(),
                  variables=colnames(x)[1:p],
                  d=distance,
                  inertia=data.frame(eigenvalue=epaff,
-                    inertia=round(1000*epaff/sum(abs(ep)))/10),
-                 scores=data.frame(group.name,PC=coor))
+                    inertia=round(1000*epaff/sum(abs(ep)))/10, stringsAsFactors = TRUE),
+                 scores=data.frame(group.name,PC=coor, stringsAsFactors = TRUE))
 # Change of the name of the grouping variable in the data frame of scores
 colnames(results$scores)[1]=last.column.name
 

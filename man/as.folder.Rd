@@ -8,7 +8,7 @@
   Coerces a data frame or an object of class \code{"folderh"} to an object of class \code{"folder"}.
 }
 \usage{
-as.folder(x, ..., groups = NULL)
+as.folder(x, ...)
 }
 \arguments{
   \item{x}{
@@ -20,9 +20,6 @@ as.folder(x, ..., groups = NULL)
 }
   \item{...}{
      further arguments passed to or from other methods.
-}
-  \item{groups}{
-     string. See \code{\link{as.folder.data.frame}}.
 }
 }
 \value{

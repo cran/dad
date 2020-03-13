@@ -30,9 +30,9 @@ Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
 }
 \examples{
 # Example 1
-x1 <- data.frame(x = c("A", "A", "B", "B"))
-x2 <- data.frame(x = c("A", "A", "A", "B", "B"))
-x3 <- data.frame(x = c("A", "A", "B", "B", "B", "B"))
+x1 <- data.frame(x = factor(c("A", "A", "B", "B")))
+x2 <- data.frame(x = factor(c("A", "A", "A", "B", "B")))
+x3 <- data.frame(x = factor(c("A", "A", "B", "B", "B", "B")))
 xf <- folder(x1, x2, x3)
 matddchisqsym(xf)
 

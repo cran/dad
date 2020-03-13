@@ -1,6 +1,6 @@
 fpcat <-
-function(xf, gaussiand=TRUE, kern = NULL, windowh=NULL,
-			normed=TRUE, centered=FALSE, data.centered=FALSE, data.scaled=FALSE, 
+function(xf, gaussiand=TRUE, windowh=NULL,
+         normed=TRUE, centered=TRUE, data.centered=FALSE, data.scaled=FALSE, 
       common.variance=FALSE, nb.factors=3, nb.values=10, sub.title="",
 			plot.eigen=TRUE, plot.score=FALSE, nscore=1:3, group.name="time", filename=NULL)
 {
@@ -12,7 +12,7 @@ times <- attr(xf, "times")
 
 # Perform the FPCA, using fpcad()
 class(xf) <- "folder"
-results <- fpcad(xf, gaussiand=gaussiand, kern = kern, windowh=windowh,
+results <- fpcad(xf, gaussiand=gaussiand, windowh=windowh,
                  normed=normed, centered=centered, data.centered=data.centered, data.scaled=data.scaled, 
                  common.variance=common.variance, nb.factors=nb.factors, nb.values=nb.values, sub.title=sub.title,
                  plot.eigen=plot.eigen, plot.score=plot.score, nscore=nscore, group.name=group.name, filename=filename)

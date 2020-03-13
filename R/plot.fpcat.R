@@ -1,5 +1,5 @@
 plot.fpcat <-
-function(x, nscore=1:3, sub.title=NULL, fontsize.points = 1.5, ...)
+function(x, nscore=1:3, main="PCA of probability density functions", sub.title=NULL, ...)
 {
   times <- x$times
   numtimes <- as.numeric(times)
@@ -19,13 +19,18 @@ function(x, nscore=1:3, sub.title=NULL, fontsize.points = 1.5, ...)
       {
       dev.new()
       }
-    par(ps=12);
-    plot(coor[,i1],coor[,i2],type="n",
-         main="Functional PCA of probability densities",sub=sub.title,
-         xlab = paste("PC", i1, " (", inertia[i1], "%)"),
-         ylab=paste("PC", i2, " (", inertia[i2], "%)"), ...);
-#    par(ps=10);
-    arrows(coor[-ngroup,i1], coor[-ngroup,i2], coor[-1,i1], coor[-1,i2], length = 0.1)
+    coorij <- data.frame(coor[-nrow(coor), c(i1, i2)],
+                         coor[-1, c(i1, i2)], stringsAsFactors = TRUE)
+    names(coorij) <- c("x1", "y1", "x2", "y2")
+    
+    graph <- ggplot(coorij)
+    graph <- graph + aes_q(x = as.name("x1"), y = as.name("y1"),
+                           xend = as.name("x2"), yend = as.name("y2"))
+    graph <- graph + geom_segment(arrow = arrow(unit(0.1, "inches")))
+    graph <- graph + labs(title = main, subtitle = sub.title,
+                          x = paste0(names(coor)[i1], " (", inertia[i1], "%)"),
+                          y = paste0(names(coor)[i2], " (", inertia[i2], "%)"))
+    print(graph)
   }
   
   if ("Date" %in% class(times))
@@ -35,17 +40,12 @@ function(x, nscore=1:3, sub.title=NULL, fontsize.points = 1.5, ...)
     if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD")) {
       dev.new()
     }
-    par(ps=12);
-    if ("Date" %in% class(times))
-      times <- as.POSIXct(times)
-    plot(times,coor[,i],type="l",
-         main="Functional PCA of probability densities",sub=sub.title,
-         xlab = "time",ylab=paste("PC", i, " (", inertia[i], "%)"), ...);
-         # , xaxt = "n")
-    # axis(1, numtimes, times)
-#    par(ps=10);
-#    text(times, coor[,i], as.character(group), cex=fontsize.points, font=2);
-    # arrows(numtimes[-ngroup], coor[-ngroup,i], numtimes[-1], coor[-1,i], length = 0.1)
+    graph <- ggplot(data.frame(time = times, coor = coor[, i]), stringsAsFactors = TRUE)
+    graph <- graph + aes_q(x = as.name("time"), y = as.name("coor"))
+    graph <- graph + geom_line()
+    graph <- graph + labs(title = main, subtitle = sub.title,
+                          x = "time", y = paste0(names(coor)[i], " (", inertia[i], "%)"))
+    print(graph)
   }
   
   return(invisible(NULL))

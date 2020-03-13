@@ -13,7 +13,7 @@ foldert(x1, x2 = NULL, ..., times = NULL, cols.select = "intersect", rows.select
 }
 \arguments{
   \item{x1}{
-     data frame or list of data frames.
+     data frame (can also be a tibble) or list of data frames.
      \itemize{
      \item If \code{x1} is a data frame, \code{x2} must be provided.
      \item If \code{x1} is a list of data frames, its elements are the datasets of the folder. In this case, there is no \code{x2} argument.
@@ -81,14 +81,17 @@ x <- data.frame(xyz = rep(c("A", "B", "C"), each = 2),
                 xy = letters[1:6],
                 x1 = rnorm(6),
                 x2 = rnorm(6, 2, 1),
-                row.names = paste0("i", 1:6))
+                row.names = paste0("i", 1:6),
+                stringsAsFactors = TRUE)
 y <- data.frame(xyz = c("A", "A", "B", "C"),
                 xy = c("a", "b", "a", "c"),
                 y1 = rnorm(4, 4, 2),
-                row.names = c(paste0("i", c(1, 2, 4, 6))))
+                row.names = c(paste0("i", c(1, 2, 4, 6))),
+                stringsAsFactors = TRUE)
 z <- data.frame(xyz = c("A", "B", "C"),
                 z1 = rnorm(3),
-                row.names = c("i1", "i2", "i5"))
+                row.names = c("i1", "i2", "i5"),
+                stringsAsFactors = TRUE)
 
 # Columns selected by the user
 ftc. <- foldert(x, y, z, cols.select = c("xyz", "x1", "y1", "z1"))

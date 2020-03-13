@@ -11,7 +11,7 @@ ddhellinger(x1, x2)
 }
 \arguments{
   \item{x1, x2}{
-      data frames of \eqn{q} columns or vectors.
+      data frames of \eqn{q} columns or vectors (can also be tibbles).
       
       If they are data frames and have not the same column names, there is a warning.
 }

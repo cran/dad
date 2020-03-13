@@ -44,7 +44,8 @@ read.mtg <- function(file, ...) {
   # Reading the 'CLASSES:' table
   classes1 <- read.table(file, sep = "\t",
       nrows = endclasses - beginclasses, skip = beginclasses - 1,
-      header = TRUE, blank.lines.skip = TRUE, strip.white = TRUE)
+      header = TRUE, blank.lines.skip = TRUE, strip.white = TRUE,
+      stringsAsFactors = TRUE)
 
   # Deleting NA columns
   colnotna <- which(!apply(apply(classes1, 2, is.na), 2, any))
@@ -55,7 +56,8 @@ read.mtg <- function(file, ...) {
   # Reading the 'DESCRIPTION:' table
   description1 <- read.table(file, sep = "\t",
       nrows = enddescription - begindescription, skip = begindescription - 1,
-      header = TRUE, blank.lines.skip = TRUE, strip.white = TRUE)
+      header = TRUE, blank.lines.skip = TRUE, strip.white = TRUE,
+      stringsAsFactors = TRUE)
 
   # Deleting NA columns
   colnotna <- which(!apply(apply(description1, 2, is.na), 2, any))
@@ -68,13 +70,14 @@ read.mtg <- function(file, ...) {
     # If "FEATURES:" table is not empty:
     features1 <- read.table(file, sep = "\t",
         nrows = endfeatures - beginfeatures, skip = beginfeatures - 1,
-        header = TRUE, blank.lines.skip = FALSE, strip.white = FALSE)[, 1:2]
+        header = TRUE, blank.lines.skip = FALSE, strip.white = FALSE,
+        stringsAsFactors = TRUE)[, 1:2]
     # If features1 only contains NA: features1 = data frame with 0 row.
     if (!any(!is.na(features1)))
-      features1 <- data.frame(NAME = character(0), TYPE = character(0))
+      features1 <- data.frame(NAME = character(0), TYPE = character(0), stringsAsFactors = TRUE)
   } else {
     # If "FEATURES:" table is empty: features1 = data frame with 0 row.
-    features1 <- data.frame(NAME = character(0), TYPE = character(0))
+    features1 <- data.frame(NAME = character(0), TYPE = character(0), stringsAsFactors = TRUE)
   }
 
   # Deleting NA columns

@@ -90,7 +90,7 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
       rownames(matprob) = groups.name
     }
   }
-  matprob = as.data.frame(matprob)
+  matprob = as.data.frame(matprob, stringsAsFactors = TRUE)
   
   if (nb.vars > 1) {
     
@@ -127,7 +127,7 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
     # Initialisation of the data frame dfjp. Its rows are the groups (occasions)
     # and its columns are the probabilities of each couple of modalities,
     # First row: the probabilities for the 1st group.
-    dfjp = data.frame(t(vvprob), row.names=nameg)
+    dfjp = data.frame(t(vvprob), row.names=nameg, stringsAsFactors = TRUE)
     names(dfjp) = dfcolsname
     
     # For the other groups
@@ -147,7 +147,7 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
           }
           vvprob = c(vvprob, vprobvar1)
       }
-      dfjpg = data.frame(t(vvprob), row.names=nameg)
+      dfjpg = data.frame(t(vvprob), row.names=nameg, stringsAsFactors = TRUE)
       names(dfjpg) = dfcolsname
       dfjp = rbind(dfjp, dfjpg)
     }
@@ -246,6 +246,7 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
   # divergence), "jensen" (Jensen-Shannon distance)
   distance <- match.arg(distance)
   
+  distance.printing <- distance
   if (distance == "l1") {
     distance <- "lp"
     p <- 1
@@ -329,8 +330,9 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
                    variables = vars.name,
                    d = distance.printing,
                    inertia = data.frame(eigenvalue=epaff,
-                                        inertia=round(1000*epaff/sum(abs(ep)))/10),
-                   scores = data.frame(groups.name,PC=coor))
+                                        inertia=round(1000*epaff/sum(abs(ep)))/10,
+                                        stringsAsFactors = TRUE),
+                   scores = data.frame(groups.name,PC=coor, stringsAsFactors = TRUE))
   
   # Change of the name of the grouping variable in the data frames in results
   colnames(results$scores)[1] = group.name

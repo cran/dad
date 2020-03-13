@@ -6,7 +6,7 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
   coor <- x$scores
   group.name <- coor[[1]]
   rownames(coor)=group.name
-  matcoor=as.data.frame(coor[1+nscore])
+  matcoor=as.data.frame(coor[1+nscore], stringsAsFactors = TRUE)
   
   colnoms=x$variables
   q = length(colnoms)
@@ -40,6 +40,7 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
              # Association matrix of the association measures (without replication)
              matprob=cbind(matprob, matpr[,num.col.assoc])
              # colNames=append(colNames, nom.col.assoc)
+             rownames(matprob)=group.name
              colnames(matprob)=nom.col.assoc
            } else {
              stop("The association measures cannot be computed\n(The densities are univariate)")
@@ -68,7 +69,7 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
         for (nom in mmanoms) {
          cnom <- (substring(colnames(matprob), 1, nchar(nom)) == nom)
           matprobnom <- matprob[, cnom]
-           plotframes(x=matprobnom, y=matcoor[,nPC, drop=FALSE], font.size=10)
+           plotframes(x=matcoor[,nPC, drop=FALSE], y=matprobnom, font.size=10)
         }
     }
   } else if (mma == "marg2") {
@@ -79,12 +80,12 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
       for (i2 in (i1+1):nrow(mmanoms)) {
         mmanom2 <- mmanoms[i2, ]
         matprobnom <- matprob[, paste(mmanom1, mmanom2, sep = ":")]
-        plotframes(x=matprobnom, y=matcoor[, nPC, drop=FALSE], font.size=10)
+        plotframes(x=matcoor[, nPC, drop=FALSE], y=matprobnom, font.size=10)
       }
     }
     }
   } else if (mma == "assoc") {
-    plotframes(x=matprob, y=matcoor, font.size=10)
+    plotframes(x=matcoor, y=matprob, font.size=10, ylab = mma)
   }
 
   if (dev.pdf) {

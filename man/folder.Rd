@@ -11,7 +11,7 @@ folder(x1, x2 = NULL, ..., cols.select = "intersect", rows.select = "")
 }
 \arguments{
   \item{x1}{
-     data frame or list of data frames.
+     data frame (can also be a tibble) or list of data frames.
      \itemize{
      \item If \code{x1} is a data frame, \code{x2} must be provided.
      \item If \code{x1} is a list of data frames, its elements are the datasets of the folder. In this case, there is no \code{x2} argument.

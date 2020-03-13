@@ -25,7 +25,7 @@ mtgorder <- function(x, classes = "all", display = FALSE) {
   v.order <- apply(mat.order, 2, which)
   
   for (cl in classes) {
-    x[[cl]] <- data.frame(x[[cl]], Order = v.order[rownames(x[[cl]])])
+    x[[cl]] <- data.frame(x[[cl]], Order = v.order[rownames(x[[cl]])], stringsAsFactors = TRUE)
   }
   
   if (display)

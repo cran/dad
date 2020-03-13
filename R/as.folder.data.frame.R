@@ -1,5 +1,5 @@
-as.folder.data.frame <- function(x, ..., groups = tail(colnames(x), 1)) {
-  
+as.folder.data.frame <- function(x, groups = tail(colnames(x), 1), ...) {
+    
   name.x <- deparse(substitute(x))
   name.g <- deparse(substitute(groups))
   
@@ -8,6 +8,8 @@ as.folder.data.frame <- function(x, ..., groups = tail(colnames(x), 1)) {
     stop(paste(name.x, "is not a data frame."))
   if (!groups %in% colnames(x))
     stop(paste(name.g, " is not a column name of ", name.x, ".", sep = ""))
+  
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   
   # The groups
   jg <- which(colnames(x) == groups)

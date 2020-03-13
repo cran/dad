@@ -9,8 +9,8 @@
     Plots the longitudinal evolution of a numeric variable for every individuals.
 }
 \usage{
-\method{plot}{foldert}(x, which, na.inter = TRUE, type = "l", lty = 1:5, col = 1:6,
-                       ylim = NULL, ylab = which, main = "", ...)
+\method{plot}{foldert}(x, which, na.inter = TRUE, type = "l", ylim = NULL, ylab = which,
+                       main = "", ...)
 }
 
 \arguments{
@@ -31,12 +31,6 @@
   \item{type}{
        character string (length 1 vector) or vector of 1-character strings (default \code{"l"}) indicating the type of plot for each of the individuals followed among time, that is for each line of the data frames in the foldert.
        For further information about this argument, see \code{\link{matplot}}.
-}
-  \item{lty}{
-       vector of line types. The first element is for the first individual, the second element for the second individual, etc. Line types will be used cyclically until all plots are drawn.
-}
-  \item{col}{
-       vector of colors. Colors are used cyclically.
 }
   \item{ylim}{
        ranges of y axis. \code{xlim} is as in \code{\link{matplot}}.

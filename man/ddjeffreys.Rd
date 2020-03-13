@@ -11,7 +11,7 @@ ddjeffreys(x1, x2)
 }
 \arguments{
   \item{x1, x2}{
-      vectors or data frames of \eqn{q} columns.
+      vectors or data frames of \eqn{q} columns (can also be a tibble).
       
       If they are data frames and have not the same column names, there is a warning.
 }

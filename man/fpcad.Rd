@@ -8,8 +8,8 @@ Functional PCA of probability densities
 Performs functional principal component analysis of probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fpcad}.
 }
 \usage{
-fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
-    centered = FALSE, data.centered = FALSE, data.scaled = FALSE,
+fpcad(xf, gaussiand = TRUE, windowh = NULL, normed = TRUE,
+    centered = TRUE, data.centered = FALSE, data.scaled = FALSE,
     common.variance = FALSE, nb.factors = 3, nb.values = 10, sub.title = "",
     plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, group.name = "group",
     filename = NULL)
@@ -25,9 +25,6 @@ fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
 }
-  \item{kern}{
-       string. If \code{gaussiand = FALSE} (default is \code{TRUE}), this argument sets the kernel used in the estimation method. Currently, only the Gaussian kernel is available: the settings \code{kern = "gauss"} and \code{kern = NULL} are equivalent.
-}                                                                                                        
   \item{windowh}{
        either a list of \eqn{T} bandwidths (one per density associated to a group), or a strictly positive number. If \code{windowh = NULL} (default), the bandwidths are automatically computed. See Details.
 }
@@ -35,7 +32,7 @@ fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
        logical. If \code{TRUE} (default), the densities are normed before computing the distances.
 }
   \item{centered}{
-       logical. If \code{TRUE} (default is \code{FALSE}), the densities are centered.
+       logical. If \code{TRUE} (default), the densities are centered.
 }
   \item{data.centered}{
        logical. If \code{TRUE} (default is \code{FALSE}), the data of each group are centered.
@@ -95,7 +92,7 @@ fpcad(xf, gaussiand = TRUE, kern = NULL, windowh = NULL, normed = TRUE,
     \item{kurtosis }{list of the kurtosis coefficients.}
 }
 \references{
-    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliquée, XLVI (2), 5-20.
+    Boumaza, R. (1998). Analyse en composantes principales de distributions gaussiennes multidimensionnelles. Revue de Statistique Appliqu?e, XLVI (2), 5-20.
 
     Boumaza, R., Yousfi, S., Demotes-Mainard, S. (2015). Interpreting the principal component analysis of multivariate density functions. Communications in Statistics - Theory and Methods, 44 (16), 3321-3339.
     
@@ -121,9 +118,12 @@ plot(result3)
 
 # Flower colors of the roses
 scores <- result3$scores
-scores <- data.frame(scores, color = scores$rose)
+scores <- data.frame(scores, color = scores$rose, stringsAsFactors = TRUE)
+colours <- scores$rose
+colours <- factor(c(A = "yellow", B = "yellow", C = "pink", D = "yellow", E = "red",
+                  F = "yellow", G = "pink", H = "pink", I = "yellow", J = "yellow"))
 levels(scores$color) <- c(A = "yellow", B = "yellow", C = "pink", D = "yellow", E = "red",
                          F = "yellow", G = "pink", H = "pink", I = "yellow", J = "yellow")
 # Scores according to the first two principal components, per color
-plot(scores$PC.1, scores$PC.2, pch = 19, col = as.character(scores$color), cex = 1.5)
+plot(result3, nscore = 1:2, color = colours)
 }

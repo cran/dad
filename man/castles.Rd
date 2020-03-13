@@ -18,7 +18,7 @@
 }
 
 \source{
-    Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
+    Rudrauf, J.M., Boumaza, R. (2001). Contribution a l'etude de l'architecture medievale: les caracteristiques des pierres a bossage des chateaux forts alsaciens. Centre de Recherches Archeologiques Medievales de Saverne, 5, 5-38.
 }
 \examples{
 data(castles)
