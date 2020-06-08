@@ -1,6 +1,6 @@
 fdiscd.predict <-
   function(xf, class.var, gaussiand = TRUE,
-           distance =  c("jeffreys", "hellinger", "wasserstein", "l2"),
+           distance =  c("jeffreys", "hellinger", "wasserstein", "l2", "l2norm"),
            crit = 1, windowh = NULL, misclass.ratio = FALSE)
   {
     # xf:     object of class 'folderh' with 2 data frames.
@@ -50,23 +50,22 @@ fdiscd.predict <-
     distance <- match.arg(distance)
     
     if ( (!gaussiand) & (distance %in% c("hellinger", "jeffreys", "wasserstein")) ) {
-      warning(paste0("distance=", distance, " is not avalaible for non-Gaussian densities.\nSo the argument distance is set to 'l2'."))
+      warning(paste0("distance='", distance, "' is not avalaible for non-Gaussian densities.\nSo the argument distance is set to 'l2'."))
       distance <- "l2"
     }
     
-    if (distance %in% c("hellinger", "jeffreys", "wasserstein"))
-    {
-      if (!is.null(windowh))
-      {
-        warning(paste0("The kernel method is not available when distance=", distance, ".\nThe parametric (Gaussian) method is used for the estimation of the densities."))
-      }
-      
-      # For the Hellinger distance, the Jeffreys measure or the Wasserstein distance,
-      # only crit=1 is available
-      if (crit != 1)
-      {
-        warning("If distance=", distance, ", crit cannot be 2 or 3.\n crit is set to 1.")
-      }
+    if (gaussiand & !is.null(windowh)) {
+      warning("The argument windowh is not taken into account for Gaussian densities.")
+    }
+    
+    if (distance %in% c("hellinger", "jeffreys", "wasserstein") & (crit != 1)) {
+      warning("If distance=", distance, ", crit cannot be 2 or 3.\n crit is set to 1.")
+    }
+    
+    # If crit is 2 or 3, the densities cannot be normed: distance cannot be "l2norm"
+    if (crit != 1 & distance == "l2norm") {
+      warning("The distance 'l2norm' (l^2-distance between normed densities) is not available when crit is 2 or 3.\ndistance used: 'l2'.")
+      distance <- "l2"
     }
     
     # Add the classes to x, as the (p+2)th column:
@@ -102,6 +101,16 @@ fdiscd.predict <-
       kern = ""
     }
     
+    # If distance == "l2norm" (i.e. L^2-distance between normed densities) then:
+    #   - dist = "l2"
+    #   - normed = TRUE
+    if (distance == "l2norm") {
+      distance <- "l2"
+      normed <- TRUE
+    } else {
+      normed <- FALSE
+    }
+    
     if (gaussiand) {
       
       switch(distance,
@@ -129,8 +138,10 @@ fdiscd.predict <-
                  if (p > 1) {
                    # Case: multivariate, gaussian distribution and estimated parameters
                    for (i in pred.name) {
+                     # squared norm of densities f asociated to groups:
                      Wf[i] <- l2dpar(moy.x[[i]],var.x[[i]],moy.x[[i]],var.x[[i]])
                      for (j in classe.name)
+                       # squared norm of densities g asociated to classes:
                        Wfg[i,j]<-l2dpar(moy.x[[i]],var.x[[i]],moy.cl[[j]],var.cl[[j]])
                    }
                    for (j in classe.name)
@@ -194,7 +205,11 @@ fdiscd.predict <-
                             Wfg.tmp <- Wfg[n.x, n.cl]
                             Wg.tmp <- Wg[n.cl]
                             # Computation of the group-classe distances:
-                            distances[n.x, n.cl] <- sqrt(Wf.tmp - 2*Wfg.tmp + Wg.tmp)
+                            if (!normed) {
+                              distances[n.x, n.cl] <- sqrt(Wf.tmp - 2*Wfg.tmp + Wg.tmp)
+                            } else {
+                              distances[n.x, n.cl] <- sqrt( 2 - 2*Wfg.tmp / sqrt(Wf.tmp*Wg.tmp) )
+                            }
                           }
                         }
                       },
@@ -229,7 +244,7 @@ fdiscd.predict <-
                               Wjj <- Wjj[names(nr), names(nr)]
                               d2fg <- sum(nr*Wij)/nj
                               d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg/nj + d2gg/(nj^2))
+                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
                             }
                           }
                         }
@@ -605,7 +620,11 @@ fdiscd.predict <-
                    Wfg.tmp <- Wfg[n.x, n.cl]
                    Wg.tmp <- Wg[n.cl]
                    # Computation of the group-classe distances:
-                   distances[n.x, n.cl] <- sqrt(Wf.tmp - 2*Wfg.tmp + Wg.tmp)
+                   if (!normed) {
+                     distances[n.x, n.cl] <- sqrt(Wf.tmp - 2*Wfg.tmp + Wg.tmp)
+                   } else {
+                     distances[n.x, n.cl] <- sqrt( 2 - 2*Wfg.tmp / sqrt(Wf.tmp*Wg.tmp) )
+                   }
                  }
                }
              },
@@ -640,7 +659,7 @@ fdiscd.predict <-
                      Wjj <- Wjj[names(nr), names(nr)]
                      d2fg <- sum(nr*Wij)/nj
                      d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                     distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg/nj + d2gg/(nj^2))
+                     distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
                    }
                  }
                }

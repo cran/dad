@@ -7,7 +7,7 @@ as.data.frame.folderh <- function(x, row.names = NULL, optional = FALSE, ..., el
   j <- which(names(x) == elt)
     # Checking the consistency of these indices and returning an error message if not
   if (k >= j)
-    stop(paste("If", elt , " is the", j, "-th element of the folderh, then the key must be \n strictly before the", j, "-th element of attr(x, 'keys') (See ?as.folder.folderh)", sep=""))
+    stop(paste("If", elt , " is the", j, "-th element of the folderh, then the key must be \n strictly before the", j, "-th element of attr(x, 'keys') (See ?as.data.frame.folderh)", sep=""))
    
   # datf: the data frame containing the data that will be returned
   datf <- x[[j]]

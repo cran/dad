@@ -20,9 +20,12 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
     # Rename the last column of x as 'group'
     colnames(x)[ncol(x)] <- "group"
     group <- as.factor(x$group)
-    nb.groups <- length(levels(group))
+    # The groups
+    nb.groups <- nlevels(group)
     groups.name <- levels(group)
+    # The variables
     vars.name <- colnames(x)[1:(ncol(x)-1)]
+    # The levels of each (factor) variable
     levels.name <- list()
     for(j in vars.name) {levels.name = c(levels.name, list(levels(x[,j])))}
     # Controls and error messages
@@ -46,11 +49,19 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
       stop("All elements of xf must be arrays with non negative elements.")
     }
     
+    # The groups
     nb.groups <- length(tab)  # number of arrays (or groups)
-    groups.name <- names(tab)  # vector of the names of the arrays 
-    # Controls that all the names are different
-    vars.name <- names(dimnames(tab[[1]]))  # vector of the names of the discrete variables (the same for all arrays)
-    # Controls that are the same
+    if (!is.null(names(tab))) {
+      groups.name <- names(tab)  # vector of the names of the arrays
+    } else {
+      groups.name <- paste0("group", 1:length(tab))
+    }
+    # The variables (dimensions of the arrays/tables)
+    if (!is.null(names(dimnames(tab[[1]])))) {
+      vars.name <- names(dimnames(tab[[1]]))  # vector of the names of the discrete variables (the same for all arrays)
+    } else {
+      vars.name <- paste0("v", 1:length(dimnames(tab[[1]])))
+    }
     levels.name = dimnames(tab[[1]])  # list of the level names per dimension (the same for all arrays)
   }
   nb.vars = length(vars.name) # number of discrete variables

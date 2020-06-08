@@ -4,11 +4,11 @@
   Misclassification ratio in functional discriminant analysis of probability densities.
 }
 \description{
-  Computes the one-leave-out misclassification ratio of the rule allocating \eqn{T} groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the \eqn{L^2} distances between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes. 
+  Computes the one-leave-out misclassification ratio of the rule allocating \eqn{T} groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the distances or divergences between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes. 
 }
 \usage{
 fdiscd.misclass(xf, class.var, gaussiand = TRUE,
-           distance =  c("jeffreys", "hellinger", "wasserstein", "l2"),
+           distance =  c("jeffreys", "hellinger", "wasserstein", "l2", "l2norm"),
            crit = 1, windowh = NULL)
 }
 \arguments{
@@ -23,16 +23,18 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
        string. The name of the class variable.
 }
   \item{distance}{
-       The distance or divergence used to compute the distance matrix between the densities.
+       The distance or dissimilarity used to compute the distance matrix between the densities.
        It can be:
        \itemize{
        \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
        \item \code{"hellinger"} the Hellinger (Matusita) distance,
        \item \code{"wasserstein"} the Wasserstein distance,
        \item \code{"l2"} the \eqn{L^2} distance,
+       \item \code{"l2norm"} (only available when crit = 1) the densities are normed and the \eqn{L^2} distance between these normed densities is used;
        }
-       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
-       \code{"l2"} (default) or \code{"l2norm"}.
+%       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
+%       \code{"l2"} (default) or \code{"l2norm"}.
+       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance is \code{"l2"}.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.
@@ -51,18 +53,34 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
 }
 }
 \details{
- To the group \eqn{t} is associated the density denoted \eqn{f_t}. To the class \eqn{k} consisting of \eqn{T_k} groups is associated the density denoted \eqn{g_k}. The \code{crit} argument selects the estimation method of the \eqn{K} densities \eqn{g_k}.
+    The \eqn{T} probability densities \eqn{f_t} corresponding to the \eqn{T} groups of individuals are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to be used. Notice that in the multivariate case (\eqn{p}>1), the bandwidths are positive-definite matrices.
+
+    The argument \code{windowh} is a numerical value, the matrix bandwidth is of the form \eqn{h S}, where \eqn{S} is either the square root of the covariance matrix (\eqn{p}>1) or the standard deviation of the estimated density.  
+    
+    If \code{windowh = NULL} (default), \eqn{h} in the above formula is computed using the \code{\link{bandwidth.parameter}} function.
+
+    %So, to the group \eqn{t} is associated the density denoted \eqn{f_t}. 
+    
+    To the class \eqn{k} consisting of \eqn{T_k} groups is associated the density denoted \eqn{g_k}. The \code{crit} argument selects the estimation method of the \eqn{K} densities \eqn{g_k}.
    
     \enumerate{
     \item
-    The density \eqn{g_k} is estimated using the whole data of this class, that is the rows of \code{x} corresponding to the \eqn{T_k} groups of the class \eqn{k}. 
+    The density \eqn{g_k} is estimated using the whole data of this class, that is the rows of \code{x} corresponding to the \eqn{T_k} groups of the class \eqn{k}.
+    
+    The estimation of the densities \eqn{g_k} uses the same method as the estimation of the \eqn{f_t}.
     \item 
     The \eqn{T_k} densities \eqn{f_t} are estimated using the corresponding data from \code{x}. Then they are averaged to obtain an estimation of the density \eqn{g_k}, that is \eqn{g_k = \frac{1}{T_k} \, \sum{f_t}}{g_k = (1/T_k)\sum(f_t)}.
     \item 
     Each previous density \eqn{f_t} is weighted by \eqn{n_t} (the number of rows of \eqn{x} corresponding to \eqn{f_t}). Then they are averaged, that is \eqn{g_k = \frac{1}{\sum n_t} \sum n_t f_t}{g_k = (1/\sum n_t) \sum n_t f_t}.
     }
-    The last two methods are available only for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or the Jeffreys measure, only the first of these methods is available.
+    The last two methods are only available for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or the Jeffreys measure, only the first of these methods is available.
+    
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
+    \itemize{
+    \item If it is the \code{L^2} distance (\code{distance="l2"} or \code{distance="l2norm"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
     }
+}
 \value{ 
     Returns an object of class \code{fdiscd.misclass}, that is a list including:
     \item{classification }{data frame with 4 columns:

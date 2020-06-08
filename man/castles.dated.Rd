@@ -6,7 +6,7 @@
 }
 \description{
   The data were collected by J.M. Rudrauf on Alsacian castles whose building period is
-  known (even approximatively).
+  known (even approximately).
   On each castle, he measured 4 structural parameters on a sample of building stones.
 }
 \usage{data(castles.dated)}

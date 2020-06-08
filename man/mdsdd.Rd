@@ -19,11 +19,23 @@ mdsdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jensen"
   \item{xf}{
        object of class \code{\link{folder}}, or list of arrays (or tables).
        
-       If it is a folder, its elements are data frames with \eqn{q} columns (considered as factors).
+       \itemize{
+       \item If it is a folder, its elements are data frames with \eqn{q} columns (considered as factors).
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
        
-       If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution 
-       (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape, and their elements are non-negative             numbers (if they are not, there is an error).
+%       If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution 
+%       (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape, and their elements are non-negative numbers (if they are not, there is an error).
+       
+       \item If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape:
+       
+       Each array (or table) \code{x[[i]]} has:
+          \itemize{
+          \item the same dimension(s). If \eqn{q = 1} (univariate), \code{dim(x[[i]])} is an integer. If \eqn{q > 1} (multivariate), \code{dim(x[[i]])} is an integer vector of length \code{q}.
+          \item the same dimension names \code{dimnames(xf[[i]])} (is non \code{NULL}). These dimnames are the names of the variables.
+          }
+       
+       The elements of the arrays are non-negative numbers (if they are not, there is an error).
+       }
 }
   \item{distance}{
        The distance or divergence used to compute the distance matrix between the discrete distributions (see Details).

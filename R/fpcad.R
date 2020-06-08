@@ -22,7 +22,7 @@ last.column.name=colnames(x)[ncol(x)]
 colnames(x)[ncol(x)] <- "group"
 group<-as.factor(x$group);
 nb.groups<-length(levels(group));
-group.name<-levels(group);
+levgroup<-levels(group);
 
 # Control and error message
 # on data
@@ -44,7 +44,7 @@ if (!is.null(windowh))
       {if (is.null(names(windowh)))
          {stop("The elements of the windowh list must be named")
          } else 
-         {if (min(names(windowh)==group.name)<1)
+         {if (min(names(windowh)==levgroup)<1)
             {stop("The names of the windowh list must be the group names")
             }
          }
@@ -85,7 +85,7 @@ if(data.centered)
   {# Centering data
   for (i in 1:nb.groups)
      {moyL[[i]]<-numeric(p)
-     x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p],scale=F)
+     x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p],scale=F)
      }
   }
 
@@ -106,7 +106,7 @@ if (p>1)
 if(data.scaled)
  {varL<-corL
    for (i in 1:nb.groups)
-     {x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p])
+     {x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p])
      }
  }
 
@@ -217,13 +217,13 @@ switch(choix,
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)}
       for (i in 1:nb.groups)
-        {xi<-x[x$group==group.name[i],1:p];
+        {xi<-x[x$group==levgroup[i],1:p];
         for(j in 1:i)
          {#Test if the determinant of 
           #varL[[i]]*(wL[[i]]^2)+varL[[j]]*(wL[[j]]^2) is different from zero
           if (abs(det(varLwL[[i]]+varLwL[[j]])) < .Machine$double.eps)
             stop("The matrices are not invertible")
-          xj<-x[x$group==group.name[j],1:p];
+          xj<-x[x$group==levgroup[j],1:p];
           W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]]) 
          }
         }
@@ -239,13 +239,13 @@ switch(choix,
         {varLwL[[i]]<-varL[[i]]*(wL[[i]]^2)
         }
       for (i in 1:nb.groups)
-        {xi<-x[x$group==group.name[i],1:p];
+        {xi<-x[x$group==levgroup[i],1:p];
         for(j in 1:i)
           {# Test if the variances are different from zero
           if (varLwL[[i]]+varLwL[[j]] < .Machine$double.eps)
             {stop("One variance or more is equal to zero")
             }
-          xj<-x[x$group==group.name[j],1:p];
+          xj<-x[x$group==levgroup[j],1:p];
           W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]])
           }
         };
@@ -259,13 +259,13 @@ switch(choix,
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
       for (i in 1:nb.groups)
-        {xi<-x[x$group==group.name[i],1:p];
+        {xi<-x[x$group==levgroup[i],1:p];
         for(j in 1:i)
          {#Test if the determinant of 
           #varL[[i]]*(wL[[i]]^2)+varL[[j]]*(wL[[j]]^2) is different from zero
           if (abs(det(varLwL[[i]]+varLwL[[j]])) < .Machine$double.eps)
             stop("The matrices are not invertible")
-          xj<-x[x$group==group.name[j],1:p];
+          xj<-x[x$group==levgroup[j],1:p];
          W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]])
          }
         }
@@ -279,13 +279,13 @@ switch(choix,
       for (i in 1:nb.groups)
         {varLwL[[i]]<-varL[[i]]*(windowh^2)}
       for (i in 1:nb.groups)
-        {xi<-x[x$group==group.name[i],1:p];
+        {xi<-x[x$group==levgroup[i],1:p];
         for(j in 1:i)
          {# Test if the variances are different from zero
           if (varLwL[[i]]+varLwL[[j]] < .Machine$double.eps)
             {stop("One variance or more is equal to zero")
             }
-          xj<-x[x$group==group.name[j],1:p];
+          xj<-x[x$group==levgroup[j],1:p];
           W[i,j]<-l2d(xi,xj,method="kern",varw1=varLwL[[i]],varw2=varLwL[[j]]) }} 
       },
   # Case: multivariate, non gaussian distributions estimated by gaussian kernel
@@ -293,10 +293,10 @@ switch(choix,
   mngl =
       {nbL<-by(x[,1:p],INDICES=group,FUN=nrow);
       for (i in 1:nb.groups)
-        {gi = group.name[i]
+        {gi = levgroup[i]
         xi<-x[x$group==gi,1:p];
         for(j in 1:i)
-         {gj = group.name[j]
+         {gj = levgroup[j]
           xj<-x[x$group==gj,1:p];
           W[i,j]<-l2d(xi,xj,method="kern",varw1=windowh[[gi]],varw2=windowh[[gj]]) }};
       },
@@ -306,10 +306,10 @@ switch(choix,
   ungl =
       {nbL<-by(as.data.frame(x[,1:p], stringsAsFactors = TRUE),INDICES=group,FUN=NROW);
       for (i in 1:nb.groups)
-        {gi = group.name[i]
+        {gi = levgroup[i]
         xi<-x[x$group==gi,1:p];
         for(j in 1:i)
-         {gj = group.name[j]
+         {gj = levgroup[j]
           xj<-x[x$group==gj,1:p];
           W[i,j]<-l2d(xi,xj,method="kern",varw1=windowh[[gi]],varw2=windowh[[gj]])
           }
@@ -381,10 +381,10 @@ results <- list( call=match.call(),
   variables=colnames(x)[1:p],
   inertia=data.frame(eigenvalue=epaff,
           inertia=round(1000*epaff/sum(abs(ep$d)))/10, stringsAsFactors = TRUE),
-  contributions=data.frame(group.name,PC=cont, stringsAsFactors = TRUE),
-  qualities=data.frame(group.name,PC=qual, stringsAsFactors = TRUE),
-  scores=data.frame(group.name,PC=coor, stringsAsFactors = TRUE),
-  norm = data.frame(group.name,norm=norme, stringsAsFactors = TRUE),
+  contributions=data.frame(levgroup,PC=cont, stringsAsFactors = TRUE),
+  qualities=data.frame(levgroup,PC=qual, stringsAsFactors = TRUE),
+  scores=data.frame(levgroup,PC=coor, stringsAsFactors = TRUE),
+  norm = data.frame(levgroup,norm=norme, stringsAsFactors = TRUE),
   means=moyL,
   variances=varL,
   correlations=corL,

@@ -28,7 +28,7 @@ last.column.name=colnames(x)[ncol(x)]
 colnames(x)[ncol(x)] <- "group"
 group<-as.factor(x$group);
 nb.groups<-length(levels(group));
-group.name<-levels(group);
+levgroup<-levels(group);
 
 # Controls and error messages
 # on data
@@ -50,7 +50,7 @@ if (!is.null(windowh))
       {if (is.null(names(windowh)))
          {stop("the elements of the windowh list must be named")
          } else 
-         {if (min(names(windowh)==group.name)<1)
+         {if (min(names(windowh)==levgroup)<1)
             {stop("the names of the windowh list must be the group names")
             }
          }
@@ -105,7 +105,7 @@ if(data.centered)
   {# Centering data
   for (i in 1:nb.groups)
      {moyL[[i]]<-numeric(p)
-     x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p],scale=F)
+     x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p],scale=F)
      }
   }
 
@@ -127,7 +127,7 @@ if(data.scaled)
  {# scaling data
   varL<-corL
    for (i in 1:nb.groups)
-     {x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p])
+     {x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p])
      }
  }
 
@@ -141,6 +141,9 @@ if(common.variance)
 #require(e1071)
 skewnessL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, skewness)
 kurtosisL <- by(as.data.frame(x[, 1:p], stringsAsFactors = TRUE), INDICES=group, FUN=apply, 2, kurtosis)
+
+# Distance: string which will be returned
+dist.print <- distance
 
 if (gaussiand) { # Gaussian case
   
@@ -328,6 +331,20 @@ if (gaussiand) { # Gaussian case
              norme[i]<-sqrt(W[i,i])
            }
 
+           if(normed) {
+             # Calculus of the matrix W of the normed pca
+             for (i in 1:nb.groups) {
+               for (j in 1:i) {
+                 W[i,j]<-W[i,j]/(norme[i]*norme[j])
+               }
+             }
+             for (i in 1:(nb.groups-1)) {
+               for (j in (i+1):nb.groups) {
+                 W[i,j]<-W[j,i]
+               }
+             }
+           }
+
            matdist <- diag(0, nb.groups, nb.groups)
            dimnames(matdist) <- list(levels(group), levels(group))
            if (!normed) {
@@ -366,10 +383,10 @@ names(attributes(kurtosisL)$dimnames) <- last.column.name
 results <- list( call=match.call(),
                  group=last.column.name,
                  variables=colnames(x)[1:p],
-                 d=distance,
+                 d=dist.print,
                  inertia=data.frame(eigenvalue=epaff,
                     inertia=round(1000*epaff/sum(abs(ep)))/10, stringsAsFactors = TRUE),
-                 scores=data.frame(group.name,PC=coor, stringsAsFactors = TRUE))
+                 scores=data.frame(levgroup,PC=coor, stringsAsFactors = TRUE))
 # Change of the name of the grouping variable in the data frame of scores
 colnames(results$scores)[1]=last.column.name
 

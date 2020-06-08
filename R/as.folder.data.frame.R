@@ -1,13 +1,12 @@
 as.folder.data.frame <- function(x, groups = tail(colnames(x), 1), ...) {
     
   name.x <- deparse(substitute(x))
-  name.g <- deparse(substitute(groups))
-  
+
   # Checking of the arguments
-  if (!is.data.frame(x))
-    stop(paste(name.x, "is not a data frame."))
+  # if (!is.data.frame(x))
+  #   stop(paste(name.x, "is not a data frame."))
   if (!groups %in% colnames(x))
-    stop(paste(name.g, " is not a column name of ", name.x, ".", sep = ""))
+    stop(paste("'", groups, "' is not a column name of ", name.x, ".", sep = ""))
   
   x <- as.data.frame(x, stringsAsFactors = TRUE)
   
@@ -15,7 +14,7 @@ as.folder.data.frame <- function(x, groups = tail(colnames(x), 1), ...) {
   jg <- which(colnames(x) == groups)
   g <- x[, jg]
   if (!is.factor(g)) {
-    stop(paste(name.x, "[, '", name.g, "']", " is not a factor.", sep = ""))
+    stop(paste(name.x, "[, '", groups, "']", " is not a factor.", sep = ""))
   }
   glev <- levels(g)
   

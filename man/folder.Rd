@@ -28,16 +28,16 @@ folder(x1, x2 = NULL, ..., cols.select = "intersect", rows.select = "")
      \describe{
      \item{\code{"intersect"}}{(default) the column names of the data frames in the folder are the intersection of the column names of all the data frames given as arguments.}
      \item{\code{"union"}}{the column names of the data frames in the folder are the union of the column names of all the data frames given as arguments. When necessary, the rows of the returned data frames are completed by NA.}
-     If \code{cols.select} is a character vector, it gives the column names selected in the data frames given as arguments. The corresponding columns constitute the columns of the elements of the returned foldert. Notice that when a column name is not present in all data frames (given as arguments), the data are completed by NA.
+     If \code{cols.select} is a character vector, it gives the column names selected in the data frames given as arguments. The corresponding columns constitute the columns of the elements of the returned folder. Notice that when a column name is not present in all data frames (given as arguments), the data are completed by NA.
      }
 }
      \item{rows.select}{
-     string. Gives the method used to choose the row names of the data frames of the foldert. This argument can be:
+     string. Gives the method used to choose the row names of the data frames of the folder. This argument can be:
      \describe{
-     \item{\code{""}}{(default) the data frames of the foldert have the same rows as those which were passed as arguments.
+     \item{\code{""}}{(default) the data frames of the folder have the same rows as those which were passed as arguments.
      }
-     \item{\code{"intersect"}}{the row names of the data frames in the foldert are the intersection of the row names of all the data frames given as arguments.}
-     \item{\code{"union"}}{the row names of the data frames in the foldert are the union of the row names of all the data frames given as arguments. When necessary, the columns of the data frames returned are completed by \code{NA}.}
+     \item{\code{"intersect"}}{the row names of the data frames in the folder are the intersection of the row names of all the data frames given as arguments.}
+     \item{\code{"union"}}{the row names of the data frames in the folder are the union of the row names of all the data frames given as arguments. When necessary, the columns of the data frames returned are completed by \code{NA}.}
      }
 }
 }

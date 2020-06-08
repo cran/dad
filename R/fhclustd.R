@@ -25,7 +25,7 @@ fhclustd <-
     colnames(x)[ncol(x)] <- "group"
     group<-as.factor(x$group);
     nb.groups<-length(levels(group));
-    group.name<-levels(group);
+    levgroup<-levels(group);
     
     # Control and error message
     # on data
@@ -47,7 +47,7 @@ fhclustd <-
     {if (is.null(names(windowh)))
     {stop("the elements of the windowh list must be named")
     } else 
-    {if (min(names(windowh)==group.name)<1)
+    {if (min(names(windowh)==levgroup)<1)
     {stop("the names of the windowh list must be the group names")
     }
     }
@@ -94,7 +94,7 @@ fhclustd <-
     {# Centering data
       for (i in 1:nb.groups)
       {moyL[[i]]<-numeric(p)
-      x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p],scale=F)
+      x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p],scale=F)
       }
     }
     
@@ -115,7 +115,7 @@ fhclustd <-
     if(data.scaled)
     {varL<-corL
     for (i in 1:nb.groups)
-    {x[x$group==group.name[i],1:p]=scale(x[x$group==group.name[i],1:p])
+    {x[x$group==levgroup[i],1:p]=scale(x[x$group==levgroup[i],1:p])
     }
     }
     
