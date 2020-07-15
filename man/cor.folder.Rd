@@ -1,6 +1,6 @@
 \name{cor.folder}
 \alias{cor.folder}
-\alias{corf}
+%\alias{corf}
 \title{
   Correlation matrices of a folder of data sets
 }

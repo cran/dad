@@ -1,6 +1,6 @@
 \name{mean.folder}
 \alias{mean.folder}
-\alias{meanf}
+%\alias{meanf}
 \title{
   Means of a folder of data sets
 }

@@ -1,11 +1,11 @@
 \name{matipl2d}
 \alias{matipl2d}
-\alias{mat.ip.l2d.gs}
-\alias{mat.ip.l2d.gs.u}
-\alias{mat.ip.l2d.kga}
-\alias{mat.ip.l2d.kga.u}
-\alias{mat.ip.l2d.kgw}
-\alias{mat.ip.l2d.kgw.u}
+%\alias{mat.ip.l2d.gs}
+%\alias{mat.ip.l2d.gs.u}
+%\alias{mat.ip.l2d.kga}
+%\alias{mat.ip.l2d.kga.u}
+%\alias{mat.ip.l2d.kgw}
+%\alias{mat.ip.l2d.kgw.u}
 \title{
     Matrix of \eqn{L^2} inner products of probability densities
 }

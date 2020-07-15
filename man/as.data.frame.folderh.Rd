@@ -1,6 +1,6 @@
 \name{as.data.frame.folderh}
 \alias{as.data.frame.folderh}
-\alias{folderh2df}
+%\alias{folderh2df}
 %\alias{as.data.frame}
 \title{
   Hierarchic folder to data frame

@@ -1,7 +1,7 @@
 \name{distl2dpar}
 \alias{distl2dpar}
-\alias{dist.l2d.gp}
-\alias{dist.l2d.gp.u}
+%\alias{dist.l2d.gp}
+%\alias{dist.l2d.gp.u}
 \title{
      \eqn{L^2} distance between Gaussian densities given their parameters
 }

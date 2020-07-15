@@ -1,6 +1,6 @@
 \name{as.folder.data.frame}
 \alias{as.folder.data.frame}
-\alias{df2folder}
+%\alias{df2folder}
 %\alias{as.folder.default}
 \title{
   Data frame to folder

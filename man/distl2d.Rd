@@ -1,11 +1,11 @@
 \name{distl2d}
 \alias{distl2d}
-\alias{dist.l2d.gs}
-\alias{dist.l2d.gs.u}
-\alias{dist.l2d.kgw}
-\alias{dist.l2d.kgw.u}
-\alias{dist.l2d.kga}
-\alias{dist.l2d.kga.u}
+%\alias{dist.l2d.gs}
+%\alias{dist.l2d.gs.u}
+%\alias{dist.l2d.kgw}
+%\alias{dist.l2d.kgw.u}
+%\alias{dist.l2d.kga}
+%\alias{dist.l2d.kga.u}
 \title{
      \eqn{L^2} distance between probability densities
 }

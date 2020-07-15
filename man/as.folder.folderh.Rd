@@ -1,6 +1,6 @@
 \name{as.folder.folderh}
 \alias{as.folder.folderh}
-\alias{folderh2folder}
+%\alias{folderh2folder}
 %\alias{as.folder}
 \title{
   Hierarchic folder to folder

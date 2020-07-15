@@ -1,6 +1,6 @@
 \name{kurtosis.folder}
 \alias{kurtosis.folder}
-\alias{kurtosisf}
+%\alias{kurtosisf}
 \title{
   Kurtosis coefficients of a folder of data sets
 }

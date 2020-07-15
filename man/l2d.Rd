@@ -1,11 +1,11 @@
 \name{l2d}
 \alias{l2d}
-\alias{l2d.gs}
-\alias{l2d.gs.u}
-\alias{l2d.kgw}
-\alias{l2d.kgw.u}
-\alias{l2d.kga}
-\alias{l2d.kga.u}
+%\alias{l2d.gs}
+%\alias{l2d.gs.u}
+%\alias{l2d.kgw}
+%\alias{l2d.kgw.u}
+%\alias{l2d.kga}
+%\alias{l2d.kga.u}
 \title{
      \eqn{L^2} inner product of probability densities
 }

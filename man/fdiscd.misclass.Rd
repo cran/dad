@@ -4,7 +4,7 @@
   Misclassification ratio in functional discriminant analysis of probability densities.
 }
 \description{
-  Computes the one-leave-out misclassification ratio of the rule allocating \eqn{T} groups of individuals, one group after another, to one class of groups (among \eqn{K} classes of groups) using the distances or divergences between the density function associated to the group to allocate and the density functions associated to the \eqn{K} classes. 
+  Computes the one-leave-out misclassification ratio of the rule assigning \eqn{T} groups of individuals, one group after another, to the class of groups (among \eqn{K} classes of groups) which achieves the minimum of the distances or divergences between the density function associated to the group to assign and the \eqn{K} density functions associated to the \eqn{K} classes. 
 }
 \usage{
 fdiscd.misclass(xf, class.var, gaussiand = TRUE,
@@ -34,7 +34,7 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
        }
 %       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance can be
 %       \code{"l2"} (default) or \code{"l2norm"}.
-       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance is \code{"l2"}.
+       If \code{gaussiand = FALSE}, the densities are estimated by the Gaussian kernel method and the distance is \code{"l2"} or \code{"l2norm"}.
 }
   \item{crit}{
        1, 2 or 3. In order to select the densities associated to the classes. See Details.
@@ -94,7 +94,7 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
     \item{confusion.mat }{confusion matrix,}
     \item{misalloc.per.class }{the misclassification ratio per class,}
     \item{misclassed }{the misclassification ratio,}
-    \item{distances }{matrix with \eqn{T} rows and \eqn{K} columns, of the distances (\eqn{d_{tk}}): \eqn{d_{tk}} is the distance between the group \eqn{t} and the class \eqn{k},}
+    \item{distances }{matrix with \eqn{T} rows and \eqn{K} columns, of the distances (\eqn{d_{tk}}): \eqn{d_{tk}} is the distance between the group \eqn{t} and the class \eqn{k}, computed with the measure given by argument \code{distance} (\eqn{L^2}-distance, Hellinger distance or Jeffreys measure),}
     \item{proximities }{matrix of the proximity indices (in percents) between the groups and the classes. The proximity of the group \eqn{t} to the class \eqn{k} is computed as so: \eqn{(1/d_{tk})/\sum_{l=1}^{l=K}(1/d_{tl})}.}
 }
 \references{

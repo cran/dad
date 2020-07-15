@@ -44,6 +44,8 @@ export(getcol.folder); export(getcol.foldert); export(rmcol.folder); export(rmco
 export(getrow.folder); export(getrow.foldert); export(rmrow.folder); export(rmrow.foldert)
 export(plot.foldert)
 export(fpcat); export(print.fpcat); export(plot.fpcat); export(interpret.fpcat)
+export(discdd.misclass); export(print.discdd.misclass); export(is.discdd.misclass)
+export(discdd.predict); export(print.discdd.predict); export(is.discdd.predict)
 ## Imports packages
 import(ggplot2)
 ## Import functions from other packages
@@ -90,6 +92,8 @@ S3method(interpret, dstatis)
 S3method(print, mdsdd)
 S3method(plot, mdsdd)
 S3method(interpret, mdsdd)
+S3method(print, discdd.misclass)
+S3method(print, discdd.predict)      
 S3method(print, hclustdd)
 S3method(plot, hclustdd)
 S3method(cut, data.frame)

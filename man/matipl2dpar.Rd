@@ -1,7 +1,7 @@
 \name{matipl2dpar}
 \alias{matipl2dpar}
-\alias{mat.ip.l2d.gp}
-\alias{mat.ip.l2d.gp.u}
+%\alias{mat.ip.l2d.gp}
+%\alias{mat.ip.l2d.gp.u}
 \title{
     Matrix of \eqn{L^2} inner products of Gaussian densities
 }

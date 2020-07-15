@@ -1,6 +1,6 @@
 \name{skewness.folder}
 \alias{skewness.folder}
-\alias{skewnessf}
+%\alias{skewnessf}
 \title{
   Skewness coefficients of a folder of data sets
 }

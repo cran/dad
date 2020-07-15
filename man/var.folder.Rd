@@ -1,6 +1,6 @@
 \name{var.folder}
 \alias{var.folder}
-\alias{varf}
+%\alias{varf}
 \title{
   Variance matrices of a folder of data sets
 }

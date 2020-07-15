@@ -13,6 +13,9 @@ fdiscd.misclass <-
     if (ncol(xf[[1]]) < 2)
       stop(paste0("The 1st data frame of xf must have at least two columns (the grouping variable and the classes)."))
     
+    if (!(crit %in% 1:3))
+      stop("crit must be 1, 2 or 3.")
+    
     x <- xf[[2]]
     j.group <- which(colnames(x) == attr(xf, "keys"))
     if (j.group != ncol(x))
@@ -60,12 +63,6 @@ fdiscd.misclass <-
     
     if (distance %in% c("hellinger", "jeffreys", "wasserstein") & (crit != 1)) {
         warning("If distance=", distance, ", crit cannot be 2 or 3.\n crit is set to 1.")
-    }
-    
-    # If crit is 2 or 3, the densities cannot be normed: distance cannot be "l2norm"
-    if (crit != 1 & distance == "l2norm") {
-      warning("The distance 'l2norm' (l^2-distance between normed densities) is not available when crit is 2 or 3.\ndistance used: 'l2'.")
-      distance <- "l2"
     }
     
     # Add the classes to x, as the (p+2)th column:
@@ -192,12 +189,19 @@ fdiscd.misclass <-
                           if (sum(x[, p+1] == n.x) > 0) {
                             d2ff <- W[n.x, n.x]
                             for (n.cl in colnames(distances))  {
+                              # numbers of the rows of x containing observations of group n.x
                               ind.cl <- which((x[, p+2] == n.cl)&(x[, p+1] != n.x))
+                              # Number of observations in class n.cl
                               Tj <- length(unique(x[ind.cl, p+1]))
+                              # The groups which belong to class n.cl
                               x.cl <- unique(x[ind.cl, p+1])
                               d2fg <- sum(W[n.x, x.cl])/Tj
                               d2gg <- sum(W[x.cl, x.cl])/(Tj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              if (!normed) {
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }
                             }
                           }
                         }
@@ -218,7 +222,11 @@ fdiscd.misclass <-
                               Wjj <- Wjj[names(nr), names(nr)]
                               d2fg <- sum(nr*Wij)/nj
                               d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              if (!normed) {
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }
                             }
                           }
                         }
@@ -638,7 +646,7 @@ fdiscd.misclass <-
                                        # Multiplication of the variance by the window parameter
                                        varLwL.tmp <- var.cl.tmp*(wL^2)
                                        Wfg.tmp <- l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp) 
-                                       Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
+                                       Wg.tmp <- l2d(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                                      },
                                      # Case: multivariate, non gaussian distributions estimed by gaussian kernel
                                      # method, and bandwith parameter, common to all densities, given by the user
@@ -656,7 +664,7 @@ fdiscd.misclass <-
                                        # Multiplication of the variance by the window parameter
                                        varLwL.tmp <- var.cl.tmp*(windowh^2)
                                        Wfg.tmp <- l2d(x[ind.x, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.f[[n.x]], varw2=varLwL.tmp)
-                                       Wg.tmp <- l2d.kgw.u(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
+                                       Wg.tmp <- l2d(x[ind.cl, 1:p], x[ind.cl, 1:p], method="kern", varw1=varLwL.tmp, varw2=varLwL.tmp)
                                      }
                               )
                             }
@@ -679,8 +687,11 @@ fdiscd.misclass <-
                               x.cl <- unique(x[ind.cl, p+1])
                               d2fg <- sum(W[n.x, x.cl])/Tj
                               d2gg <- sum(W[x.cl, x.cl])/(Tj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
-                            }
+                              if (!normed) {
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }                            }
                           }
                         }
                       },
@@ -700,7 +711,12 @@ fdiscd.misclass <-
                               Wjj <- Wjj[names(nr), names(nr)]
                               d2fg <- sum(nr*Wij)/nj
                               d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              if (!normed) {
+                                # distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg/nj + d2gg/(nj^2))
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }
                             }
                           }
                         }

@@ -1,0 +1,125 @@
+---
+title: "Multidimensional Scaling of Discrete Probability Distributions"
+author: "Pierre Santagostini, Rachid Boumaza"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    # number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Multidimensional Scaling of Discrete Probability Distributions}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loadpkg, message=FALSE}
+library(dad)
+```
+
+## Introduction: example and objective of the method
+
+The dataset `dspg` of the **dad** package is a list of $T = 7$ matrices. For each of the $T$ years 1968, 1975, 1982, 1990, 1999, 2010 and 2015, we have the contingency table of Diploma × Socioprofessional group in France. Each table has:
+
+* 4 rows corresponding to a level of diploma (`diplome`):
+  + `bepc`: brevet
+  + `cap`: NCQ (CAP)
+  + `bac`: baccalaureate
+  + `sup`: higher education (supérieur)
+* 6 columns corresponding to socio professional groups (`csp`):
+  + `agri`: farmer (agriculteur)
+  + `cardr`: senior manager (cadre supérieur)
+  + `pint`: middle manager (profession intermédiaire)
+  + `empl`: employee (employé)
+  + `ouvr`: worker (ouvrier)
+
+
+```{r load_data}
+data("dspg")
+print(dspg)
+```
+
+After the computation of the distances or divergences between each pair of occasions, that is the distances $(\delta_{ts})$ between their corresponding distributions, the MDS technique looks for a representation of the distributions by $T$ points in a low dimensional space such that the distances between these points are as similar as possible to the $(\delta_{ts})$.
+
+The dad package includes functions for all the calculations required to implement such a method and to interpret its outputs:
+
+* The `mdsdd` function performs MDS and generates scores;
+* The `plot` function generates graphics representing the probability distributions on the factorial axes;
+* The `interpret` function returns other aids to interpretation based on the marginal distributions.
+
+<!-- Given $T$ discrete probability distributions and $(\delta_{ts})_{1 \le t,s \le T}$ the distances/divergences between each pair of them, the MDS technique looks for a representation of the densities by $T$ points in a low dimensional space such as the distances between these points are as similar as possible to the $(\delta_{ts})$. -->
+
+<!-- The **dad** package includes functions for all the calculations required to implement such a method and to interpret its outputs: -->
+
+<!-- * The `mdsdd` function performs MDS and generates scores; -->
+<!-- * The `plot` function generates graphics representing the densities on the factorial axes; -->
+<!-- * The `interpret` function returns other aids to interpretation based on the moments of the variables. -->
+
+<!-- For the analysis of continuous probability distributions, see [MDS of probability densities](mds-densities.html) -->
+
+## The `mdsdd` function
+
+MDS of discrete probability distributions can be carried using the `mdsdd` function. This function applies to
+
+* an object of class "[folder](dad-intro.html)" (in this case, it is used the same way as `fmdsd` (see help), except that the columns of each data frame of the folder are not numeric, but factors)
+* or a list of arrays (or a list of tables).
+
+The following example shows the application of `mdsdd` on a list of arrays.
+The `mdsdd` function is built on the `cmdscale` function of R.
+It is carried out on the dataset `dspg` as follows:
+```{r mds, results='hide', fig.height=3, fig.width=3.5}
+resultmds <- mdsdd(dspg)
+```
+
+In addition to the `add` argument of `cmdscale`, the `mdsdd` function has two sets of optional arguments:
+
+* The first, consisting of `distance`, controls the method used to compute the distances between the distributions.
+* The second set consists of optional arguments which control the function outputs.
+
+## Interpretation of `mdsdd` outputs
+
+<!-- ```{r fig.height = 3.5, fig.width = 3.5} -->
+<!-- resultmds <- mdsdd(dspg) -->
+<!-- ``` -->
+
+The `mdsdd` function returns an object of **S3** class `"mdsdd"`, consisting of a list of 9 elements, including the scores, also called principal coordinates, and the marginal and joint distributions of the variables per occasion.
+
+```{r}
+names(resultmds)
+```
+
+The outputs are displayed with the `print` function:
+
+```{r}
+print(resultmds)
+```
+
+Graphical representations on the principal planes are generated with the `plot` function:
+
+```{r fig.height = 3, fig.width = 4.5}
+plot(resultmds, fontsize.points = 1)
+```
+
+In this example, a single axis is enough to explain the general trends; the first principal coordinate explains 92% of the inertia.
+
+This graph shows an evolution of the value of the first principal score, which gets higher for recent years.
+
+The interpretation of outputs is based on the relationships between the principal scores and the marginal or joint frequencies. These relationships are quantified by correlation coefficients and are represented graphically by plotting the scores against the frequencies. These interpretation tools are provided by the `interpret` function which has two optional arguments: `nscores` indicating the indices of the column scores to be interpreted and `mma` whose default value is `"marg1"` (the probability distributions of each variable).
+
+```{r fig.height = 4.5, fig.width = 8.8}
+interpret(resultmds, nscore = 1)
+```
+
+From the correlations between the principal coordinates (PC) and the distributions of the variables, we deduce that:
+
+* The higher $PC1$, the higher the frequencies of the diplomas `"diplome.bac"` and `"diplome.sup"`, the higher `"diplome.cap"` tends to be, and the lower the frequencies of `"diplome.bepc"`.
+* The higher $PC1$, the higher the frequencies of the socio professional groups `"csp.cadr"`, `"csp.pint"` and "csp.empl"`, and the lower the frequencies of  "csp.agri"`, `"csp.arti"` and `"csp.ouvr"`.
+
+So, reminding that $PC1$ gets higher for recent years, these results highlight that in France, since 1968:
+
+* the number of brevet graduates have decreased and higher degrees have increased,
+* the number of farmers, craftsmen and workers have decreased and the number of employees, middle and senior managers have increased.

@@ -1,11 +1,11 @@
 \name{matdistl2d}
 \alias{matdistl2d}
-\alias{mat.dist.l2d.gs}
-\alias{mat.dist.l2d.gs.u}
-\alias{mat.dist.l2d.kga}
-\alias{mat.dist.l2d.kga.u}
-\alias{mat.dist.l2d.kgw}
-\alias{mat.dist.l2d.kgw.u}
+%\alias{mat.dist.l2d.gs}
+%\alias{mat.dist.l2d.gs.u}
+%\alias{mat.dist.l2d.kga}
+%\alias{mat.dist.l2d.kga.u}
+%alias{mat.dist.l2d.kgw}
+%\alias{mat.dist.l2d.kgw.u}
 \title{
     Matrix of \eqn{L^2} distances between probability densities
 }

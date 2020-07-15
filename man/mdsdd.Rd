@@ -26,11 +26,12 @@ mdsdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jensen"
 %       If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution 
 %       (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape, and their elements are non-negative numbers (if they are not, there is an error).
        
-       \item If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape:
+       \item If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint frequency distribution of \eqn{q} variables within the \eqn{t^{th}} group. The frequency distribution is expressed with relative or absolute frequencies.
+       These arrays have the same shape:
        
-       Each array (or table) \code{x[[i]]} has:
+       Each array (or table) \code{xf[[i]]} has:
           \itemize{
-          \item the same dimension(s). If \eqn{q = 1} (univariate), \code{dim(x[[i]])} is an integer. If \eqn{q > 1} (multivariate), \code{dim(x[[i]])} is an integer vector of length \code{q}.
+          \item the same dimension(s). If \eqn{q = 1} (univariate), \code{dim(xf[[i]])} is an integer. If \eqn{q > 1} (multivariate), \code{dim(xf[[i]])} is an integer vector of length \code{q}.
           \item the same dimension names \code{dimnames(xf[[i]])} (is non \code{NULL}). These dimnames are the names of the variables.
           }
        

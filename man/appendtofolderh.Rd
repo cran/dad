@@ -1,6 +1,6 @@
 \name{appendtofolderh}
 \alias{appendtofolderh}
-\alias{append.df2folderh}
+%\alias{append.df2folderh}
 \title{
   Adds a data frame to a \code{folderh}.
 }

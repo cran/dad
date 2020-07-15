@@ -1,7 +1,7 @@
 \name{matdistl2dpar}
 \alias{matdistl2dpar}
-\alias{mat.dist.l2d.gp}
-\alias{mat.dist.l2d.gp.u}
+%\alias{mat.dist.l2d.gp}
+%\alias{mat.dist.l2d.gp.u}
 \title{
     Matrix of \eqn{L^2} distances between Gaussian densities given their parameters
 }

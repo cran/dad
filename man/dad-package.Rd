@@ -17,8 +17,8 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 3.4.1\cr
-Date: \tab 2020-06-05\cr
+Version: \tab 3.4.3\cr
+Date: \tab 2020-07-15\cr
 License: \tab GPL-2\cr
 }
 To cite \code{dad}, use \code{citation("dad")}.
@@ -30,7 +30,9 @@ The main functions applying to the probability densities are: \itemize{
 \item{\code{\link{fhclustd}}: hierarchical clustering,}
 \item{\code{\link{fdiscd.misclass}}: functional discriminant analysis in order to compute the misclassification ratio with the one-leave-out method,}
 \item{\code{\link{fdiscd.predict}}: discriminant analysis in order to predict the class (synonymous with cluster, not to be confused with the class attribute of an R object) of each probability density whose class is unknown,}
-\item{\code{\link{mdsdd}}: multidimensional scaling of discrete probability distributions.}
+\item{\code{\link{mdsdd}}: multidimensional scaling of discrete probability distributions,}
+\item{\code{\link{discdd.misclass}}: functional discriminant analysis of discrete probability distributions, in order to compute the misclassification ratio with the one-leave-out method,}
+\item{\code{\link{discdd.predict}}: discriminant analysis of discrete probability distributions, in order to predict the class of each probability distribution whose class is unknown,}
 }
 The above functions are completed by: \itemize{
 \item{A \code{print()} method for objects of class \code{fpcad}, \code{fmdsd}, \code{fdiscd.misclass}, \code{fdiscd.predict} or \code{mdsdd}, in order to display the results of the corresponding function,}

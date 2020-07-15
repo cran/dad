@@ -1,7 +1,7 @@
 \name{l2dpar}
 \alias{l2dpar}
-\alias{l2d.gp}
-\alias{l2d.gp.u}
+%\alias{l2d.gp}
+%\alias{l2d.gp.u}
 \title{
      \eqn{L^2} inner product of Gaussian densities given their parameters
 }

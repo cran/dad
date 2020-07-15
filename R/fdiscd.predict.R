@@ -13,6 +13,9 @@ fdiscd.predict <-
     if (ncol(xf[[1]]) < 2)
       stop(paste0("The 1st data frame of xf must have at least two columns (the grouping variable and the classes)."))
     
+    if (!(crit %in% 1:3))
+      stop("crit must be 1, 2 or 3.")
+    
     x <- xf[[2]]
     j.group <- which(colnames(x) == attr(xf, "keys"))
     if (j.group != ncol(x))
@@ -60,12 +63,6 @@ fdiscd.predict <-
     
     if (distance %in% c("hellinger", "jeffreys", "wasserstein") & (crit != 1)) {
       warning("If distance=", distance, ", crit cannot be 2 or 3.\n crit is set to 1.")
-    }
-    
-    # If crit is 2 or 3, the densities cannot be normed: distance cannot be "l2norm"
-    if (crit != 1 & distance == "l2norm") {
-      warning("The distance 'l2norm' (l^2-distance between normed densities) is not available when crit is 2 or 3.\ndistance used: 'l2'.")
-      distance <- "l2"
     }
     
     # Add the classes to x, as the (p+2)th column:
@@ -223,7 +220,11 @@ fdiscd.predict <-
                               x.cl <- unique(x[ind.cl, p+1])
                               d2fg <- sum(W[n.x, x.cl])/Tj
                               d2gg <- sum(W[x.cl, x.cl])/(Tj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              if (!normed) {
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }
                             }
                           }
                         }
@@ -244,7 +245,11 @@ fdiscd.predict <-
                               Wjj <- Wjj[names(nr), names(nr)]
                               d2fg <- sum(nr*Wij)/nj
                               d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                              distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              if (!normed) {
+                                distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                              } else {
+                                distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                              }
                             }
                           }
                         }
@@ -638,7 +643,11 @@ fdiscd.predict <-
                      x.cl <- unique(x[ind.cl, p+1])
                      d2fg <- sum(W[n.x, x.cl])/Tj
                      d2gg <- sum(W[x.cl, x.cl])/(Tj^2)
-                     distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                     if (!normed) {
+                       distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                     } else {
+                       distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                     }
                    }
                  }
                }
@@ -659,8 +668,12 @@ fdiscd.predict <-
                      Wjj <- Wjj[names(nr), names(nr)]
                      d2fg <- sum(nr*Wij)/nj
                      d2gg <- as.numeric(rbind(nr) %*% Wjj %*% cbind(nr))/(nj^2)
-                     distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
-                   }
+                     if (!normed) {
+                       # distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg/nj + d2gg/(nj^2))
+                       distances[n.x, n.cl] <- sqrt(d2ff - 2*d2fg + d2gg)
+                     } else {
+                       distances[n.x, n.cl] <- sqrt(2 - 2*d2fg / sqrt(d2ff*d2gg))
+                     }                            }
                  }
                }
              }
