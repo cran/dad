@@ -82,14 +82,15 @@ as.foldert.data.frame <- function(x, method = 1, ind = 1, timecol = 2, nvar = NU
            
 #            browser()
            # Building the list of data frames
-           cnames <- c("ind", colnames(x)[jt + 1:nvar])
+           cnames <- c(colnames(x)[jt + 1:nvar])
            fold <- list()
            i <- 0
            while((jt+nvar) <= ncol(x)) {
              # cat("\n")
              # print(colnames(x)[c(jind, jt + 1:nvar)])
-             xj <- x[, c(jind, jt + 1:nvar)]
+             xj <- x[, jt + 1:nvar]
              colnames(xj) <- cnames
+             rownames(xj) <- x[, jind]
              fold <- c(fold, list(xj))
              jt <- jt + nvar
            }

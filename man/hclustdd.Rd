@@ -8,21 +8,39 @@ Hierarchic cluster analysis of discrete probability distributions
 Performs functional hierarchic cluster analysis of discrete probability distributions. It returns an object of class \code{\link{hclustdd}}. It applies \code{\link{hclust}} to the distance matrix between the \eqn{T} distributions.
 }
 \usage{
-hclustdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger",
-             "jeffreys", "jensen", "lp"),
-             %association = c("cramer", "tschuprow", "pearson",  "phi"),
+hclustdd(xf, group.name = "group", distance = c("l1", "l2", "chisqsym", "hellinger",
+             "jeffreys", "jensen", "lp"), %association = c("cramer", "tschuprow", "pearson",  "phi"),
              sub.title = "", filename = NULL,
-             method.hclust = "complete", group.name = "group")
+             method.hclust = "complete")
 }
 \arguments{
   \item{xf}{
        object of class \code{\link{folder}}, or list of arrays (or tables).
        
-       If it is a folder, its elements are data frames with \eqn{q} numeric columns. The \eqn{t^{th}} element (\eqn{t = 1, ... , T}) matches with the \eqn{t^{th}} group.
+       \itemize{
+       \item If it is a folder, its elements are data frames with \eqn{q} columns (considered as factors).
+       The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
        
-       If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint distribution 
-       (absolute or relative frequencies) of the \eqn{t^{th}} group. These arrays have the same shape, and their elements are non-negative             numbers (if they are not, there is an error).
+
+       \item If it is a data frame, the columns with name given by the \code{group.name} argument is a factor giving the groups.
+       The other columns are all considered as factors.
+       
+       \item If it is a list of arrays (or tables), the \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) is the table of the joint frequency distribution of \eqn{q} variables within the \eqn{t^{th}} group. The frequency distribution is expressed with relative or absolute frequencies.
+       These arrays have the same shape.
+       
+       Each array (or table) \code{xf[[i]]} has:
+          \itemize{
+          \item the same dimension(s). If \eqn{q = 1} (univariate), \code{dim(xf[[i]])} is an integer. If \eqn{q > 1} (multivariate), \code{dim(xf[[i]])} is an integer vector of length \code{q}.
+          \item the same dimension names \code{dimnames(xf[[i]])} (is non \code{NULL}). These dimnames are the names of the variables.
+          }
+       
+       The elements of the arrays are non-negative numbers (if they are not, there is an error).
+       }
+
 }       
+  \item{group.name}{
+       string. Name of the grouping variable. Default: \code{group.name  = "group"}.
+}
   \item{distance}{
        The distance or divergence used to compute the distance matrix between the discrete distributions (see Details).
        It can be:
@@ -31,7 +49,7 @@ hclustdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger",
        \item \code{"l2"} the \eqn{L^p} distance with \eqn{p = 2}
        \item \code{"chisqsym"} the symmetric Chi-squared distance
        \item \code{"hellinger"} the Hellinger metric (Matusita distance)
-       \item \code{"jeffreys"} the Jeffreys distance (symmetrised Kullback-Leibler divergence)
+       \item \code{"jeffreys"} Jeffreys distance (symmetrised Kullback-Leibler divergence)
        \item \code{"jensen"} the Jensen-Shannon distance
        \item \code{"lp"} the \eqn{L^p} distance with \eqn{p} given by the argument \code{p} of the function.  
        }
@@ -59,9 +77,6 @@ hclustdd(xf, distance = c("l1", "l2", "chisqsym", "hellinger",
 %       \code{NULL} or a vector with length the number of groups, i.e. the length of \code{xf}. See \code{\link{hclust}}.
 %       \code{NULL} or a vector with length size of d. See \code{\link{hclust}}.
 %}
-  \item{group.name}{
-       string. Name of the grouping variable. Default: \code{group.name  = "group"}.
-}
 }
 \details{ 
     In order to compute the distances/dissimilarities between the groups, the \eqn{T} probability distributions \eqn{f_t} corresponding to the \eqn{T} groups of individuals are estimated from observations.
@@ -92,17 +107,22 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 # obtained by converting numeric variables 
 data(roses)
 xr = roses[,c("Sha", "Den", "Sym", "rose")]
-xr$Sha = cut(xr$Sha, breaks = c(0, 5, 7, 10))
-xr$Den = cut(xr$Den, breaks = c(0, 4, 6, 10))
-xr$Sym = cut(xr$Sym, breaks = c(0, 6, 8, 10))
+xr = cut(xr, breaks = list(c(0, 5, 7, 10), c(0, 4, 6, 10), c(0, 6, 8, 10)))
 xf = as.folder(xr, groups = "rose")
-a = hclustdd(xf)
-print(a)
-print(a, dist.print = TRUE)
-plot(a)
-plot(a, hang = -1)
+af = hclustdd(xf)
+print(af)
+print(af, dist.print = TRUE)
+plot(af)
+plot(af, hang = -1)
 
-# Example 2 with a list of 7 arrays
+# Example 2 with a data frame obtained by converting numeric variables
+ar = hclustdd(xr, group.name = "rose")
+print(ar)
+print(ar, dist.print = TRUE)
+plot(ar)
+plot(ar, hang = -1)
+
+# Example 3 with a list of 7 arrays
 data(dspg)
 xl = dspg
 hclustdd(xl)

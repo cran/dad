@@ -24,7 +24,7 @@ jeffreys(x1, x2, check = FALSE)
     The Jeffreys measure between the two Gaussian densities is computed by using the \code{\link{jeffreyspar}} function and the density parameters estimated from samples.
 }
 \value{
-    Returns the Jeffreys measure between the two probability densities.
+    Returns the Jeffrey's measure between the two probability densities.
 
     Be careful! If \code{check = FALSE} and one smoothing bandwidth matrix is degenerate, the result returned must not be considered.
 }
@@ -35,7 +35,7 @@ jeffreys(x1, x2, check = FALSE)
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \seealso{
-   \link{jeffreyspar}: Jeffreys measure between Gaussian densities, given their parameters.
+   \link{par}: Jeffreys measure between Gaussian densities, given their parameters.
 }
 \examples{
 require(MASS)

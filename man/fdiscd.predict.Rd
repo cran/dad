@@ -28,7 +28,7 @@ fdiscd.predict(xf, class.var, gaussiand = TRUE,
        The distance or divergence used to compute the distance matrix between the densities.
        It can be:
        \itemize{
-       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
+       \item \code{"jeffreys"} (default) Jeffreys measure (symmetrised Kullback-Leibler divergence),
        \item \code{"hellinger"} the Hellinger (Matusita) distance,
        \item \code{"wasserstein"} the Wasserstein distance,
        \item \code{"l2"} the \eqn{L^2} distance,
@@ -67,7 +67,7 @@ fdiscd.predict(xf, class.var, gaussiand = TRUE,
     \item 
     Each previous density \eqn{f_t} is weighted by \eqn{n_t} (the number of rows of \eqn{x} corresponding to \eqn{f_t}). Then they are averaged, that is \eqn{g_k = (1/\sum n_t) \sum n_t f_t}.
     }
-    The last two methods are available only for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or the Jeffreys measure, only the first of these methods is available.
+    The last two methods are available only for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or Jeffreys measure, only the first of these methods is available.
 }
 \value{
     Returns an object of class \code{fdiscd.predict}, that is a list including:
@@ -78,7 +78,7 @@ fdiscd.predict(xf, class.var, gaussiand = TRUE,
         \item \code{class.predict}: the class allocation predicted by the discriminant analysis method. If \code{misclass.ratio = TRUE}, the class allocations are computed for all groups. Otherwise (default), they are computed only for the groups whose class is unknown.
       }
     }
-    \item{distances }{matrix with \eqn{T} rows and \eqn{K} columns, of the distances (\eqn{d_{tk}}): \eqn{d_{tk}} is the distance between the group \eqn{t} and the class \eqn{k}, computed with the measure given by argument \code{distance} (\eqn{L^2}-distance, Hellinger distance or Jeffreys measure),}
+    \item{distances }{matrix with \eqn{T} rows and \eqn{K} columns, of the distances (\eqn{d_{tk}}): \eqn{d_{tk}} is the distance between the group \eqn{t} and the class \eqn{k}, computed with the measure given by argument \code{distance} (\eqn{L^2}-distance, Hellinger distance or jeffreys measure),}
     \item{proximities }{matrix of the proximities (in percents). The proximity of a group \eqn{t} to the class \eqn{k} is computed as so: \eqn{(1/d_{tk})/\sum_{l=1}^{l=K}(1/d_{tl})}.}
     \item{confusion.mat }{the confusion matrix (if \code{misclass.ratio = TRUE})}
     \item{misclassed }{the misclassification ratio (if \code{misclass.ratio = TRUE})}
@@ -118,7 +118,7 @@ print(resultl2.3)
 resulthelling <- fdiscd.predict(castlesfh, "period", distance="hellinger")
 print(resulthelling)
 
-# With the Jeffreys measure
+# With jeffreys measure
 resultjeff <- fdiscd.predict(castlesfh, "period", distance="jeffreys")
 print(resultjeff)
 }

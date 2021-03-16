@@ -27,7 +27,7 @@ ddjensen(x1, x2)
 Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
 }
 \seealso{
-   \code{\link{ddjensenpar}}: Jeffreys distances  between two discrete distributions, given the probabilities on their common support.
+   \code{\link{ddjensenpar}}: Jensen-Shannon distance between two discrete distributions, given the probabilities on their common support.
    
    Other distances: \code{\link{ddchisqsym}}, \code{\link{ddhellinger}}, \code{\link{ddjeffreys}}, \code{\link{ddlp}}.
 }

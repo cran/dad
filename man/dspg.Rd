@@ -26,7 +26,7 @@
 }
 
 \source{
-INSEE. \href{http://www.insee.fr/fr/statistiques/1893185}{Population active de 25 \'a 54 ans ayant un emploi et ch\^omeurs par cat\'egorie socioprofessionnelle et dipl\^ome par commune et d\'epartement (1968 \'a 2015)}.
+INSEE. \href{https://www.insee.fr/fr/statistiques/1893185}{Population active de 25 \'a 54 ans ayant un emploi et ch\^omeurs par cat\'egorie socioprofessionnelle et dipl\^ome par commune et d\'epartement (1968 \'a 2015)}.
 }
 
 \author{

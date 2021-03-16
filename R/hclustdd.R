@@ -1,14 +1,15 @@
 hclustdd <-
-function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jensen", "lp"),
+function(xf, group.name="group",
+         distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jensen", "lp"),
          # association = c("cramer", "tschuprow", "pearson", "phi"),
-         sub.title="", filename=NULL, method.hclust = "complete",# members = NULL,
-         group.name="group")
+         sub.title="", filename=NULL, method.hclust = "complete"# , members = NULL,
+         )
   {
   #---------------
   # Preliminaries
   #---------------
-  if (!is.folder(xf) & !all(sapply(xf,is.array))){
-    stop("hclustdd applies to an object of class 'folder' or to a list of arrays or tables.")
+  if (! (is.folder(xf) | is.data.frame(xf) | all(sapply(xf,is.array))) ) {
+    stop("hclustdd applies to a data frame, an object of class 'folder' or a list of arrays or tables.")
   }
   if (is.folder(xf)) {
     # Convert the data folder into a data frame
@@ -28,6 +29,19 @@ function(xf, distance = c("l1", "l2", "chisqsym", "hellinger", "jeffreys", "jens
       stop("There are NAs in the folder")
     # Computes the joint frequency distribution per group
     tab <- lapply(xf, table)
+  } else if (is.data.frame(xf)) {
+    if (!group.name %in% names(xf))
+      stop(paste0("xf has no column named '", group.name, "'."))
+    # The groups
+    group <- as.factor(xf[, group.name])
+    groups.name <- levels(group)
+    # The data
+    x <- xf[which(colnames(xf) != group.name)]
+    # The variables
+    vars.name <- colnames(x)
+    # Computes the joint frequency distribution per group
+    tab <- by(x, group, table)
+    names(tab) <- groups.name
   } else {
     # Check if all elements of the list xf are arrays with the same dimnames
     nomdim <- lapply(xf, dimnames)

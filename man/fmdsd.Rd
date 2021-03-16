@@ -8,19 +8,29 @@ Multidimensional scaling of probability densities
 Applies the multidimensional scaling (MDS) method to probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fmdsd}. It applies \code{\link{cmdscale}} to the distance matrix between the \eqn{T} densities.
 }
 \usage{
-fmdsd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein", "l2",
-    "l2norm"), windowh=NULL, data.centered = FALSE, data.scaled = FALSE,
-    common.variance = FALSE, add = TRUE, nb.factors = 3, nb.values = 10, sub.title = "",
-    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, filename = NULL,
-    group.name = "group")
+fmdsd(xf, group.name = "group", gaussiand = TRUE, distance = c("jeffreys", "hellinger",
+    "wasserstein", "l2", "l2norm"), windowh=NULL, data.centered = FALSE,
+    data.scaled = FALSE, common.variance = FALSE, add = TRUE, nb.factors = 3,
+    nb.values = 10, sub.title = "", plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3,
+    filename = NULL)
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{folder}}. Its elements are data frames with \eqn{p} numeric columns.
+       object of class \code{"\link{folder}"} or data.frame.
+       \itemize{
+       \item If it is an object of class \code{"folder"}, its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
        The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.             
-       
-       Notice that for the versions earlier than 2.0, fmdsd applied to a data frame.
+       \item If it is a data frame, the column with name given by the \code{group.name} argument is a factor giving the groups.
+       The other columns are all numeric; otherwise, there is an error.
+       }
+}
+  \item{group.name}{
+       string.
+       \itemize{
+       \item If \code{xf} is an object of class \code{"\link{folder}"}, it is the name of the grouping variable in the returned results. The default is \code{groupname  = "group"}.
+       \item If \code{xf} is a data frame, it is the name of the column of \code{xf} containing the groups.
+       }
 }
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
@@ -30,7 +40,7 @@ fmdsd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein",
        
        If \code{gaussiand = TRUE}, the densities are parametrically estimated and the distance can be:
        \itemize{
-       \item \code{"jeffreys"} (default) the Jeffreys measure (symmetrised Kullback-Leibler divergence),
+       \item \code{"jeffreys"} (default) Jeffreys measure (symmetrised Kullback-Leibler divergence),
        \item \code{"hellinger"} the Hellinger (Matusita) distance,
        \item \code{"wasserstein"} the Wasserstein distance,
        \item \code{"l2"} the \eqn{L^2} distance,
@@ -79,9 +89,6 @@ fmdsd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein",
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) they are not saved.
 }
-  \item{group.name}{
-       string. Name of the grouping variable. Default: \code{groupname  = "group"}.
-}
 }
 \details{
     In order to compute the distances/dissimilarities between the groups, the \eqn{T} probability densities \eqn{f_t} corresponding to the \eqn{T} groups of individuals are either parametrically estimated (\code{gaussiand = TRUE}) or estimated using the Gaussian kernel method (\code{gaussiand = FALSE}). In the latter case, the \code{windowh} argument provides the list of the bandwidths to be used. Notice that in the multivariate case (\eqn{p}>1), the bandwidths are positive-definite matrices.
@@ -90,10 +97,10 @@ fmdsd(xf, gaussiand = TRUE, distance = c("jeffreys", "hellinger", "wasserstein",
     
     If \code{windowh = NULL} (default), \eqn{h} in the above formula is computed using the \code{\link{bandwidth.parameter}} function.
 
-    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
     \itemize{
     \item If it is the \code{L^2} distance (\code{distance="l2"} or \code{distance="l2norm"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
-    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}), Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
     }
 }
 \value{
@@ -130,10 +137,18 @@ rosesf <- as.folder(roses[,c("Sha","Den","Sym","rose")])
 
 # MDS on Gaussian densities (on sensory data)
 
-# using the Jeffreys measure (default):
+# using jeffreys measure (default):
 resultjeff <- fmdsd(rosesf, distance = "jeffreys")
 print(resultjeff)
 plot(resultjeff)
+
+\dontrun{
+# Applied to a data frame:
+resultjeffdf <- fmdsd(roses[,c("Sha","Den","Sym","rose")],
+                      distance = "jeffreys", group.name = "rose")
+print(resultjeffdf)
+plot(resultjeffdf)
+}
 
 # using the Hellinger distance:
 resulthellin <- fmdsd(rosesf, distance = "hellinger")

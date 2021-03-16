@@ -73,12 +73,12 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
     \item 
     Each previous density \eqn{f_t} is weighted by \eqn{n_t} (the number of rows of \eqn{x} corresponding to \eqn{f_t}). Then they are averaged, that is \eqn{g_k = \frac{1}{\sum n_t} \sum n_t f_t}{g_k = (1/\sum n_t) \sum n_t f_t}.
     }
-    The last two methods are only available for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or the Jeffreys measure, only the first of these methods is available.
+    The last two methods are only available for the \eqn{L^2}-distance. If the divergences between densities are computed using the Hellinger or Wasserstein distance or Jeffreys measure, only the first of these methods is available.
     
-    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, the Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
+    The distance or dissimilarity between the estimated densities is either the \eqn{L^2} distance, the Hellinger distance, Jeffreys measure (symmetrised Kullback-Leibler divergence) or the Wasserstein distance.
     \itemize{
     \item If it is the \code{L^2} distance (\code{distance="l2"} or \code{distance="l2norm"}), the densities can be either parametrically estimated or estimated using the Gaussian kernel.
-    \item If it is the Hellinger distance (\code{distance="hellinger"}), the Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
+    \item If it is the Hellinger distance (\code{distance="hellinger"}), Jeffreys measure (\code{distance="jeffreys"}) or the Wasserstein distance (\code{distance="wasserstein"}), the densities are considered Gaussian and necessarily parametrically estimated.
     }
 }
 \value{ 

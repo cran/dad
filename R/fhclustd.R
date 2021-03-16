@@ -1,18 +1,32 @@
 fhclustd <-
-  function(xf, gaussiand=TRUE,
+  function(xf, group.name="group", gaussiand=TRUE,
            distance = c("jeffreys", "hellinger", "wasserstein", "l2", "l2norm"),
            windowh=NULL, data.centered=FALSE, data.scaled=FALSE, common.variance=FALSE,
-           sub.title="", filename=NULL, method.hclust = "complete",# members = NULL,
-           group.name="group")
+           sub.title="", filename=NULL, method.hclust = "complete"#, members = NULL
+           )
   {
     #---------------
     # Preliminaries
     #---------------
-    if (!is.folder(xf)){
-      stop("fhclustd applies to an object of class 'folder'.\nNotice that for versions earlier than 2.0, fhclustd applied to a data frame.")
+    if (!(is.folder(xf) | is.data.frame(xf))){
+      stop("fhclustd applies to a data frame or an object of class 'folder'.")
     }
-    x <- as.data.frame(xf, group.name = group.name, stringsAsFactors = TRUE)
     
+    if (is.folder(xf)) {
+      # Convert the data folder into a data frame
+      x <- as.data.frame(xf, group.name = group.name)
+    }
+    if (is.data.frame(xf)) {
+      # Is group.name the name of a column of x?
+      if (!group.name %in% names(xf))
+        stop(paste0("xf has no column named '", group.name, "'."))
+      # x will contain the data.frame
+      x <- xf[-which(colnames(xf) == group.name)]
+      # Last column: the grouping variable
+      x[group.name] <- xf[, group.name]
+      # Convert the data.frame into a folder
+      xf <- as.folder(xf, groups = group.name)
+    }
     # p denotes the dimension of the data
     p<-ncol(x)-1;
     

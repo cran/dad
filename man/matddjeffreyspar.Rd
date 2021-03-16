@@ -4,7 +4,7 @@
     Matrix of divergences between discrete probability densities given the probabilities on their common support
 }
 \description{
-    Computes the matrix of the Jeffreys divergences between several multivariate or univariate discrete probability distributions on the same support (which can be a Cartesian product of \eqn{q} sets), given the probabilities of the states (which are \eqn{q}-tuples) of the support.
+    Computes the matrix of Jeffreys divergences between several multivariate or univariate discrete probability distributions on the same support (which can be a Cartesian product of \eqn{q} sets), given the probabilities of the states (which are \eqn{q}-tuples) of the support.
 }
 \usage{
 matddjeffreyspar(freq)

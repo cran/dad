@@ -15,82 +15,76 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(dad)
 ```
 
 ## Data under consideration
 
-<!-- For MDS and HCA,  -->
-For the analyses implemented in the **dad** package, the data $\mathbf{X}$ (Table 1) of interest have three kinds of objects: occasions (or groups) $\times$ individuals $\times$ variables. In what follows, the terms occasion and group are used interchangeably: in the case of three-way data, the term occasion would be preferable, while in the case of multigroup data the term group would be more appropriate.
+The **dad** package provides tools for analysing multi-group data.
+Such data consist of variables observed on individuals, these individuals being organised into groups (or occasions).
+Hence, there are three types of objects: groups, individuals and variables.
 
-The groups define a partition of the individuals on which are measured the variables. If $T$ denotes the number of groups, for each $t$ in $\left\{1,\ldots,T\right\}$ the rows of the table $\mathbf{X}_t$ correspond to $n_t$ observations $\mathbf{x}_{t1}\,,\ldots,\,\mathbf{x}_{tn_t}$ of $X_t$ a random vector with $p$ components.
+## Implemented methods
 
-![**Table 1**: For each group (or occasion) $t = 1,\ldots,T$, the same $p$ variables are observed for $n_t$ individuals.](table1.png){ width=80% }
+For the analysis of such data, a probability density function is associated to each group.
+Some methods dealing with these functions are implemented:
 
-<!-- For each occasion $t = 1,\ldots,T$, the same $p$ variables are observed for $n_t$ individuals. The data frame (a) consists of ($p+1$) columns, the last one is a factor designating the group. The data folder (b) consists of $T$ data frames with the same $p$ column names. -->
-
-<br>
-
-For discriminant analysis, the data of interest are similar to the previous ones with the difference that we have two categories of occasions or groups. The first category, consisting of $T$ occasions, are partitioned into $K$ subsets deriving from a factor $G$ defined on occasions <!-- (Table~\ref{DataStructureAD}) -->. The second category consists of occasions, numbered $T+1,\ \ldots$ for which we have data of type $\mathbf{X}$ but not the value of $G$.
-
-![**Table 2**: Each occasion $t$ ($t=1,\ldots,T$) matches a table with $n_t$ rows and $p$ columns (see Table 1). The variable $G$ defined on the occasions takes values $\{1,\ldots,K\}$. For each $k=1,\ldots,K$, the value $k$ is taken $T_k$ times. The $G$ values of the occasions $T+1,\,\ldots$ are not available and have to be predicted.](table2.png){ width=80% }
-
-<br>
-
-## Implemented methods and their objectives
-
-When the individuals are organised into groups, the analyst could be interested in taking into account this data organisation by associating with each group a mathematical object and performing multivariate techniques on these objects. In the **dad** package devoted to such data, the objects are probability density functions.
-These densities are either all continuous (numeric data with Lebesgue measure as reference measure) or all discrete (categorical data with counting measure as reference measure) and are subjected to following analyses:
-
-<!-- * [**Multidimensional scaling (MDS) of probability density functions**](mds-densities.html) or [**MDS of discrete probability functions**](mds-discrete-distributions.html) aims to visualize a set of densities (or groups) so that the distances between the densities are preserved as well as possible;
-* [**Hierarchical cluster analysis (HCA) of probability density functions**](hclust-densities.html) or HCA of discrete probability distributions is used to divide a set of densities (or groups) into clusters so that the densities of the same cluster are as similar as possible, and are dissimilar from those of the other clusters;
-* [**Discriminant analysis (DA) of probability density functions**](da-densities.html) or DA of discrete probability distributions deals with the same kind of data, knowing a partition of the densities (or groups) into classes. Its first objective is to learn how the *a priori* classes can be explained by the distances between these densities. Then if the training step is judged satisfactory according to a criterion named misclassification ratio, its second objective is to classify a new density whose class is unknown. -->
-* **Multidimensional scaling (MDS) of probability density functions** <!-- or [**MDS of discrete probability functions**](mds-discrete-distributions.html) --> aims to visualize a set of densities (or groups) so that the distances between the densities are preserved as well as possible;
-* **Hierarchical cluster analysis (HCA) of probability density functions** is used to divide a set of densities (or groups) into clusters so that the densities of the same cluster are as similar as possible, and are dissimilar from those of the other clusters;
-* **Discriminant analysis (DA) of probability density functions** deals with the same kind of data, knowing a partition of the densities (or groups) into classes. Its first objective is to learn how the *a priori* classes can be explained by the distances between these densities. Then if the training step is judged satisfactory according to a criterion named misclassification ratio, its second objective is to classify a new density whose class is unknown.
-
-These three multivariate techniques are essentially based on distance indices between probability density functions. Literature abounds with such indices: as an example, the encyclopedia of distances of Deza (p. 235--245)[^1] lists some forty. The \pkg{dad} package proposes to calculate ten of them by considering the case of discrete densities and that of continuous densities. The results returned by the three previous multivariate techniques depend on the distance index used. The choice of such a distance index depends above all on the modeling hypotheses: discrete or continuous data, Gaussian or not...
-
-[^1]: Deza, M.M. and Deza, E. (2013), Encyclopedia of Distances. Springer-Verlag, Heidelberg.
-
-Thus, for each distance index, the **dad** package implements:
-
-* its calculation for two densities whose type and parameters are known,
-* its estimation for two densities for which there are two samples which allow the estimation of their parameters,
-* the generalization of each previous calculation for $T$ ($T > 2$) densities taken two by two, the result of which is a symmetric matrix.
+* **Multidimensional scaling (MDS) of probability density functions**: function `fmdsd` (continuous data) or `mdsdd` (discrete data)  
+<!-- A probability density function is estimated on the data of each group, and the distances between these probability densities are calculated. The MDS is then performed on these distances. -->
+* **Hierarchical cluster analysis (HCA) of probability density functions**: `fhclustd` (continuous) or `hclustdd` (discrete)
+<!-- In the same way, the distances between the estimated probability density functions are calculated. -->
+<!-- Then hierarchical cluster analysis is performed on these distances. -->
+* **Discriminant analysis (DA) of probability density functions**:
+  + Computation of the misclassification ratio using the one-leave-out method: `fdiscd.misclass` (continuous) or `discdd.misclass` (discrete)
+  + Assignment of groups of individuals, one group after another, for which the class is unknown:  `fdiscd.predict` (continuous) or `discdd.predict` (discrete)
 
 ## Data organisation
 
-The **dad** package uses objects of class `"folder"` or `"folderh"`.
+In order to facilitate the work with these multi-group data, the **dad** package uses objects of class `"folder"` or `"folderh"`.
 These objects are lists of data frames having particular formats. 
 
 ### Objects of class `folder`
 
-Such objects are lists of data frames which have the same column names. They are created by the functions `folder` or `as.folder` (see their help in R).
+Such objects are lists of data frames which have the same column names.
+Each data frame matches with an occasion (a group of individuals).
+
+An object of class `"folder"` is created by the functions `folder` or `as.folder` (see their help in R).
+
+**Example:**
+Ten rosebushes $A$, $B$, $\dots$, $J$ were evaluated by 14 assessors, at three sessions, according to several descriptors including their shape `Sha`, their foliage thickness `Den` and their symmetry `Sym`.
 
 ```{r}
+library(dad)
 data("roses")
-rosesf <- as.folder(roses[,c("Sha", "Den", "Sym", "rose")], groups = "rose")
+x <- roses[, c("Sha", "Den", "Sym", "rose")]
+head(x)
+```
+
+Coerce these data into an object of class `"folder"`:
+```{r}
+rosesf <- as.folder(x, groups = "rose")
 print(rosesf, max = 9)
 ```
 
 ### Objects of class `folderh`
 
-In the most useful case, such objects are hierarchical lists of two data frames `df1` and `df2` related by means of a key which describes the “1 to N” relationship between the data frames. They are created by the function `folderh` (see its help in R for the case of three data frames or more).
+Objects of class `"folderh"` can be used to avoid redundancies in the data.
+
+In the most useful case, such objects are hierarchical lists of two data frames `df1` and `df2` related by means of a key which describes the “1 to N” relationship between the data frames.
+
+They are created by the function `folderh` (see its help in R for the case of three data frames or more).
+
+**Example:**
+Data about 5 rosebushes (`roseflowers$variety`). For each rosebush, measures on several flowers (`roseflowers$flower`).
 
 ```{r}
+library(dad)
 data(roseflowers)
 df1 <- roseflowers$variety
 df2 <- roseflowers$flower
+```
+
+Build an object of class `"folderh"`:
+```{r}
 fh1 <- folderh(df1, "rose", df2)
 print(fh1)
 ```
-
-<!-- Such objects are hierarchical lists of data frames in which two successive data frames from the list are related by means of a key. -->
-<!-- For three data frames, say `df1`, `df2` and `df3`, there are two keys: the first, say `key1`, describes the "1 to N" relationship between `df1` and `df2`, and the second, say `key2`, describes the "1 to N" relationship between `df2` and `df3`. The arguments of the `folderh` function are introduced in the following order: `df1`, `key1`, `df2`, `key2`, `df3`, and so on, if there are more than three data frames. An example of such an object is given in appendix B. -->
-
-<!-- The function `as.data.frame` applied to such a hierarchical folder, say `fh`, whose constituent elements are listed above, has two main arguments: `key` (the name of a key of `fh`) and `elt` (the name of a data frame of `fh`) with the precision that the value of `elt` is located after the value of `key` in the list of arguments defining `fh`. -->
-
-<!-- In the case of two adjacent names, that is `key` = `key1` and `elt`` = `df2` or `key` = `key2` and `elt` = `df3`, `as.data.frame` returns a data frame similar to any viewpoint to that returned by the `merge` function. -->
-
-<!-- If `key` = `key1` and `elt` = `df3`, the data frame returned by the `as.data.frame` function, say `dfr`, has the same rows as `df3`. The columns of `dfr` are those of the data frames `df3` and `df1`, and those corresponding to all the keys located between `key1` and `df3` in the list defining `fh`, noticing that the key columns are the first columns of `dfr`. -->

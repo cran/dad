@@ -44,7 +44,7 @@ discdd.misclass(xf, class.var, distance =  c("l1", "l2", "chisqsym", "hellinger"
        \item \code{"l2"} the \eqn{L^p} distance with \eqn{p = 2}
        \item \code{"chisqsym"} the symmetric Chi-squared distance
        \item \code{"hellinger"} the Hellinger metric (Matusita distance)
-       \item \code{"jeffreys"} the Jeffreys distance (symmetrised Kullback-Leibler divergence)
+       \item \code{"jeffreys"} Jeffreys distance (symmetrised Kullback-Leibler divergence)
        \item \code{"jensen"} the Jensen-Shannon distance
        \item \code{"lp"} the \eqn{L^p} distance with \eqn{p} given by the argument \code{p} of the function.  
        }

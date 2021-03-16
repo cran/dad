@@ -4,7 +4,7 @@
     Matrix of distances between discrete probability densities given samples
 }
 \description{
-    Computes the matrix of the Jeffreys divergences between several multivariate or univariate discrete probability distributions, estimated from samples.
+    Computes the matrix of Jeffreys divergences between several multivariate or univariate discrete probability distributions, estimated from samples.
 }
 \usage{
 matddjeffreys(x)

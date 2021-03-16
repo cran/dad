@@ -8,20 +8,30 @@ Functional PCA of probability densities
 Performs functional principal component analysis of probability densities in order to describe a data folder, consisting of \eqn{T} groups of individuals on which are observed \eqn{p} variables. It returns an object of class \code{fpcad}.
 }
 \usage{
-fpcad(xf, gaussiand = TRUE, windowh = NULL, normed = TRUE,
+fpcad(xf, group.name = "group", gaussiand = TRUE, windowh = NULL, normed = TRUE,
     centered = TRUE, data.centered = FALSE, data.scaled = FALSE,
     common.variance = FALSE, nb.factors = 3, nb.values = 10, sub.title = "",
-    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, group.name = "group",
+    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3,
     filename = NULL)
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{folder}}. Its elements are data frames with \eqn{p} numeric columns.
+       object of class \code{"\link{folder}"} or data.frame.
+       \itemize{
+       \item If it is an object of class \code{"folder"}, its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
-       The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.
-       
-       Notice that for the versions earlier than 2.0, fpcad applied to a data frame.
+       The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} group.             
+       \item If it is a data frame, the column with name given by the \code{group.name} argument is a factor giving the groups.
+       The other columns are all numeric; otherwise, there is an error.
+       }
 }       
+  \item{group.name}{
+       string.
+       \itemize{
+       \item If \code{xf} is an object of class \code{"\link{folder}"}, name of the grouping variable in the returned results. The default is \code{groupname  = "group"}.
+       \item If \code{xf} is a data frame, \code{group.name} is the name of the column of \code{xf} containing the groups.
+       }
+}
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method.
 }
@@ -63,9 +73,6 @@ fpcad(xf, gaussiand = TRUE, windowh = NULL, normed = TRUE,
 }
   \item{nscore}{
        numeric vector. If \code{plot.score = TRUE}, the numbers of the principal scores which are plotted. By default it is equal to \code{nscore = 1:3}. Its components cannot be greater than \code{nb.factors}. 
-}
-  \item{group.name}{
-       string. Name of the grouping variable. Default: \code{groupname  = "group"}.
 }
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) the results are not saved.
@@ -115,6 +122,11 @@ rosesf <- as.folder(roses[,c("Sha","Den","Sym","rose")])
 result3 <- fpcad(rosesf, group.name = "rose")
 print(result3)
 plot(result3)
+
+# Applied to a data frame:
+result3df <- fpcad(roses[,c("Sha","Den","Sym","rose")], group.name = "rose")
+print(result3df)
+plot(result3df)
 
 # Flower colors of the roses
 scores <- result3$scores

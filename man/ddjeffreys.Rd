@@ -4,7 +4,7 @@
      Divergence between probability distributions of discrete variables given samples   
 }
 \description{
-    Jeffreys divergence (symmetrized Kullback-Leibler divergence) between two multivariate (\eqn{q > 1}) or univariate (\eqn{q = 1}) discrete probability distributions, estimated from samples.
+    jeffreys's divergence (symmetrized Kullback-Leibler divergence) between two multivariate (\eqn{q > 1}) or univariate (\eqn{q = 1}) discrete probability distributions, estimated from samples.
 }
 \usage{
 ddjeffreys(x1, x2)
@@ -17,7 +17,7 @@ ddjeffreys(x1, x2)
 }
 }
 \details{
-    Let \eqn{p_1} and \eqn{p_2} denote the estimated probability distributions of the discrete samples \eqn{x_1} and \eqn{x_2}. The Jeffreys divergence between the discrete probability distributions of the samples are computed using the \code{\link{ddjeffreyspar}} function.
+    Let \eqn{p_1} and \eqn{p_2} denote the estimated probability distributions of the discrete samples \eqn{x_1} and \eqn{x_2}. The jeffreys's divergence between the discrete probability distributions of the samples are computed using the \code{\link{ddjeffreyspar}} function.
 }
     
 \value{
@@ -27,7 +27,7 @@ ddjeffreys(x1, x2)
 Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard
 }
 \seealso{
-   \code{\link{ddjeffreyspar}}: Jeffreys distances  between two discrete distributions, given the probabilities on their common support.
+   \code{\link{ddjeffreyspar}}: Jeffrey's distances  between two discrete distributions, given the probabilities on their common support.
    
    Other distances: \code{\link{ddchisqsym}}, \code{\link{ddhellinger}}, \code{\link{ddjensen}}, \code{\link{ddlp}}.
    

@@ -27,14 +27,14 @@ jeffreyspar(mean1, var1, mean2, var2, check = FALSE)
 }
 }
 \details{
-    Let \eqn{m1} and \eqn{m2} the mean vectors, \eqn{v1} and \eqn{v2} the covariance matrices, the Jeffreys' measure of the two Gaussian densities is equal to:
+    Let \eqn{m1} and \eqn{m2} the mean vectors, \eqn{v1} and \eqn{v2} the covariance matrices, Jeffreys measure of the two Gaussian densities is equal to:
     
     \deqn{(1/2) t(m1 - m2) (v1^{-1} + v2^{-1}) (m1 - m2) - (1/2) tr( (v1 - v2) (v1^{-1} - v2^{-1}) )}.
     
 If \eqn{p = 1} the means and variances are numbers, the formula is the same ignoring the following operators: t (transpose of a matrix or vector) and tr (trace of a square matrix).
 }                                                                                                      
 \value{
-    The Jeffreys measure between two Gaussian densities.
+    Jeffreys measure between two Gaussian densities.
 
     Be careful! If \code{check = FALSE} and one covariance matrix is degenerated (multivariate case) or one variance is zero (univariate case), the result returned must not be considered.
 }

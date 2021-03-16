@@ -17,7 +17,7 @@ distl2d(x1, x2, method = "gaussiand", check = FALSE, varw1 = NULL, varw2 = NULL)
 }
 \arguments{
   \item{x1, x2}{
-       the samples from the probability densities (see \code{\link{l2d}}.
+       the samples from the probability densities (see \code{\link{l2d}}).
 }
   \item{method}{
        string.  It can be:
@@ -32,7 +32,7 @@ distl2d(x1, x2, method = "gaussiand", check = FALSE, varw1 = NULL, varw2 = NULL)
        Notice that if \eqn{p = 1}, it checks if the variances or smoothing parameters are not zero.
 }
   \item{varw1, varw2}{
-       the bandwidths when the densities are estimated by the kernel method (see \code{\link{l2d}}.
+       the bandwidths when the densities are estimated by the kernel method (see \code{\link{l2d}}).
 }
 }
 \details{

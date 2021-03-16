@@ -18,7 +18,7 @@
 }
 
 \source{  
-INSEE. \href{http://www.insee.fr/fr/information/3363419}{Code officiel g\'eographique au 1er janvier 2018}.
+INSEE. \href{https://www.insee.fr/fr/information/3363419}{Code officiel g\'eographique au 1er janvier 2018}.
 }
 
 \author{

@@ -18,7 +18,7 @@ ddjeffreyspar(p1, p2)
 }
 }
 \details{
-    The Jeffreys divergence \eqn{||p_1 - p_2||} between two discrete distributions \eqn{p_1} and \eqn{p_2} is given by the formula:
+    Jeffreys divergence \eqn{||p_1 - p_2||} between two discrete distributions \eqn{p_1} and \eqn{p_2} is given by the formula:
  \deqn{||p_1 - p_2|| = \sum_x{(p_1(x) - p_2(x)) log(p_1(x)/p_2(x))}}
 }
 \author{

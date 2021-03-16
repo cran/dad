@@ -8,19 +8,79 @@ Functional PCA of probability densities among time
 Performs functional principal component analysis of probability densities in order to describe a data ``foldert'', consisting of individuals on which are observed \eqn{p} variables on \eqn{T} times. It returns an object of class \code{fpcat}.
 }
 \usage{
-fpcat(xf, gaussiand = TRUE, windowh = NULL, normed=TRUE,
-    centered=TRUE, data.centered = FALSE, data.scaled = FALSE,
-    common.variance = FALSE, nb.factors = 3, nb.values = 10, sub.title = "",
-    plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3, group.name="time",
+fpcat(xf, group.name="time", method = 1, ind = 1, nvar = NULL, gaussiand = TRUE,
+    windowh = NULL, normed=TRUE, centered=TRUE, data.centered = FALSE,
+    data.scaled = FALSE, common.variance = FALSE, nb.factors = 3, nb.values = 10,
+    sub.title = "", plot.eigen = TRUE, plot.score = FALSE, nscore = 1:3,
     filename = NULL)
 }
 \arguments{
   \item{xf}{
-       object of class \code{\link{foldert}} that is a list of data frames with the same column names, each of them corresponding to a time of observation. Its elements are data frames with \eqn{p} numeric columns.
+       object of class \code{"\link{foldert}"} or data.frame.
+       \itemize{
+       \item An object of class \code{"foldert"} is a list of data frames with the same column names, each of them corresponding to a time of observation. Its elements are data frames with \eqn{p} numeric columns.
        If there are non numeric columns, there is an error.
-       The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} time of observation.
+       The \eqn{t^{th}} element (\eqn{t = 1, \ldots, T}) matches with the \eqn{t^{th}} time of observation.             
+       \item If it is a data frame:
+       \itemize{
+          \item If \code{method=1}: the column with name given by the \code{group.name} argument is a factor giving the groups.
+          The other columns are all numeric; otherwise, there is an error.
+          \item If \code{method=2}: the column named after the \code{ind} argument contains the identifiers of the measured objects, and the observations are organized as follows:
+          
+          Given \code{timecol} the number of the column named by the \code{group.name} argument,
+          
+          the observations corresponding to the 1st time are on columns \code{timecol : (timecol + nvar - 1)}
+          
+          the observations corresponding to the 2nd time are on columns \code{(timecol + nvar) : (timecol + 2 * nvar - 1)}
+          
+          and so on.
+       }
+       }
 }
-All other arguments are the same as for \code{\link{fpcad}}, except \code{group.name}.
+  \item{group.name}{
+       string or numeric.
+       \itemize{
+       \item If \code{xf} is an object of class \code{"\link{foldert}"}, string.
+       Name of the grouping variable, that is the observation times.
+       The default is \code{groupname  = "time"}.
+       \item If \code{xf} is a data frame, string or numeric,
+       as the \code{ind} argument of \code{\link{as.foldert.data.frame}}.
+       \itemize{
+          \item{If \code{method = 1}, \code{timecol} is the name or the number of the column of x containing the times of observation, or the number of this column. \code{x[, timecol]} must be of class \code{"numeric"}, \code{"ordered"}, \code{"Date"}, \code{"POSIXlt"} or \code{"POSIXct"}, otherwise, there is an error.
+          }
+          \item{If \code{method=2}, \code{timecol} is the name or the number of the first column corresponding to the first observation. If there are duplicated column names and several columns are named by \code{timecol}, the first one is considered.
+          }
+       }
+       }
+}
+  \item{method}{
+     if \code{xf} is a data frame, 1 or 2. Omitted if \code{xf} is an object of class \code{"foldert"}.
+     
+     If \code{xf} is a data frame, \code{method} indicates the layout of this data frame and, therefore, the method used to extract the data and build the foldert.
+     \itemize{
+     \item{If \code{method = 1}, there is a column containing the identifiers of the measured objects and a column containing the times. The other columns contain the observations.}
+     \item{If \code{method = 2}, there is a column containing the identifiers of the measured objects, and the observations are organized as follows:
+      \itemize{
+      \item{the observations corresponding to the 1st time are on columns \code{timecol : (timecol + nvar - 1)}}
+      \item{the observations corresponding to the 2nd time are on columns \code{(timecol + nvar) : (timecol + 2 * nvar - 1)}}
+      \item{and so on.}
+      }
+     }
+     }
+}
+  \item{ind}{
+       if \code{xf} is a data frame, string or numeric. Omitted if \code{xf} is an object of class \code{"foldert"}.
+       
+       The name of the column of x containing the indentifiers of the measured objects, or the number of this column.
+       See the \code{ind} argument of \code{\link{as.foldert.data.frame}}.
+}
+  \item{nvar}{
+       if \code{xf} is a data frame and \code{mathod=2}, string or numeric. Omitted if \code{xf} is an object of class \code{"foldert"} or if \code{method=1}.
+       
+       The number of variable measured at each observation time.
+       See the \code{ind} argument of \code{\link{as.foldert.data.frame}}.
+}
+All other arguments are the same as for \code{\link{fpcad}}.
   \item{gaussiand}{
        logical. If \code{TRUE} (default), the probability densities are supposed Gaussian. If \code{FALSE}, densities are estimated using the Gaussian kernel method (as \code{\link{fpcad}}).
 }
@@ -61,9 +121,6 @@ All other arguments are the same as for \code{\link{fpcad}}, except \code{group.
 }
   \item{nscore}{
        numeric vector. If \code{plot.score = TRUE}, the numbers of the principal scores which are plotted. By default it is equal to \code{nscore = 1:3}. Its components cannot be greater than \code{nb.factors} (as \code{\link{fpcad}}). 
-}
-  \item{group.name}{
-       name of the grouping variable, that is the observation times. Default: \code{"time"}.
 }
   \item{filename}{
        string. Name of the file in which the results are saved. By default (\code{filename  = NULL}) the results are not saved (as \code{\link{fpcad}}).

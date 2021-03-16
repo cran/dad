@@ -1,10 +1,10 @@
 \name{matjeffreys}
 \alias{matjeffreys}
 \title{
-    Matrix of Jeffreys measures (symmetrised Kullback-Leibler divergences) between Gaussian densities
+    Matrix of the Jeffreys measures (symmetrised Kullback-Leibler divergences) between Gaussian densities
 }
 \description{
-    Computes the matrix of the Jeffreys measures between several multivariate (\eqn{p > 1}) or univariate (\eqn{p = 1}) Gaussian densities, given samples.
+    Computes the matrix of Jeffreys measures between several multivariate (\eqn{p > 1}) or univariate (\eqn{p = 1}) Gaussian densities, given samples.
 }
 \usage{
 matjeffreys(x)
@@ -16,7 +16,7 @@ matjeffreys(x)
 }
 }
 \value{
-    Positive symmetric matrix whose order is equal to the number of densities, consisting of the pairwise Jeffreys measures between the Gaussian densities. 
+    Positive symmetric matrix whose order is equal to the number of densities, consisting of pairwise Jeffreys measures between the Gaussian densities. 
 }
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
