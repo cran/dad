@@ -10,16 +10,16 @@
     \code{\link{mdsdd}} function). Plots the scores.
 }
 \usage{
-\method{plot}{mdsdd}(x, nscore = 1:2, main="MDS of probability density functions",
+\method{plot}{mdsdd}(x, nscore = c(1, 2), main="MDS of probability density functions",
     sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
 }
 
 \arguments{
   \item{x}{
-       object of class \code{mdsdd}.
+       object of class \code{"mdsdd"}.
 }
   \item{nscore}{
-       numeric vector. The numbers of the score vectors to be plotted.
+       a length 2 numeric vector. The numbers of the score vectors to be plotted.
        
        Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fmdsd}} function.
 }

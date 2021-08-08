@@ -6,19 +6,19 @@
     Plotting scores of STATIS method (interstructure) analysis
 }
 \description{
-    Applies to an object of class \code{dstatis} (see details of the  
+    Applies to an object of class \code{"dstatis"} (see details of the  
     \code{\link{dstatis.inter}} function). Plots the scores.
 }
 \usage{
-\method{plot}{dstatis}(x, nscore = 1:3, sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
+\method{plot}{dstatis}(x, nscore = c(1, 2), sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
 }
 
 \arguments{
   \item{x}{
-       object of class \code{dstatis} (returned by \code{\link{dstatis.inter}}).
+       object of class \code{"dstatis"} (returned by \code{\link{dstatis.inter}}).
 }
   \item{nscore}{
-       numeric vector. The numbers of the score vectors to be plotted.
+       a length 2 numeric vector. The numbers of the score vectors to be plotted.
        
        Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{dstatis.inter}} function.
 }

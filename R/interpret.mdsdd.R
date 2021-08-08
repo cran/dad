@@ -1,6 +1,9 @@
 interpret.mdsdd <-
-function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
+function(x, nscore=1, mma = c("marg1", "marg2", "assoc"), ...) {
   mma <- match.arg(mma)
+  
+  if (length(nscore) > 1)
+    nscore <- nscore[1]
   
   # Read scores
   coor <- x$scores
@@ -55,7 +58,9 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
   spearman.mat=cor(matprob,matcoor, method="spearman")
   
   # Crossed figures
-  dev.pdf <- (.Device %in% c("null device", "windows"))&(ncol(matprob) > 36)
+  dev.pdf <- (.Device != "pdf")&(ncol(matprob) > 36)
+  if (dev.pdf)
+    warning(paste(ncol(matprob), "graphs displayed. Consider producing PDF graphics."))
   if (dev.pdf) {
     namePDF <- paste(as.character(x$call)[1:2], collapse = "_")
     namePDF <- paste(namePDF, "pdf", sep = ".")
@@ -88,10 +93,6 @@ function(x, nscore=1:3, mma = c("marg1", "marg2", "assoc"), ...) {
     plotframes(x=matcoor, y=matprob, font.size=10, ylab = mma)
   }
 
-  if (dev.pdf) {
-    dev.off(which = dev.list()["pdf"])
-  }
-  
   margassoc <- paste0("probability distributions of each variable"[mma == "marg1"],
                       "probability distributions of each pair of variables"[mma == "marg2"],
                       "association measures"[mma == "assoc"])

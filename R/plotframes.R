@@ -62,9 +62,9 @@ plotframes <-
           yl <- "" else
             yl <- ylab
         graph.i <- graph.i + labs(x = xl, y = yl, title = nx)
-        if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD")) {
-          dev.new()
-        }
+        # if (.Device %in% c("null device", "X11", "windows", "quartz", "RStudioGD")) {
+        #   dev.new()
+        # }
         print(graph.i)
       }
     }

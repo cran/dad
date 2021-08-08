@@ -6,20 +6,20 @@
     Plotting scores of multidimensional scaling of density functions
 }
 \description{
-    Applies to an object of class \code{fmdsd} (see the details section of the  
+    Applies to an object of class \code{"fmdsd"} (see the details section of the  
     \code{\link{fmdsd}} function). Plots the scores.
 }
 \usage{
-\method{plot}{fmdsd}(x, nscore = 1:3, main="MDS of probability density functions",
+\method{plot}{fmdsd}(x, nscore = c(1, 2), main="MDS of probability density functions",
     sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
 }
 
 \arguments{
   \item{x}{
-       object of class \code{fmdsd}.
+       object of class \code{"fmdsd"}.
 }
   \item{nscore}{
-       numeric vector. The numbers of the score vectors to be plotted.
+       a length 2 numeric vector. The numbers of the score vectors to be plotted.
        
        Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fmdsd}} function.
 }

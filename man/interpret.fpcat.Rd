@@ -2,25 +2,27 @@
 \alias{interpret.fpcat}
 
 \title{
-    Scores of the \code{fpcat} function vs. moments of the densities
+    Scores of the \code{"fpcat"} function vs. moments of the densities
 }
 \description{
-    This function applies to an object of class \code{fpcat} and does the same as for an object of class \code{fpcad}: it plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
+    This function applies to an object of class \code{"fpcat"} and does the same as for an object of class \code{"fpcad"}: it plots the principal scores vs. the moments of the densities (means, standard deviations, variances, correlations, skewness and kurtosis coefficients), and computes the correlations between these scores and moments.
     
-    In the next version of the package, this function will be updated by some more graphics.
+%    In the next version of the package, this function will be updated by some more graphics.
 }
 \usage{
-\method{interpret}{fpcat}(x, nscore = 1:3, moment=c("mean", "sd", "var", "cov", "cor",
-    "skewness", "kurtosis", "all"), ...)
+\method{interpret}{fpcat}(x, nscore = 1, moment=c("mean", "sd", "var", "cov", "cor",
+    "skewness", "kurtosis"), ...)
 }
 \arguments{
   \item{x}{
-       object of class \code{fpcat} (returned by the \code{\link{fpcat}} function).
+       object of class \code{"fpcat"} (returned by the \code{\link{fpcat}} function).
 }
   \item{nscore}{
-       numeric vector. Selects the columns of the data frame \code{x$scores} to be interpreted.
+       numeric. Selects the column of the data frame \code{x$scores} consisting of a score vector.
        
-       Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fpcat}} function.
+       Note that since dad-4, \code{nscore} can only be a single value (in earlier versions, it could be a vector of length > 1).
+       
+       Warning: \code{nscore} cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fpcat}} function.
 }
   \item{moment}{
        characters string. Selects the moments to cross with scores:
@@ -31,7 +33,6 @@
           \item \code{"cor"} (correlation coefficients)
           \item \code{"skewness"} (skewness coefficients)
           \item \code{"kurtosis"} (kurtosis coefficients)
-          \item \code{"all"} (for univariate densities only. It simultaneously considers means, standard deviations, variances and skewness and kurtosis coefficients)
        }
 }
   \item{...}{
@@ -39,11 +40,10 @@
 }
 }
 \details{
-    A new graphics device is opened for each score column. A device can contain up to 9 graphs.
-    If there are too many (more than 36) graphs for each score, a multipage PDF file is created in the current working directory, and the graphs are displayed in it.
+    A graphics device can contain up to 9 graphs.
+    If there are too many (more than 36) graphs for each score, one can display the graphs in a multipage PDF file.
 
     The number of principal scores to be interpreted cannot be greater than \code{nb.factors} of the data frame \code{x$scores} returned by the function \link{fpcat}.
-
 }
 \value{
     Returns a list including:

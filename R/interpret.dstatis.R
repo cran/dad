@@ -1,38 +1,33 @@
 interpret.dstatis <-
-  function(x, nscore=1:3, moment=c("mean", "sd", "var", "cov", "cor", "skewness", "kurtosis", "all"), ...)
+  function(x, nscore=1, moment=c("mean", "sd", "var", "cov", "cor", "skewness", "kurtosis"), ...)
   { 
-    moment <- match.arg(moment)
+    if (moment[1] == "all") 
+      stop("Since dad-4, moment='all' is not allowed any more")
     
-    if (moment == "all") {
-      ylab <- "moments"
-    } else {
-      ylab <- moment
-    }
+    moment <- match.arg(moment)
     
     # Check if x is an object of "dstatis" class
     if (!is.dstatis(x))
       stop("arg1 must be an object of class 'dstatis'!")
     
+    if (length(nscore) > 1) {
+      warning(paste0("Since dad-4, nscore can only be a single numeric value.\n nscore is set to ", nscore[1]))
+      nscore <- nscore[1]
+    }
+    
     # Read scores
     coor <- x$scores
     group.name <- coor[[1]]
     rownames(coor)=group.name
-    matcoor=as.data.frame(coor[,1+nscore], stringsAsFactors = TRUE)
+    matcoor=as.data.frame(coor[1+nscore], stringsAsFactors = TRUE)
     
     colnoms=x$variables
     p = length(colnoms)
     
-    if ((p > 1)&(moment == "all"))
-      stop("moment can be 'all' only if the data is univariate.")
-    
-    if ((p == 1)&(moment == "all"))
-      moment = c("mean", "sd", "skewness", "kurtosis")
-    
     matmoments=matrix(nrow=length(group.name), ncol=0)
     colNames=character(0)
     
-    for (mom in moment)
-    {switch(mom,
+    switch(moment,
             mean=
               {# Compute and store the means 
                 moyL <- x$means
@@ -120,7 +115,6 @@ interpret.dstatis <-
                 colNames=append(colNames, paste("kurtosis",colnoms,sep="."))
               }
     )
-    }
     matmoments=as.data.frame(matmoments, stringsAsFactors = TRUE)
     rownames(matmoments)=group.name
     colnames(matmoments)=colNames
@@ -131,17 +125,11 @@ interpret.dstatis <-
     spearman.mat=cor(matmoments,matcoor, method="spearman")
     
     # Crossed figures                
-    dev.pdf <- (.Device %in% c("null device", "windows"))&(ncol(matmoments) > 36)
+    dev.pdf <- (.Device != "pdf")&(ncol(matmoments) > 9)
     if (dev.pdf)
-    {namePDF <- paste(as.character(x$call)[1:2], collapse = "_")
-    namePDF <- paste(namePDF, "pdf", sep = ".")
-    warning(paste("Due to the high number of variables, the graphics were displayed in ", namePDF, sep = ""))
-    pdf(namePDF)}
+      warning(paste(ncol(matmoments), "graphs displayed. Consider producing PDF graphics."))
     
-    plotframes(x=matcoor, y=matmoments, font.size=10, ylab = ylab)
-    
-    if (dev.pdf)
-    {dev.off(which = dev.list()["pdf"])}
+    plotframes(x=matcoor, y=matmoments, font.size=10, ylab = moment)
     
     # Display correlations
     cat("Pearson correlations between scores and moments\n")

@@ -6,20 +6,20 @@
     Plotting scores of principal component analysis of density functions
 }
 \description{
-    Applies to an object of class \code{fpcad} (see details of the  
+    Applies to an object of class \code{"fpcad"} (see details of the  
     \code{\link{fpcad}} function). Plots the scores.
 }
 \usage{
-\method{plot}{fpcad}(x, nscore = 1:3, main = "PCA of probability density functions",
+\method{plot}{fpcad}(x, nscore = c(1, 2), main = "PCA of probability density functions",
     sub.title = NULL, color = NULL, fontsize.points = 1.5, ...)
 }
 
 \arguments{
   \item{x}{
-       object of class \code{fpcad} (returned by \code{\link{fpcad}}).
+       object of class \code{"fpcad"} (returned by \code{\link{fpcad}}).
 }
   \item{nscore}{
-       numeric vector. The numbers of the score vectors to be plotted.
+       a length 2 numeric vector. The numbers of the score vectors to be plotted.
        
        Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{fpcad}} function.
 }

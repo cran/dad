@@ -8,16 +8,18 @@
     Applies to an object of class \code{"mdsdd"}, plots the scores vs. the marginal probability distributions or pairwise association measures of the discrete variables, and computes the correlations between these scores and probabilities or association measures (see Details).
 }
 \usage{
-\method{interpret}{mdsdd}(x, nscore = 1:3, mma = c("marg1", "marg2", "assoc"), ...)
+\method{interpret}{mdsdd}(x, nscore = 1, mma = c("marg1", "marg2", "assoc"), ...)
 }
 \arguments{
   \item{x}{
-       object of class \code{mdsdd} (returned by the \code{\link{mdsdd}} function).
+       object of class \code{"mdsdd"} (returned by the \code{\link{mdsdd}} function).
 }
   \item{nscore}{
-       numeric vector. Selects the columns of the data frame \code{x$scores} consisting of the score vectors.
+       numeric. Selects the column of the data frame \code{x$scores} consisting of a score vector.
        
-       Warning: Its components cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{mdsdd}} function.
+       Note that since dad-4, \code{nscore} can only be a single value (in earlier versions, it could be a vector of length > 1).
+       
+       Warning: \code{nscore} cannot be greater than the \code{nb.factors} argument in the call of the \code{\link{mdsdd}} function.
 }
   \item{mma}{
        character. Indicates which measures will be considered:
@@ -32,11 +34,10 @@
 }
 }
 \details{
-    A new graphics device is opened for each score column. A device can contain up to 9 graphs.
-    If there are too many (more than 36) graphs for each score, a multipage PDF file is created in the current working directory, and the graphs are displayed in it.
+    A graphics device can contain up to 9 graphs.
+    If there are too many (more than 36) graphs for each score, one can display the graphs in a multipage PDF file.
 
     The number of principal scores to be interpreted cannot be greater than \code{nb.factors} of the data frame \code{x$scores} returned by the function \code{\link{mdsdd}}.
-
 }
 \value{
     Returns a list including:
