@@ -36,9 +36,6 @@
     
     If \code{dist.print = TRUE} or \code{prox.print = TRUE}, the distances or proximity indices between groups and classes, are displayed.
 }
-\references{
-    Rudrauf J.M., Boumaza R. (2001). Contribution ? l'?tude de l'architecture m?di?vale: les caract?ristiques des pierres ? bossage des ch?teaux forts alsaciens. Centre de Recherches Arch?ologiques M?di?vales de Saverne, 5, 5-38.
-}
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }

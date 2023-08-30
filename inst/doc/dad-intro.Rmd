@@ -17,6 +17,11 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Below is an overview of the data analysis methods provided by the dad package, and a presentation of the type of data manipulated.
+
+For more information on these elements, see:
+[https://journal.r-project.org/archive/2021/RJ-2021-071/index.html](https://doi.org/10.32614/RJ-2021-071)
+
 ## Data under consideration
 
 The **dad** package provides tools for analysing multi-group data.
@@ -69,7 +74,7 @@ print(rosesf, max = 9)
 
 Objects of class `"folderh"` can be used to avoid redundancies in the data.
 
-In the most useful case, such objects are hierarchical lists of two data frames `df1` and `df2` related by means of a key which describes the “1 to N” relationship between the data frames.
+In the most useful case, such objects are hierarchical lists of two data frames `df1` and `df2` related by means of a key which describes the "1 to N" relationship between the data frames.
 
 They are created by the function `folderh` (see its help in R for the case of three data frames or more).
 

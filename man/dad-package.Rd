@@ -17,9 +17,11 @@ discriminant analysis...) for such probability densities.
 \tabular{ll}{
 Package: \tab dad\cr
 Type: \tab Package\cr
-Version: \tab 4.0.0\cr
-Date: \tab 2021-08-04\cr
+Version: \tab 4.1.2\cr
+Date: \tab 2023-08-28\cr
 License: \tab GPL-2\cr
+URL: https://forgemia.inra.fr/dad/dad
+BugReports: https://forgemia.inra.fr/dad/dad/issues
 }
 To cite \code{dad}, use \code{citation("dad")}.
 
@@ -59,13 +61,13 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard with 
     
     Boumaza, R. (2004). Discriminant analysis with independently repeated multivariate measurements: an \eqn{L^2} approach. Computational Statistics & Data Analysis, 47, 823-843.
 
-    Cokelaer, T. and Pradal, C. (2010). \href{http://openalea.gforge.inria.fr/doc/vplants/newmtg/doc/_build/html/user/syntax.html}{MTG user guide}
-    
     Delicado, P. (2011). Dimensionality reduction when data are density functions. Computational Statistics & Data Analysis, 55, 401-420.
     
     Deza, M.M. and Deza E. (2013). Encyclopedia of distances. Springer.
     
-    Rudrauf, J.M., Boumaza, R. (2001). Contribution ? l'?tude de l'architecture m?di?vale: les caract?ristiques des pierres ? bossage des ch?teaux forts alsaciens. Centre de Recherches Arch?ologiques M?di?vales de Saverne, 5, 5-38.
+    Pradal, C., Godin, C. and Cokelaer, T. (2023). \href{https://mtg.readthedocs.io/en/latest/user/index.html}{MTG user guide}
+    
+    Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
     
     Rachev, S.T., Klebanov, L.B., Stoyanov, S.V. and Fabozzi, F.J. (2013). The methods of distances in the theory of probability and statistics. Springer.
 

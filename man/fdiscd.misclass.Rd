@@ -100,7 +100,7 @@ fdiscd.misclass(xf, class.var, gaussiand = TRUE,
 \references{
     Boumaza, R. (2004). Discriminant analysis with independently repeated multivariate measurements: an \eqn{L^2} approach. Computational Statistics & Data Analysis, 47, 823-843.
     
-    Rudrauf, J.M., Boumaza, R. (2001). Contribution ? l'?tude de l'architecture m?di?vale: les caract?ristiques des pierres ? bossage des ch?teaux forts alsaciens. Centre de Recherches Arch?ologiques M?di?vales de Saverne, 5, 5-38.
+    Rudrauf, J.M., Boumaza, R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
 }
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard

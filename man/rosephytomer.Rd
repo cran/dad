@@ -22,7 +22,7 @@ The metamers which have no leaflets are omitted.
 }
 }
 \source{
-Demotes-Mainard, S., Bertheloot, J., Boumaza, R., Huché-Thélier, L., Guéritaine, G., Guérin, V. and Andrieu, B. (2013). Rose bush leaf and internode expansion dynamics: analysis and development of a model capturing interplant variability. Frontiers in Plant Science 4: 418. Doi: 10.3389/fpls.2013.00418
+Demotes-Mainard, S., Bertheloot, J., Boumaza, R., HuchÃ©-ThÃ©lier, L., GuÃ©ritaine, G., GuÃ©rin, V. and Andrieu, B. (2013). Rose bush leaf and internode expansion dynamics: analysis and development of a model capturing interplant variability. Frontiers in Plant Science 4: 418. Doi: 10.3389/fpls.2013.00418
 }
 \examples{
 data(rosephytomer)

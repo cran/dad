@@ -23,7 +23,7 @@ library(dad)
 
 ## Introduction: example and objective of the method
 
-The dataset `dspg` of the **dad** package is a list of $T = 7$ matrices. For each of the $T$ years 1968, 1975, 1982, 1990, 1999, 2010 and 2015, we have the contingency table of Diploma × Socioprofessional group in France. Each table has:
+The dataset `dspg` of the **dad** package is a list of $T = 7$ matrices. For each of the $T$ years 1968, 1975, 1982, 1990, 1999, 2010 and 2015, we have the contingency table of Diploma $\times$ Socioprofessional group in France. Each table has:
 
 * 4 rows corresponding to a level of diploma (`diplome`):
   + `bepc`: brevet

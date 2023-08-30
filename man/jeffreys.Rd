@@ -35,7 +35,7 @@ jeffreys(x1, x2, check = FALSE)
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard
 }
 \seealso{
-   \link{par}: Jeffreys measure between Gaussian densities, given their parameters.
+   \link{jeffreyspar}: Jeffreys measure between Gaussian densities, given their parameters.
 }
 \examples{
 require(MASS)

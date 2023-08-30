@@ -31,7 +31,7 @@ wassersteinpar(mean1, var1, mean2, var2, check = FALSE)
 
     \deqn{(||m1-m2||_2^2 + trace((v1+v2) - 2*(v2^{1/2} v1 v2^{1/2})^{1/2}))^{1/2}}
 
-    If \eqn{p = 1}:.
+    If \eqn{p = 1}:
 
     \deqn{((m1-m2)^2 + v1 + v2 - 2*(v1*v2)^{1/2})^{1/2}}
 

@@ -39,7 +39,7 @@
 \references{
     Boumaza, R. (2004). Discriminant analysis with independently repeated multivariate measurements: an \eqn{L^2} approach. Computational Statistics & Data Analysis, 47, 823-843.
     
-    Rudrauf J.M., Boumaza R. (2001). Contribution à l'étude de l'architecture médiévale: les caractéristiques des pierres à bossage des châteaux forts alsaciens. Centre de Recherches Archéologiques Médiévales de Saverne, 5, 5-38.
+    Rudrauf, J.M., Boumaza, R. (2001). Contribution Ã  l'Ã©tude de l'architecture mÃ©diÃ©vale: les caractÃ©ristiques des pierres Ã  bossage des chÃ¢teaux forts alsaciens, Centre de Recherches ArchÃ©ologiques mÃ©diÃ©vales de Saverne, 5, 5-38.
 }
 \author{
 Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demotes-Mainard

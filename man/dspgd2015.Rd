@@ -28,7 +28,7 @@ data(dspgd2015)
 }
 \source{
 INSEE. \href{https://www.insee.fr/fr/statistiques/1893185}{
-Population active de 25 \'a 54 ans ayant un emploi et ch\^omeurs par cat\'egorie socioprofessionnelle et dipl\^ome par commune et d\'epartement (1968 \'a 2015)}.
+Population active de 25 à 54 ans ayant un emploi et chômeurs par catégorie socioprofessionnelle et diplôme par commune et département (1968 à 2015)}.
 }
 \author{
 Rachid Boumaza, Pierre Santagostini, Smail Yousfi, Sabine Demotes-Mainard

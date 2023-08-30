@@ -19,7 +19,7 @@ cut.folder <- function(x, breaks, labels = NULL, include.lowest = FALSE, right =
   #                      of the folder.
   #                      By default, labels are constructed using "(a,b]" interval notation.
   #                      If labels = FALSE, simple integer codes are returned instead of a factor.
-  #   - include.lowest : logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’ value should be included.
+  #   - include.lowest : logical, indicating if an 'x[i]' equal to the lowest (or highest, for right = FALSE) 'breaks' value should be included.
   #   - right          : logical, indicating if the intervals should be closed on the right (and open on the left) or vice versa.
   #   - dig.lab :      : integer or list of integer which is used when labels are not given.
   #                      It determines the number of digits used in formatting the break numbers.

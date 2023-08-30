@@ -31,8 +31,8 @@
   }
 }
 \source{
-Boumaza, R., Huché-Thélier, L., Demotes-Mainard, S., Le Coz, E., Leduc, N., Pelleschi-Travier, S., 
-Qannari, E.M., Sakr, S., Santagostini, P., Symoneaux, R., Guérin, V. (2010). Sensory profile 
+Boumaza, R., HuchÃ©-ThÃ©lier, L., Demotes-Mainard, S., Le Coz, E., Leduc, N., Pelleschi-Travier, S., 
+Qannari, E.M., Sakr, S., Santagostini, P., Symoneaux, R., GuÃ©rin, V. (2010). Sensory profile 
 and preference analysis in ornamental horticulture: The case of rosebush. Food Quality and Preference,
 21, 987-997. 
 }

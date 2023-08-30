@@ -1,8 +1,8 @@
 distl2dpar <-
 function(mean1, var1, mean2, var2, check=FALSE)  
 {
-  # mean1, var1 :   mean et variance (matrix) of the first data set.
-  # mean2, var2 :   les (vecteur) moyenne et (matrice de) variance du deuxième jeu de données.
+  # mean1, var1 :   mean and variance (matrix) of the first dataset.
+  # mean2, var2 :   the mean (vector) and variance (matrix) of the second dataset.
    if(check)
     {if (length(mean1) == 1)
       {if(abs(var1)<.Machine$double.eps | abs(var2)<.Machine$double.eps)
