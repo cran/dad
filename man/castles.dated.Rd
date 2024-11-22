@@ -13,7 +13,7 @@
 \format{
   \code{castles.dated} is a list of two data frames:
   
-  \itemize{
+  \describe{
     \item{\code{castles.dated$stones}: }{this first data frame has 1262 cases (rows) and 5 variables (columns) that are named
      \code{height, width, edging, boss} (numeric) and \code{castle} (factor).}
 

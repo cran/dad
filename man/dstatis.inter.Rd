@@ -59,7 +59,8 @@ dstatis.inter(xf, normed = TRUE, centered = TRUE, data.scaled = FALSE, nb.factor
 \details{ 
     The covariance matrices (if \code{data.scale} is \code{FALSE}) or correlation matrices (if \code{TRUE}) per group are computed. The matrix \eqn{W} of the scalar products between these covariance matrices is then computed.
     
-    To perform the STATIS method, see the function \link[multigroup]{DSTATIS} of the \code{multigroup} package.
+    To perform the STATIS method, see the function DSTATIS%\link[multigroup]{DSTATIS}
+    of the \code{multigroup} package.
 }
 \value{
     Returns an object of class \code{dstatis}, that is a list including:
@@ -84,7 +85,7 @@ Rachid Boumaza,  Pierre Santagostini, Smail Yousfi, Gilles Hunault, Sabine Demot
 \seealso{
     \link{print.dstatis}, \link{plot.dstatis}, \link{interpret.dstatis}.
     
-    \link[multigroup]{DSTATIS}
+    %\link[multigroup]{DSTATIS}
 }
 \examples{
 data(roses)

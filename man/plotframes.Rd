@@ -5,7 +5,7 @@
     Plotting of two sets of variables
 }
 \description{
-    Plots a set of numeric variables vs. another set and prints the pairwise correlations. It uses the function \code{\link{xyplot}} of \code{lattice} package. 
+    Plots a set of numeric variables vs. another set and prints the pairwise correlations. It uses the \link[ggplot2]{ggplot2} package. 
 }
 \usage{
 plotframes(x, y, xlab = NULL, ylab = NULL, font.size = 12, layout = NULL)

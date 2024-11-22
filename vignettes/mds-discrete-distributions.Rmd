@@ -1,7 +1,7 @@
 ---
 title: "Multidimensional Scaling of Discrete Probability Distributions"
 author: "Pierre Santagostini, Rachid Boumaza"
-date: "`r Sys.Date()`"
+date: "2023-08-28"
 output:
   rmarkdown::html_vignette:
     toc: true

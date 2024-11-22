@@ -15,15 +15,15 @@ kurtosis.folder(x, na.rm = FALSE, type = 3)
      an object of class \code{\link{folder}}.% The attribute \code{attr(,"same.cols")} must be \code{TRUE} (otherwise, there is an error).
 }
   \item{na.rm}{
-     logical. Should missing values be omitted from the calculations? (see \code{\link{kurtosis}})
+     logical. Should missing values be omitted from the calculations? (see \code{\link[e1071]{kurtosis}})
 }
   \item{type}{
-     an integer between 1 and 3 (see \code{\link{kurtosis}}).
+     an integer between 1 and 3 (see \code{\link[e1071]{kurtosis}}).
 }
 }
 \details{
 % This function can only be applied to a folder of data frames with the same column names. If \code{attr(x,"same.cols") = FALSE}, there is an error.
- It uses \code{\link{kurtosis}} to compute the mean by numeric column of each element of the folder. If some columns of the data frames are not numeric, there is a warning, and the means are computed on the numeric columns only.
+ It uses \code{\link[e1071]{kurtosis}} to compute the mean by numeric column of each element of the folder. If some columns of the data frames are not numeric, there is a warning, and the means are computed on the numeric columns only.
 }
 \value{
  A list whose elements are the kurtosis coefficients by column of the elements of the folder.

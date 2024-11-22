@@ -7,7 +7,7 @@
   Association measures between several categorical variables of a data frame
 }
 \description{
-  Computes pairwise association measures (Cramer's V, Pearson's contingency coefficient, phi, Tschuprow's T) between the categorical variables of a data frame, using functions of the package \code{DescTools} (see \code{\link{Assocs}}).
+  Computes pairwise association measures (Cramer's V, Pearson's contingency coefficient, phi, Tschuprow's T) between the categorical variables of a data frame, using functions of the package \code{DescTools} (see \code{\link[DescTools]{Assocs}}).
 }
 \usage{
 cramer.data.frame(x, check = TRUE)

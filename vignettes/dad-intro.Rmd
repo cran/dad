@@ -1,7 +1,7 @@
 ---
 title: "Introduction to dad"
 author: "Pierre Santagostini, Rachid Boumaza"
-date: "`r Sys.Date()`"
+date: "2023-08-29"
 output:
   rmarkdown::html_vignette:
     toc: true

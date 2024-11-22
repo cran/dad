@@ -7,7 +7,7 @@
   Association measures between categorical variables of the data frames of a folder
 }
 \description{
-  Computes the pairwise association measures (Cramer's V, Pearson's contingency coefficient, phi, Tschuprow's T) between the categorical variables of an object of class \code{folder}. The computation is carried out using the functions \code{\link{cramer.data.frame}}, \code{\link{tschuprow.data.frame}}, \code{\link{pearson.data.frame}} or \code{\link{phi.data.frame}}. These functions are built from corresponding functions of the package \code{DescTools} (see \code{\link{Assocs}})
+  Computes the pairwise association measures (Cramer's V, Pearson's contingency coefficient, phi, Tschuprow's T) between the categorical variables of an object of class \code{folder}. The computation is carried out using the functions \code{\link{cramer.data.frame}}, \code{\link{tschuprow.data.frame}}, \code{\link{pearson.data.frame}} or \code{\link{phi.data.frame}}. These functions are built from corresponding functions of the package \code{DescTools} (see \code{\link[DescTools]{Assocs}})
 }
 \usage{
 cramer.folder(xf)

@@ -11,19 +11,19 @@ data(dspgd2015)
 }
 \format{
   \code{dspgd2015} is a list of 96 arrays (each one corresponding to a department, designated by its official geographical code) of 4 rows (each one corresponding to a level of diploma) and 6 columns (each one corresponding to a socio professional group). 
-  \itemize{
-    \item{\code{csp: }} {Socio professional group}
-    \item{\code{diplome: }} {Diploma}
-    \item{\code{agri: }} {farmer (agriculteur)}
-    \item{\code{arti: }} {craftsperson (artisan)}
-    \item{\code{cadr: }} {senior manager (cadre sup\'erieur)}
-    \item{\code{pint: }} {middle manager (profession interm\'ediaire)}
-    \item{\code{empl: }} {employee (employ\'e)}
-    \item{\code{ouvr: }} {worker (ouvrier)}
-    \item{\code{bepc: }} {brevet}
-    \item{\code{cap: }} {NVQ (cap)}
-    \item{\code{bac: }} {baccalaureate}
-    \item{\code{sup: }} {higher education (sup\'erieur)}
+  \describe{
+    \item{\code{csp: }}{Socio professional group}
+    \item{\code{diplome: }}{Diploma}
+    \item{\code{agri: }}{farmer (agriculteur)}
+    \item{\code{arti: }}{craftsperson (artisan)}
+    \item{\code{cadr: }}{senior manager (cadre sup\'erieur)}
+    \item{\code{pint: }}{middle manager (profession interm\'ediaire)}
+    \item{\code{empl: }}{employee (employ\'e)}
+    \item{\code{ouvr: }}{worker (ouvrier)}
+    \item{\code{bepc: }}{brevet}
+    \item{\code{cap: }}{NVQ (cap)}
+    \item{\code{bac: }}{baccalaureate}
+    \item{\code{sup: }}{higher education (sup\'erieur)}
   }
 }
 \source{

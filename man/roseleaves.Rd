@@ -10,7 +10,7 @@
 \usage{data("roseleaves")}
 \format{
   \code{roseleaves} is a list of four data frames:
-  \itemize{
+  \describe{
     \item{\code{roseflowers$rose}: }{data frame with 7 rows and 3 columns (factors) named
      \code{rose}, \code{place} and \code{variety}.}
 

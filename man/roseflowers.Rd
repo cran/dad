@@ -11,7 +11,7 @@
 \format{
   \code{roseflowers} is a list of two data frames:
   
-  \itemize{
+  \describe{
     \item{\code{roseflowers$variety}: }{this first data frame has 5 rows and 3 columns (factors) named
      \code{place}, \code{rose} and \code{variety}.}
 

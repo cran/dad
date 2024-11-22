@@ -9,11 +9,11 @@
 \usage{data(departments)}
 \format{
   \code{departments} is a data frame with 96 rows and 4 columns (factors):
-  \itemize{
-    \item{\code{coded: }} {departments: numbers}
-    \item{\code{named: }} {departments: names}
-    \item{\code{coder: }} {regions: ISO code}
-    \item{\code{namer: }} {region: names}
+  \describe{
+    \item{\code{coded: }}{departments: numbers}
+    \item{\code{named: }}{departments: names}
+    \item{\code{coder: }}{regions: ISO code}
+    \item{\code{namer: }}{region: names}
   }
 }
 

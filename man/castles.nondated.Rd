@@ -12,7 +12,7 @@
 \format{
   \code{castles.nondated} is a list of two data frames:
   
-  \itemize{
+  \describe{
     \item{\code{castles.nondated$stones}: }{this first data frame has 1280 cases (rows) and 5 variables (columns) that are named
      \code{height, width, edging, boss} (numeric) and \code{castle} (factor).}
 

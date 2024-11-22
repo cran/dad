@@ -10,7 +10,7 @@
 \usage{data("mtgplant2")}
 \format{
   This object of class \code{\link{foldermtg}} is a list of 9 data frames:
-  \itemize{
+  \describe{
     \item{\code{mtgplant2$classes}: }{data frame with 6 rows and 5 columns named
      \code{SYMBOL} (factor: the classes of the vertices), \code{SCALE} (integer: the scale at which they appear), \code{DECOMPOSITION} (factor), \code{INDEXATION} (factor) and \code{DEFINITION} (factor).
      
