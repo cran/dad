@@ -16,7 +16,7 @@ Or from the repository, using the `devtools` package:
 
 ```
 install.packages("devtools")
-devtools::install_git("https://forgemia.inra.fr/dad/dad.git", build_vignettes = TRUE)
+devtools::install_git("https://forge.inrae.fr/dad/dad.git", build_vignettes = TRUE)
 ```
 
 <!---

@@ -1,7 +1,7 @@
 Package: dad
 Type: Package
 Title: Three-Way / Multigroup Data Analysis Through Densities
-Version: 4.1.5
+Version: 4.1.6
 Authors@R: c(person(given = "Rachid",
                     family = "Boumaza",
                     role = "aut"),
@@ -33,8 +33,8 @@ Author: Rachid Boumaza [aut],
   Sabine Demotes-Mainard [aut]
 Maintainer: Pierre Santagostini <pierre.santagostini@agrocampus-ouest.fr>
 Description: The data consist of a set of variables measured on several groups of individuals. To each group is associated an estimated probability density function. The package provides tools to create or manage such data and functional methods (principal component analysis, multidimensional scaling, cluster analysis, discriminant analysis...) for such probability densities.
-URL: https://forgemia.inra.fr/dad/dad
-BugReports: https://forgemia.inra.fr/dad/dad/-/issues
+URL: https://forge.inrae.fr/dad/dad
+BugReports: https://forge.inrae.fr/dad/dad/-/issues
 Depends: R (>= 3.6.0)
 Imports: methods, stats, graphics, grDevices, utils, ggplot2, e1071,
         DescTools
@@ -44,6 +44,6 @@ License: GPL (>= 2)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-11-22 12:07:47 UTC; psantagosti
+Packaged: 2025-06-10 13:49:31 UTC; psantagosti
 Repository: CRAN
-Date/Publication: 2024-11-22 14:20:13 UTC
+Date/Publication: 2025-06-10 14:30:02 UTC

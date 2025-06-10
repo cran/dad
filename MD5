@@ -1,4 +1,4 @@
-75ea1f1ca63ef0000a2eba6b4bfbfed2 *DESCRIPTION
+b3ca5acbf047884943475fb710bd0e66 *DESCRIPTION
 e16360b72d72fcd81c88027f0b20fb7c *NAMESPACE
 03bdec69d671ac16eabed46f8d05bd34 *R/appendtofolderh.R
 a7b9d5fb496b942a910f8725d0099f6f *R/as.data.frame.folder.R
@@ -138,8 +138,8 @@ dbf494a6b9bb13d82ae7a8ac53718d05 *R/summary.foldert.R
 2d796583e141e32cf4738b87213a0cdd *R/var.folder.R
 9d780d66e1bf92be105cba2307410753 *R/wasserstein.R
 dce44bf35a799c5c4dc039afdaff0c3a *R/wassersteinpar.R
-a10528d9cbc9cec13a5673877809cf44 *README.md
-3b69e7d5838355d6cf57d0e1991109a0 *build/vignette.rds
+6157f1f56dd2bbf31cc99b89eaa3d396 *README.md
+fe61996340e2d73ff2f87df24b577e52 *build/vignette.rds
 594d18dd011b42c45907e37f6412a163 *data/castles.dated.rda
 354c751ee54590bd67be0ab29fb35e49 *data/castles.nondated.rda
 eaabcdd24d9e922e5a26c7200ed18c0e *data/castles.rda
@@ -160,7 +160,7 @@ c0eeefb764b0ddaad9e4937e62722853 *inst/doc/dad-intro.R
 306799b4a4a271e7966acfc40d6c6346 *inst/doc/dad-intro.html
 93502bf9f1467ceec9d68119f12b2a15 *inst/doc/mds-discrete-distributions.R
 3b151231e8abf958ffa2e5a4d484657e *inst/doc/mds-discrete-distributions.Rmd
-468dc36c5fd58861b418cc395e6e116b *inst/doc/mds-discrete-distributions.html
+d0044477eb9ce22d35ef497e96730a1a *inst/doc/mds-discrete-distributions.html
 fb9d53e6c0793733fed8172d736ea52e *inst/extdata/plant1.mtg
 5eacea0c06624a828bcabf699f7025c9 *inst/extdata/plant2.mtg
 40e7c5816207574f42bf33a72b9fe09f *man/appendtofolderh.Rd
